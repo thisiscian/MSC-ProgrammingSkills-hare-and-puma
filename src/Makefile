@@ -33,8 +33,8 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = hare-and-puma$(EXEEXT)
-check_PROGRAMS = board_test$(EXEEXT)
-TESTS = board_test$(EXEEXT)
+check_PROGRAMS = board_test$(EXEEXT) tile_test$(EXEEXT)
+TESTS = board_test$(EXEEXT) tile_test$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -53,6 +53,9 @@ board_test_LDADD = $(LDADD)
 am_hare_and_puma_OBJECTS = main.$(OBJEXT)
 hare_and_puma_OBJECTS = $(am_hare_and_puma_OBJECTS)
 hare_and_puma_LDADD = $(LDADD)
+am_tile_test_OBJECTS = tile_test.$(OBJEXT)
+tile_test_OBJECTS = $(am_tile_test_OBJECTS)
+tile_test_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -62,8 +65,10 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
-SOURCES = $(board_test_SOURCES) $(hare_and_puma_SOURCES)
-DIST_SOURCES = $(board_test_SOURCES) $(hare_and_puma_SOURCES)
+SOURCES = $(board_test_SOURCES) $(hare_and_puma_SOURCES) \
+	$(tile_test_SOURCES)
+DIST_SOURCES = $(board_test_SOURCES) $(hare_and_puma_SOURCES) \
+	$(tile_test_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 am__tty_colors = \
@@ -154,6 +159,7 @@ top_builddir = ..
 top_srcdir = ..
 hare_and_puma_SOURCES = main.cpp
 board_test_SOURCES = board_test.cpp
+tile_test_SOURCES = tile_test.cpp
 all: all-am
 
 .SUFFIXES:
@@ -234,6 +240,9 @@ board_test$(EXEEXT): $(board_test_OBJECTS) $(board_test_DEPENDENCIES) $(EXTRA_bo
 hare-and-puma$(EXEEXT): $(hare_and_puma_OBJECTS) $(hare_and_puma_DEPENDENCIES) $(EXTRA_hare_and_puma_DEPENDENCIES) 
 	@rm -f hare-and-puma$(EXEEXT)
 	$(CXXLINK) $(hare_and_puma_OBJECTS) $(hare_and_puma_LDADD) $(LIBS)
+tile_test$(EXEEXT): $(tile_test_OBJECTS) $(tile_test_DEPENDENCIES) $(EXTRA_tile_test_DEPENDENCIES) 
+	@rm -f tile_test$(EXEEXT)
+	$(CXXLINK) $(tile_test_OBJECTS) $(tile_test_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -243,6 +252,7 @@ distclean-compile:
 
 include ./$(DEPDIR)/board_test.Po
 include ./$(DEPDIR)/main.Po
+include ./$(DEPDIR)/tile_test.Po
 
 .cpp.o:
 	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

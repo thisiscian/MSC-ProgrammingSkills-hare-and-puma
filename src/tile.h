@@ -1,3 +1,8 @@
+#ifndef __TILE_H__
+#define __TILE_H__
+
+#include <stdlib.h>
+
 class tile
 {
   public:
@@ -48,3 +53,5 @@ class tile
 
   int land_type;
 };
+
+#endif
