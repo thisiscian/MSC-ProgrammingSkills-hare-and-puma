@@ -5,9 +5,10 @@ The C conventions as documented at:
 http://fxa.noaa.gov/manuals/codingGuidelines.html
 
 with emphasis on:
-UPPERCASE_IDENTIFIERS for #defined constants
-UpperMixedCase for user defined types (enumerations, classes, structs, unions etc.)
-lowerMixedCase for local variable names, function names, formal parameter names
+-UPPERCASE_IDENTIFIERS for #defined constants
+-UpperMixedCase for user defined types (enumerations, classes, structs, unions etc.)
+-lowerMixedCase for local variable names, formal parameter names
+-lower_case for function names
 
 files will be named with .cpp
 two space tabs will be used
