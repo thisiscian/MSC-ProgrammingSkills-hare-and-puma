@@ -7,3 +7,4 @@ What Ruairi Did With His Time
 -I am doing the update implementations
 -wrote update hares function
 -considered whether to copy to hares array before computing update or after, decided on after
+-comtemplating whether to compute number of adjacent land elements inline or in seperate loop for performance reasons

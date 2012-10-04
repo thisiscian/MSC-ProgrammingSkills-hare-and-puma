@@ -2,6 +2,8 @@
 
 /*takes in the array of hares and updates it using the update equations*/
 
+using namespace std;
+
 void update_hares(double map[NX][NY] double hares[NX][NY],\
 double pumas[NX][NY], double timeStep, double a, double k, double r)
 {
