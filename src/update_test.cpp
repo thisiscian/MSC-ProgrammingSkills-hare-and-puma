@@ -35,7 +35,7 @@ int main()
 		oldPumaSum += old_field(i,j).puma;
 	}
 	
-	if(newHareSum == oldHareSum)
+	if(newHareSum <= oldHareSum)
 	{
 		cout << "error: hare sums not changing" << endl;
 		return 1;
