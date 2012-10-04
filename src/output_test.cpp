@@ -2,11 +2,12 @@
 #include <math.h>
 int main()
 {
-	board<tile> field(15,5);
+	board<tile> field(10,10);
 	int horizontalPosition, verticalPosition;
 	int width = field.get_width();
 	int height = field.get_height();
 
+	/* define a field with arbitrarily different values for land, hare numbers and puma numbers */
 	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
 	{
 		for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
@@ -23,5 +24,6 @@ int main()
 	output_to_console(field, 0.0);
 	write_simple_ppm(field, 0.0);
 	write_simple_adjustable_ppm(field, 0.0, 40, 3);
+	write_fancy_ppm(field, 0.0);
 	return 0;
 }

@@ -100,7 +100,7 @@ void write_simple_adjustable_ppm(board<tile> field, double time, int tileSize, i
 
 	FILE *file;
 	char buffer[100];
-	char grey[12] = "040 040 040";
+	color borderColor(40,40,40);
 	sprintf(buffer, "output/adjustable_%f.ppm", time);
 	file = fopen(buffer, "w");
 	
@@ -111,7 +111,7 @@ void write_simple_adjustable_ppm(board<tile> field, double time, int tileSize, i
 		{
 			for(int j=0; j<borderWidth; j++)
 			{
-				fprintf(file, "%s ", grey);
+				fprintf(file, "%s ", borderColor.col());
 			}
 		}
 		for(int i=0; i<tileSize; i++)
@@ -129,7 +129,7 @@ void write_simple_adjustable_ppm(board<tile> field, double time, int tileSize, i
 				}
 				for(int j=0; j<borderWidth; j++)
 				{
-					fprintf(file, "%s ", grey);
+					fprintf(file, "%s ", borderColor.col());
 				}
 				for(int i=0; i<tileSize; i++)
 				{
@@ -138,7 +138,7 @@ void write_simple_adjustable_ppm(board<tile> field, double time, int tileSize, i
 			}
 			for(int j=0; j<borderWidth; j++)
 			{
-				fprintf(file, "%s ", grey);
+				fprintf(file, "%s ", borderColor.col());
 			}
 		}
 	}
@@ -146,7 +146,75 @@ void write_simple_adjustable_ppm(board<tile> field, double time, int tileSize, i
 	{
 		for(int j=0; j<borderWidth; j++)
 		{
-			fprintf(file, "%s \n", grey);
+			fprintf(file, "%s \n", borderColor.col());
+		}
+	}
+	fprintf(file, "\n");
+		fclose(file);	
+}
+
+void write_fancy_ppm(board<tile> field, double time)
+{
+	int verticalPosition, horizontalPosition;
+	int width = field.get_width();
+	int height = field.get_height();
+	int borderWidth = 3;
+	int tileSize = 45;
+	int maxValue = 255; // This is not a good choice, as values could well exceed it
+
+	int drawingWidth = width*(borderWidth+tileSize)+borderWidth;
+	int drawingHeight = height*(borderWidth+tileSize)+borderWidth;
+
+
+	FILE *file;
+	char buffer[100];
+	color borderColor(40,40,40);
+	sprintf(buffer, "output/fancy_%f.ppm", time);
+	file = fopen(buffer, "w");
+	
+	fprintf(file, "P3 %i %i %i\n", drawingWidth, drawingHeight, maxValue);
+	for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
+	{
+		for(horizontalPosition = 0; horizontalPosition < drawingWidth ; ++horizontalPosition)
+		{
+			for(int j=0; j<borderWidth; j++)
+			{
+				fprintf(file, "%s ", borderColor.col());
+			}
+		}
+		for(int i=0; i<tileSize; i++)
+		{
+			for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
+			{
+				int red = 0, green = 0, blue = 0;
+				red = (int) (field(horizontalPosition, verticalPosition).puma);
+				green = (int) (field(horizontalPosition, verticalPosition).hare);
+				if(!field(horizontalPosition, verticalPosition).is_land())
+				{
+					red = 0;
+					green = 0;
+					blue = 255;
+				}
+				for(int j=0; j<borderWidth; j++)
+				{
+					fprintf(file, "%s ", borderColor.col());
+				}
+				for(int i=0; i<tileSize; i++)
+				{
+					fprintf(file, "%i %i %i ", red, green, blue);
+				}
+			}
+			for(int j=0; j<borderWidth; j++)
+			{
+				fprintf(file, "%s ", borderColor.col());
+			}
+		}
+	}
+	for(horizontalPosition = 0; horizontalPosition < drawingWidth; ++horizontalPosition)
+	{
+		for(int j=0; j<borderWidth; j++)
+		{
+			fprintf(file, "%s \n", borderColor.col());
 		}
 	}
 	fprintf(file, "\n");
