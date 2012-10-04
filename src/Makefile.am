@@ -7,4 +7,4 @@ TESTS = board_test tile_test update_test
 
 board_test_SOURCES = board_test.cpp
 tile_test_SOURCES = tile_test.cpp
-update_test_SOURCES = update_test.cpp update_hares.cpp
+update_test_SOURCES = update_test.cpp update_hares.cpp update_pumas.cpp

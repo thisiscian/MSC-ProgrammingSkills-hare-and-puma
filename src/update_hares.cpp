@@ -1,25 +1,27 @@
+#include "update.h"
 
 /*function that takes in the array of hares and updates it using the update equations*/
 
-void update_hares(board<tile> &board, double timeStep, double a, double k, double r)
+void update_hares(board<tile> &field, double timeStep, double a, double k, double r)
 {
-	int NY = board.get_height();
-	int NX = board.getwidth();
-	board<tile> new_board(NX,NY);
+
+	int NY = field.get_height();
+	int NX = field.get_width();
+	board<tile> new_field(NX,NY);
 
 
 	for(int y=1; y<NY-1; y++)
 	{
 		for(int x=1; x<NX-1; x++)
 		{
-		new_board(x,y).hare = board(x,y).hare + timeStep* (r*board(x,y).hare - a*board(x,y).hare * board(x,y).puma + k* (board(x-1,y).hare + board(x+1,y).hare + board(x,y-1).hare + board(x,y+1).hare - board(x+1,y).is_land + board(x-1,y).is_land+ board(x,y+1).is_land + board(x,y-1).is_land())*board(x,y).hare);
+		new_field(x,y).hare = field(x,y).hare + timeStep* (r*field(x,y).hare - a*field(x,y).hare * field(x,y).puma + k* (field(x-1,y).hare + field(x+1,y).hare + field(x,y-1).hare + field(x,y+1).hare - field(x+1,y).is_land() + field(x-1,y).is_land() + field(x,y+1).is_land() + field(x,y-1).is_land())*field(x,y).hare);
 		}
 	}
 
 	for(int y=1; y<NY-1; y++)
 	for(int x=1; x<NX-1; x++)
 	{	
-			board(x,y).hare = new_board(x,y).hare;
+			field(x,y).hare = new_field(x,y).hare;
 	}
 	
 
