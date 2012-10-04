@@ -73,6 +73,34 @@ int main(void)
     }
   }
 
+  //checking water and land declarations
+  // land and water should be different
+  if(tile::land() == tile::water())
+  {
+    std::cout << "land and water are the same!!" << std::endl;
+    return 1;
+  }
+
+  //checking getting and setting of tile types
+  tile t;
+
+  // check land setting
+  t.make_land();
+  if(!t.is_land())
+  {
+    std::cout << "t was set to land, but doesn't recognize this" << std::endl;
+    return 1;
+  }
+
+  //check water setting
+  t.make_water();
+  if(t.is_land())
+  {
+    std::cout << "t was set to water, but doesn't recognize this" << std::endl;
+    return 1;
+  }
+
+
 
   // everything passed
   return 0;
