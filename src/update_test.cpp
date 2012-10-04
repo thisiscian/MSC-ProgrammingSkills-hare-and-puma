@@ -10,13 +10,16 @@ int main()
 	double timeStep, a, k, r;
 	board<tile> b(10, 10);
 
+	a = k = r = 0.0;
+
 	for(size_t i=0; i<10; ++i)
 	for(size_t j=0; j<10; ++j)
 	{
 		b(i,j).hare = 1;
-		b(i,j).puma = 0;	
+		b(i,j).puma = 0;
 	}
 
 	update_hares(b, timeStep, a, k, r);
-
+	
+	return 0;
 }
