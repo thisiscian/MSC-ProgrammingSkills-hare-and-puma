@@ -10,7 +10,7 @@ void update_hares(board<tile> board, double timeStep, double a, double k, double
 	{
 		for(int x=1; x<NX-1; x++)
 		{
-			newHares[x][y] = board(x)(y).hares + timeStep* (r*board(x)(y). - a*board(x)(y).hares * pumas[x][y] + k* (board(x-1)(y).hares + board(x+1)(y).hares + board(x)(y-1).hares +board(x)(y+1).hares - (map[x+1][y] + map[x-1][y] + map[x][y+1] + map[x][y-1])*board(x)(y).hares));
+			newHares[x][y] = board(x,y).hares + timeStep* (r*board(x,y).hares - a*board(x,y).hares * board(x,y).pumas + k* (board(x-1,y).hares + board(x+1,y).hares + board(x,y-1).hares + board(x,y+1).hares - board(x+1,y).is_land() + board(x-1,y).is_land()+ board(x,y+1).is_land() + board(x,y-1).is_land())*board(x,y).hares);
 		}
 	}
 
