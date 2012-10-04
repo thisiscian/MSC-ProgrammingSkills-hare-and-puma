@@ -88,13 +88,11 @@ void write_simple_ppm(board<tile> field, double time)
 }
 
 /* A function that writes a fancy looking PPM file */
-void write_fancy_ppm(board<tile> field, double time)
+void write_simple_adjustable_ppm(board<tile> field, double time, int tileSize, int borderWidth)
 {
 	int verticalPosition, horizontalPosition;
 	int width = field.get_width();
 	int height = field.get_height();
-	int tileSize = 10;
-	int borderWidth = 3;
 	int maxValue = 255; // This is not a good choice, as values could well exceed it
 
 	int drawingWidth = width*(borderWidth+tileSize)+borderWidth;
@@ -103,7 +101,7 @@ void write_fancy_ppm(board<tile> field, double time)
 	FILE *file;
 	char buffer[100];
 	char grey[12] = "040 040 040";
-	sprintf(buffer, "output/fancy_%f.ppm", time);
+	sprintf(buffer, "output/adjustable_%f.ppm", time);
 	file = fopen(buffer, "w");
 	
 	fprintf(file, "P3 %i %i %i\n", drawingWidth, drawingHeight, maxValue);

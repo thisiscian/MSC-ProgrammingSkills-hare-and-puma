@@ -22,6 +22,6 @@ int main()
 	
 	output_to_console(field, 0.0);
 	write_simple_ppm(field, 0.0);
-	write_fancy_ppm(field, 0.0);
+	write_simple_adjustable_ppm(field, 0.0, 40, 3);
 	return 0;
 }
