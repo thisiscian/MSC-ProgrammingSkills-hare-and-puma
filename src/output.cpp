@@ -8,79 +8,68 @@
 /*A function that recieves the populations of the hares and pumas, and outputs their values to the console*/
 void output_to_console(board<tile> field, double time)
 {
-	int horizontalPosition, verticalPosition;
+	int verticalPosition, horizontalPosition;
 	int width = field.get_width();
 	int height = field.get_height();
 
 	printf("Time: %2.1f\n", time);
 	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
 	{
-		if(field(horizontalPosition, 0).is_land())
-		{
-			printf("H%6.1lf", field(horizontalPosition, 0).hare);
-		}
-		else
-		{
-			printf("~~~~~~~");
-		}
-		for(verticalPosition = 1; verticalPosition < height; ++verticalPosition)
+			printf("----------");
+	}
+	printf("-\n");
+	for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
+	{
+		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
 		{
 			if(field(horizontalPosition, verticalPosition).is_land())
 			{
-				printf(" | H%6.1f", field(horizontalPosition, verticalPosition).hare);
+				printf("| H%6.1f ", field(horizontalPosition, verticalPosition).hare);
 			}
 			else
 			{
-				printf(" | ~~~~~~~");
+				printf("| ~~~~~~~ ");
 			}
 		}
-		printf("\n");
-		if(field(horizontalPosition, 0).is_land())
-		{
-			printf("P%6.1f", field(horizontalPosition, 0).puma);
-		}
-		else
-		{
-			printf("~~~~~~~");
-		}
-		for(verticalPosition = 1; verticalPosition < height; ++verticalPosition)
+		printf("|\n");
+		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
 		{
 			if(field(horizontalPosition, verticalPosition).is_land())
 			{
-				printf(" | P%6.1f", field(horizontalPosition, verticalPosition).puma);
+				printf("| P%6.1f ", field(horizontalPosition, verticalPosition).puma);
 			}
 			else
 			{
-				printf(" | ~~~~~~~");
+				printf("| ~~~~~~~ ");
 			}
 		}
-		printf("\n");
-		for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
+		printf("|\n");
+		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
 		{
-				printf("----------");
+			printf("----------");
 		}
-		printf("\n");
-			}
+		printf("-\n");
+	}
 	printf("\n");
 }
 
 /*A function that recieves the two populations and outputs a simple plain PPM file, named according to the current iteration to 'output/'*/
 void write_simple_ppm(board<tile> field, double time)
 {
-	int horizontalPosition, verticalPosition;
+	int verticalPosition, horizontalPosition;
 	int width = field.get_width();
 	int height = field.get_height();
 	int maxValue = 255; // This is not a good choice, as values could well exceed it
-	stringstream fileName;
-	ofstream population;
+
+	FILE *file;
+	char buffer[100];
+	sprintf(buffer, "output/population_%f.ppm", time);
+	file = fopen(buffer, "w");
 	
-	fileName << "output/population_" << time << ".ppm";
-	population.open(fileName.str().c_str());
-	
-	population << "P3 " << width << " " << height << " " << maxValue << endl;
-	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
+	fprintf(file, "P3 %i %i %i\n", width, height, maxValue);
+	for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
 	{
-		for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
+		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
 		{
 			int red = 0, green = 0, blue = 0;
 			red = (int) (field(horizontalPosition, verticalPosition).puma);
@@ -91,48 +80,81 @@ void write_simple_ppm(board<tile> field, double time)
 				green = 0;
 				blue = 255;
 			}
-			population << red << " " << green << " " << blue << " " << flush;
+			fprintf(file, "%i %i %i ", red, green, blue);
 		}
-		population << endl;
+		fprintf(file, "\n");
 	}
-	
-	population.close();
+	fclose(file);	
 }
 
 /* A function that writes a fancy looking PPM file */
 void write_fancy_ppm(board<tile> field, double time)
 {
-	int horizontalPosition, verticalPosition;
+	int verticalPosition, horizontalPosition;
 	int width = field.get_width();
 	int height = field.get_height();
+	int tileSize = 10;
+	int borderWidth = 3;
 	int maxValue = 255; // This is not a good choice, as values could well exceed it
-	stringstream fileName;
-	ofstream population;
+
+	int drawingWidth = width*(borderWidth+tileSize)+borderWidth;
+	int drawingHeight = height*(borderWidth+tileSize)+borderWidth;
+
+	FILE *file;
+	char buffer[100];
+	char grey[12] = "040 040 040";
+	sprintf(buffer, "output/fancy_%f.ppm", time);
+	file = fopen(buffer, "w");
 	
-	fileName << "output/population_" << time << ".ppm";
-	population.open(fileName.str().c_str());
-	
-	population << "P3 " << width << " " << height << " " << maxValue << endl;
-	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
+	fprintf(file, "P3 %i %i %i\n", drawingWidth, drawingHeight, maxValue);
+	for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
 	{
-		for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
+		for(horizontalPosition = 0; horizontalPosition < drawingWidth ; ++horizontalPosition)
 		{
-			int red = 0, green = 0, blue = 0;
-			red = (int) (field(horizontalPosition, verticalPosition).puma);
-			green = (int) (field(horizontalPosition, verticalPosition).hare);
-			if(!field(horizontalPosition, verticalPosition).is_land())
+			for(int j=0; j<borderWidth; j++)
 			{
-				red = 0;
-				green = 0;
-				blue = 255;
+				fprintf(file, "%s ", grey);
 			}
-			population << red << " " << green << " " << blue << " " << flush;
 		}
-		population << endl;
+		for(int i=0; i<tileSize; i++)
+		{
+			for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
+			{
+				int red = 0, green = 0, blue = 0;
+				red = (int) (field(horizontalPosition, verticalPosition).puma);
+				green = (int) (field(horizontalPosition, verticalPosition).hare);
+				if(!field(horizontalPosition, verticalPosition).is_land())
+				{
+					red = 0;
+					green = 0;
+					blue = 255;
+				}
+				for(int j=0; j<borderWidth; j++)
+				{
+					fprintf(file, "%s ", grey);
+				}
+				for(int i=0; i<tileSize; i++)
+				{
+					fprintf(file, "%i %i %i ", red, green, blue);
+				}
+			}
+			for(int j=0; j<borderWidth; j++)
+			{
+				fprintf(file, "%s ", grey);
+			}
+		}
 	}
-	
-	population.close();
+	for(horizontalPosition = 0; horizontalPosition < drawingWidth; ++horizontalPosition)
+	{
+		for(int j=0; j<borderWidth; j++)
+		{
+			fprintf(file, "%s \n", grey);
+		}
+	}
+	fprintf(file, "\n");
+		fclose(file);	
 }
+
 /*A function that outputs the mean values of the populations of the hares and pumas*/
 /*void output_averages(board<tile> field, double time, double timeStep)
 {
