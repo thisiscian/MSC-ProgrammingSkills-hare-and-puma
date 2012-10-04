@@ -23,6 +23,18 @@ class board
     return board_array[x_pos*height + y_pos];
   }
 
+  // get the height of the board
+  size_t get_height()
+  {
+    return height;
+  }
+
+  // get the width of the board
+  size_t get_width()
+  {
+    return width;
+  }
+
 
   private:
 

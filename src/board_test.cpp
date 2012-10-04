@@ -30,6 +30,13 @@ int main(void)
     }
   }
 
+  // height and width should be 10
+  if(b.get_height() != 10 || b.get_width() != 10)
+  {
+    // test failed!
+    return 1;
+  }
+
   // everything passed
   return 0;
 }
