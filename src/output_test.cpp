@@ -2,7 +2,7 @@
 #include <math.h>
 int main()
 {
-	board<tile> field(10,10);
+	board<tile> field(15,5);
 	int horizontalPosition, verticalPosition;
 	int width = field.get_width();
 	int height = field.get_height();
@@ -22,5 +22,6 @@ int main()
 	
 	output_to_console(field, 0.0);
 	write_simple_ppm(field, 0.0);
+	write_simple_adjustable_ppm(field, 0.0, 40, 3);
 	return 0;
 }
