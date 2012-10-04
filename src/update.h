@@ -1,4 +1,6 @@
-#include <stdio.h>
+#include <stdlib.h>
+#include "board.h"
+#include "tile.h"
 /*header file containing the update routines*/
 
 using namespace std;
