@@ -20,7 +20,7 @@ class board
   {
     // have rightmost index contiguous in memory
     //   as is standard in C
-    return board_array[x_pos*height + y_pos];
+    return board_array[x_pos*width + y_pos];
   }
 
   // get the height of the board
