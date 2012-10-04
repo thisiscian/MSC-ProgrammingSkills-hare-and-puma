@@ -8,3 +8,11 @@ What Ruairi Did With His Time
 -wrote update hares function
 -considered whether to copy to hares array before computing update or after, decided on after
 -comtemplating whether to compute number of adjacent land elements inline or in seperate loop for performance reasons
+
+04/10/12 17:00
+-wrote "update_pumas" code
+-learned, to some degree how to you automake
+-wrote 2 small tests to see if "update_hares" and "update_pumas" are working
+
+04/10/12 23:00
+-wrote more tests to check pumas die without hares
