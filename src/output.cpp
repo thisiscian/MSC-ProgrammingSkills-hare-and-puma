@@ -12,31 +12,56 @@ void output_to_console(board<tile> field, double time)
 	int width = field.get_width();
 	int height = field.get_height();
 
-	cout << "Time: " << time << endl;
+	printf("Time: %2.1f\n", time);
 	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
 	{
 		if(field(horizontalPosition, 0).is_land())
 		{
-			cout << field(horizontalPosition, 0).hare <<	";" << field(horizontalPosition, 0).puma << flush;
+			printf("H%6.1lf", field(horizontalPosition, 0).hare);
 		}
 		else
 		{
-			cout << "~~~~~" << flush;
+			printf("~~~~~~~");
 		}
 		for(verticalPosition = 1; verticalPosition < height; ++verticalPosition)
 		{
 			if(field(horizontalPosition, verticalPosition).is_land())
 			{
-				cout << " | " << field(horizontalPosition, verticalPosition).hare <<	"; " << field(horizontalPosition, verticalPosition).puma << flush;
+				printf(" | H%6.1f", field(horizontalPosition, verticalPosition).hare);
 			}
 			else
 			{
-				cout << " | ~~~~~ " << flush;
+				printf(" | ~~~~~~~");
 			}
 		}
-		cout << endl;
-	}
-	cout << endl;
+		printf("\n");
+		if(field(horizontalPosition, 0).is_land())
+		{
+			printf("P%6.1f", field(horizontalPosition, 0).puma);
+		}
+		else
+		{
+			printf("~~~~~~~");
+		}
+		for(verticalPosition = 1; verticalPosition < height; ++verticalPosition)
+		{
+			if(field(horizontalPosition, verticalPosition).is_land())
+			{
+				printf(" | P%6.1f", field(horizontalPosition, verticalPosition).puma);
+			}
+			else
+			{
+				printf(" | ~~~~~~~");
+			}
+		}
+		printf("\n");
+		for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
+		{
+				printf("----------");
+		}
+		printf("\n");
+			}
+	printf("\n");
 }
 
 /*A function that recieves the two populations and outputs a simple plain PPM file, named according to the current iteration to 'output/'*/

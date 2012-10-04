@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <stdio.h>
 #include "board.h"
 #include "tile.h"
 using namespace std;
