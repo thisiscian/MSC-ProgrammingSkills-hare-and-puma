@@ -74,7 +74,8 @@ void write_simple_ppm(board<tile> field, double time)
 	population.close();
 }
 
-void write_simple_ppm(board<tile> field, double time)
+/* A function that writes a fancy looking PPM file */
+void write_fancy_ppm(board<tile> field, double time)
 {
 	int horizontalPosition, verticalPosition;
 	int width = field.get_width();

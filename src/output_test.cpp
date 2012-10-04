@@ -21,6 +21,6 @@ int main()
 	}
 	
 	output_to_console(field, 0.0);
-	output_to_ppm(field, 0.0);
+	write_simple_ppm(field, 0.0);
 	return 0;
 }
