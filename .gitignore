@@ -12,5 +12,17 @@
 *.la
 *.a
 
+# Automake stuff
 autom4te.cache
 autom4te.cache/*
+*.m4
+configure
+config.*
+*Makefile
+missing
+install-sh
+depcomp
+*.log
+*.in
+*.m4
+stamp-h1
