@@ -13,11 +13,11 @@ class tile
   // water should be 0
   size_t static water()
   {
-    return 1;
+    return 0;
   }
   size_t static land()
   {
-    return 0;
+    return 1;
   }
 
   // check if tile is land
