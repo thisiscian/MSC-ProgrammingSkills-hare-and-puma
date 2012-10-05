@@ -12,6 +12,10 @@
 *.la
 *.a
 
+#whatever the hell .deps is
+.deps
+.deps/*
+
 # Automake stuff
 autom4te.cache
 autom4te.cache/*
