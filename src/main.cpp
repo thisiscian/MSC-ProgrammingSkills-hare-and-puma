@@ -1,10 +1,27 @@
 #include <config.h>
 
-#include <iostream>
-
-int main(void)
+int main(int argc, char* argv[])
 {
-  std::cout << "HELLO!" << std::endl;
+  /*
+   * Process input
+   */
+
+  /*
+   * initialize board
+   */
+
+  /*
+   * initialize updating variables
+   */
+
+  /*
+   * run updates
+   */
+
+  /*
+   * output data
+   */
+
 
   return 0;
 }
