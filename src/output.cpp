@@ -6,7 +6,7 @@
 #include "output.h"
 
 /*A function that recieves the populations of the hares and pumas, and outputs their values to the console*/
-void output_to_console(board<tile> field, double time)
+void output_to_console(Board<Tile> field, double time)
 {
 	int verticalPosition, horizontalPosition;
 	int width = field.get_width();
@@ -54,7 +54,7 @@ void output_to_console(board<tile> field, double time)
 }
 
 /*A function that recieves the two populations and outputs a simple plain PPM file, named according to the current iteration to 'output/'*/
-void write_simple_ppm(board<tile> field, double time)
+void write_simple_ppm(Board<Tile> field, double time)
 {
 	int verticalPosition, horizontalPosition;
 	int width = field.get_width();
@@ -88,7 +88,7 @@ void write_simple_ppm(board<tile> field, double time)
 }
 
 /* A function that writes a fancy looking PPM file */
-void write_simple_adjustable_ppm(board<tile> field, double time, int tileSize, int borderWidth)
+void write_simple_adjustable_ppm(Board<Tile> field, double time, int tileSize, int borderWidth)
 {
 	int verticalPosition, horizontalPosition;
 	int width = field.get_width();
@@ -100,7 +100,7 @@ void write_simple_adjustable_ppm(board<tile> field, double time, int tileSize, i
 
 	FILE *file;
 	char buffer[100];
-	color borderColor(40,40,40);
+	Color borderColor(40,40,40);
 	sprintf(buffer, "output/adjustable_%f.ppm", time);
 	file = fopen(buffer, "w");
 	
@@ -153,7 +153,7 @@ void write_simple_adjustable_ppm(board<tile> field, double time, int tileSize, i
 		fclose(file);	
 }
 
-void write_fancy_ppm(board<tile> field, double time)
+void write_fancy_ppm(Board<Tile> field, double time)
 {
 	int verticalPosition, horizontalPosition;
 	int width = field.get_width();
@@ -168,7 +168,7 @@ void write_fancy_ppm(board<tile> field, double time)
 
 	FILE *file;
 	char buffer[100];
-	color borderColor(40,40,40);
+	Color borderColor(40,40,40);
 	sprintf(buffer, "output/fancy_%f.ppm", time);
 	file = fopen(buffer, "w");
 	
@@ -222,7 +222,7 @@ void write_fancy_ppm(board<tile> field, double time)
 }
 
 /*A function that outputs the mean values of the populations of the hares and pumas*/
-/*void output_averages(board<tile> field, double time, double timeStep)
+/*void output_averages(Board<Tile> field, double time, double timeStep)
 {
 
 	cout << "Mean Number of Hares (at time " << time << "): " << field.mean.hare << endl;

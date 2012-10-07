@@ -5,15 +5,15 @@
 #include <vector>
 
 template<class T>
-class board : private std::vector<T>
+class Board : private std::vector<T>
 {
   public:
 
-  board() : height(0), width(0)
+  Board() : height(0), width(0)
   {
   }
 
-  board(size_t width_in, size_t height_in)
+  Board(size_t width_in, size_t height_in)
   {
     resize(width_in, height_in);
   }

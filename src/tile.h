@@ -3,51 +3,26 @@
 
 #include <stdlib.h>
 
-class tile
+class Tile
 {
   public:
 
-  tile(): hare(0), puma(0), land_type(0) {};
+  Tile();
 
-  // land should be 1
-  // water should be 0
-  size_t static water()
-  {
-    return 0;
-  }
-  size_t static land()
-  {
-    return 1;
-  }
+  // returns land or water value
+  size_t static water();
+  size_t static land();
 
-  // check if tile is land
-  bool is_land()
-  {
-    if(land_type == water())
-    {
-      return false;
-    }
-    else if(land_type == land())
-    {
-      return true;
-    }
-  }
+  // test if tile is land
+  bool is_land();
 
   // set land types
-  void make_land()
-  {
-    land_type = land();
-  }
-  void make_water()
-  {
-    land_type = water();
-  }
-
+  void make_land();
+  void make_water();
 
   // hare and puma densities
   double hare;
   double puma;
-
 
   private:
 

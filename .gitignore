@@ -30,3 +30,6 @@ depcomp
 *.in
 *.m4
 stamp-h1
+src/.deps
+libtool
+ltmain.sh

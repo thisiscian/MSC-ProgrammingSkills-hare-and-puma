@@ -2,7 +2,7 @@
 #include <math.h>
 int main()
 {
-	board<tile> field(10,10);
+	Board<Tile> field(10,10);
 	int horizontalPosition, verticalPosition;
 	int width = field.get_width();
 	int height = field.get_height();

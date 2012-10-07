@@ -8,7 +8,7 @@
 int main()
 {
 	double timeStep, a, b, k, l, m, r, newHareSum, oldHareSum, newPumaSum, oldPumaSum;
-	board<tile> field(10, 10), old_field(10,10);
+	Board<Tile> field(10, 10), old_field(10,10);
 
 	a = b = k = l = m = r = timeStep = 1.0; // chosen so there are values
 
