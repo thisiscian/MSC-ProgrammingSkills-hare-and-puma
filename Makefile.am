@@ -1,3 +1,3 @@
-ACLOCAL_AMFLAGS = -I build-aux
+ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = src
