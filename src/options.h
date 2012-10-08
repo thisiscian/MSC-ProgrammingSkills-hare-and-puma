@@ -18,6 +18,8 @@ class Options
   {
   }
 
+  std::string config_filename;
+
   std::string land_filename;
   std::string hare_filename;
   std::string puma_filename;

@@ -63,7 +63,7 @@ void BoardSetter::set_puma_from_file(
 
 
 
-void BoardSetter::set_land_randomly(
+void BoardSetter::set_land_from_distribution(
     Board<Tile>& board,
     DistributionBase<bool> const& distribution
 )
@@ -81,7 +81,7 @@ void BoardSetter::set_land_randomly(
     }
   }
 }
-void BoardSetter::set_hare_randomly(
+void BoardSetter::set_hare_from_distribution(
     Board<Tile>& board,
     DistributionBase<double> const& distribution
 )
@@ -97,7 +97,7 @@ void BoardSetter::set_hare_randomly(
 }
 
 
-void BoardSetter::set_puma_randomly(
+void BoardSetter::set_puma_from_distribution(
     Board<Tile>& board,
     DistributionBase<double> const& distribution
 )
