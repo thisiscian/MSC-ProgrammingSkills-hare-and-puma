@@ -60,6 +60,58 @@ void BoardSetter::set_puma_from_file(
 
 }
 
+
+
+
+void BoardSetter::set_land_randomly(
+    Board<Tile>& board,
+    DistributionBase<bool> const& distribution
+)
+{
+  for(size_t x=0; x<board.get_width(); ++x)
+  for(size_t y=0; y<board.get_width(); ++y)
+  {
+    if(distribution(x,y))
+    {
+      board(x,y).make_land();
+    }
+    else
+    {
+      board(x,y).make_water();
+    }
+  }
+}
+void BoardSetter::set_hare_randomly(
+    Board<Tile>& board,
+    DistributionBase<double> const& distribution
+)
+{
+  for(size_t x=0; x<board.get_width(); ++x)
+  for(size_t y=0; y<board.get_width(); ++y)
+  {
+    if(board(x,y).is_land())
+    {
+      board(x,y).hare = distribution(x,y);
+    }
+  }
+}
+
+
+void BoardSetter::set_puma_randomly(
+    Board<Tile>& board,
+    DistributionBase<double> const& distribution
+)
+{
+  for(size_t x=0; x<board.get_width(); ++x)
+  for(size_t y=0; y<board.get_width(); ++y)
+  {
+    if(board(x,y).is_land())
+    {
+      board(x,y).hare = distribution(x,y);
+    }
+  }
+}
+
 Board<double> BoardSetter::pgm_to_array(std::string const& filename)
 {
   Board<double> return_board;

@@ -8,9 +8,12 @@ AC_PROG_LIBTOOL
 AC_PROG_CC
 AC_PROG_CXX
 
-#require boos installed
+#require boost installed
 BOOST_REQUIRE
 BOOST_PROGRAM_OPTIONS
+
+#require Qt
+AT_WITH_QT
 
 
 AC_CONFIG_MACRO_DIR([m4])

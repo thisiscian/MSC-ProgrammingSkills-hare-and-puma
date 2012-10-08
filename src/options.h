@@ -5,16 +5,36 @@
 class Options
 {
   public:
+  // set default values for options
+  Options():
+    run_time(500),
+    time_step(0.4),
+    hare_birth(0.08),
+    puma_predation(0.04),
+    hare_diffusion(0.02),
+    puma_birth(0.02),
+    puma_death(0.02),
+    puma_diffusion(0.06)
+  {
+  }
 
   std::string land_filename;
   std::string hare_filename;
   std::string puma_filename;
 
-  double dt;
-  double r;
+  // time values
+  double run_time;       // t
+  double time_step;      // dt
 
+  // hare equation values
+  double hare_birth;     // r
+  double puma_predation; // a
+  double hare_diffusion; // k
 
-  // Initially
-  //    ./hare-and-puma -r rabbit_file -p puma_file -l land_file -c config_file
+  // puma equation values
+  double puma_birth;     // b
+  double puma_death;     // m
+  double puma_diffusion; // l
+
   void parse_input(int argc, char** argv);
 };
