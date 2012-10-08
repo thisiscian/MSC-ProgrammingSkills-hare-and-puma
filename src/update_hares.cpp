@@ -14,7 +14,10 @@ void update_hares(Board<Tile> &field, double timeStep, double a, double k, doubl
 	{
 		for(int x=1; x<NX-1; x++)
 		{
-		new_field(x,y).hare = field(x,y).hare + timeStep* (r*field(x,y).hare - a*field(x,y).hare * field(x,y).puma + k* (field(x-1,y).hare + field(x+1,y).hare + field(x,y-1).hare + field(x,y+1).hare - field(x+1,y).is_land() + field(x-1,y).is_land() + field(x,y+1).is_land() + field(x,y-1).is_land())*field(x,y).hare);
+		new_field(x,y).hare = field(x,y).hare + timeStep* \
+		(r*field(x,y).hare - a*field(x,y).hare * field(x,y).puma + k* \
+		(field(x-1,y).hare + field(x+1,y).hare + field(x,y-1).hare + field(x,y+1).hare - \
+		(field(x+1,y).is_land() + field(x-1,y).is_land() + field(x,y+1).is_land() + field(x,y-1).is_land())*field(x,y).hare));
 		}
 	}
 
