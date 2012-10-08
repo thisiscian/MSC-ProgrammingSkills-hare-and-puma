@@ -34,3 +34,7 @@ What Cian Did With His Time
 06/10/12 - 07/10/12
 -------------------
 - wrote a basic qt program
+
+08/10/12 11.10
+--------------
+- switched from using printf to cout
