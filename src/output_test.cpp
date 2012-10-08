@@ -7,6 +7,11 @@ int main()
 	int width = field.get_width();
 	int height = field.get_height();
 
+	if(freopen("output/output.test", "w", stdout))
+	{
+		printf("Error: freopen failed to redirect stdout to output/output.test");
+		return 1;
+	}
 	/* define a field with arbitrarily different values for land, hare numbers and puma numbers */
 	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
 	{
@@ -21,6 +26,11 @@ int main()
 			}
 		}
 	}
+	if(freopen("CON", "w", stdout))
+	{
+		printf("Error: freopen failed to return printf to using stdout");
+	}
+	
 	
 	output_to_console(field, 0.0);
 	write_simple_ppm(field, 0.0);
