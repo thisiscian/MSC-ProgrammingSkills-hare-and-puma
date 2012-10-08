@@ -19,6 +19,7 @@ int main()
 	for(size_t j=0; j<10; ++j)
 	for(size_t i=0; i<10; ++i)
 	{
+		field(i,j).make_land();
 		field(i,j).hare = old_field(i,j).hare = 1.0;
 		field(i,j).puma = old_field(i,j).puma = 0.0;
 	}
@@ -62,6 +63,7 @@ int main()
 	for(size_t j=0; j<10; ++j)
 	for(size_t i=0; i<10; ++i)
 	{
+		field(i,j).make_land();
 		field(i,j).hare = old_field(i,j).hare = 0.0;
 		field(i,j).puma = old_field(i,j).puma = 1.0;
 	}
