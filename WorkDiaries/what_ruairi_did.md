@@ -16,3 +16,8 @@ What Ruairi Did With His Time
 
 04/10/12 23:00
 -wrote more tests to check pumas die without hares
+
+08/10/12 20:00
+-wrote migration of pumas and hares test
+-fixed bracketing mistake in update_hares formula
+-made update_hares and update_pumas formulae more readable with new lines
