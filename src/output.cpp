@@ -12,6 +12,7 @@ void output_to_console(Board<Tile> field, double time)
 	int width = field.get_width();
 	int height = field.get_height();
 
+	cout << setprecision(3);
 	cout << "Time: " << time << endl;
 	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
 	{
@@ -24,7 +25,7 @@ void output_to_console(Board<Tile> field, double time)
 		{
 			if(field(horizontalPosition, verticalPosition).is_land())
 			{
-				cout << "| H" << field(horizontalPosition, verticalPosition).hare << " " << flush;
+				cout << "| H" << setw(6) << setfill(' ') <<  field(horizontalPosition, verticalPosition).hare << " " << flush;
 			}
 			else
 			{
@@ -36,7 +37,7 @@ void output_to_console(Board<Tile> field, double time)
 		{
 			if(field(horizontalPosition, verticalPosition).is_land())
 			{
-				cout << "| P" << field(horizontalPosition, verticalPosition).puma << " " << flush;
+				cout << "| P" << setw(6) << setfill(' ') <<  field(horizontalPosition, verticalPosition).puma << " " << flush;
 			}
 			else
 			{
@@ -56,68 +57,75 @@ void output_to_console(Board<Tile> field, double time)
 /*A function that recieves the two populations and outputs a simple plain PPM file, named according to the current iteration to 'output/'*/
 void write_ppm(Board<Tile> field, double time)
 {
-	write_adjustable_ppm(field, time, 1, 0);
+	write_adjustable_ppm(field, time, 1, 1, "population");
 }
 
-void write_adjustable_ppm(Board<Tile> field, double time, int tileSize, int borderWidth)
+void write_adjustable_ppm(Board<Tile> field, double time, int tileSize, int borderWidth, string title)
 {
 	int verticalPosition, horizontalPosition;
 	int width = field.get_width();
 	int height = field.get_height();
-	int maxValue = 255; // This is not a good choice, as values could well exceed it
+	int maxValue = 255; // This is the value to be written to PPM, not the actual maximum value. Values could well exceed it
 
 	int drawingWidth = width*(borderWidth+tileSize)+borderWidth;
 	int drawingHeight = height*(borderWidth+tileSize)+borderWidth;
-
+	int red, green, blue;
+	int i,j,k;
+	string grey = " 40  40  40";
+	
 	ofstream file;
 	stringstream fileName;
-	fileName << "output/population_" << time << ".ppm";
+	fileName << "output/" << title << "_" << time << ".ppm";
 	file.open(fileName.str().c_str());
 	
 	file << "P3 " << drawingWidth << " " <<  drawingHeight << " " <<  maxValue << endl;
-	for(verticalPosition = 0; verticalPosition < drawingHeight; ++verticalPosition)
+	for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
 	{
 		for(horizontalPosition = 0; horizontalPosition < drawingWidth;  ++horizontalPosition)
 		{
-				for(int j=0; j<borderWidth; j++)
-				{
-					file << borderColor.col() << " " << flush;
-				}
-		}
-		for(int i=0; i<tileSize; i++)
-		{
-			for(horizontalPosition = 0; horizontalPosition < drawingWidth;  ++horizontalPosition)
+			for(i=0; i<borderWidth; ++i)
 			{
-				int red = 0, green = 0, blue = 0;
-				red = (int) (field(horizontalPosition, verticalPosition).puma);
-				green = (int) (field(horizontalPosition, verticalPosition).hare);
-				if(!field(horizontalPosition, verticalPosition).is_land())
+				file << grey << "\t" << flush;
+			}
+		}
+		file << endl;
+		for(i=0; i<tileSize; ++i)
+		{
+			for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
+			{
+				if(field(horizontalPosition, verticalPosition).is_land())	
+				{
+					red = floor(field(horizontalPosition, verticalPosition).puma);
+					green = floor(field(horizontalPosition, verticalPosition).hare);
+					blue = 0;
+				}
+				else
 				{
 					red = 0;
 					green = 0;
 					blue = 255;
 				}
-				for(int j=0; j<borderWidth; j++)
+				for(j=0; j<borderWidth; ++j)
 				{
-					file << borderColor.col() << " " << flush;
+					file << grey << "\t" << flush;
 				}
-				
-				for(int k=0; i<tileSize; k++)
+				for(k=0; k<tileSize; ++k)
 				{
-					file << red << " " <<  green << " " << blue << " " << flush;
+					file << setfill(' ' ) << setw(3) << red << " " <<  setw(3) << green << " " << setw(3) << blue << "\t" << flush;
 				}
 			}
-			for(int j=0; j<borderWidth; j++)
+			for(j=0; j<borderWidth; ++j)
 			{
-				file << borderColor.col() << " " << flush;
+				file << grey << "\t" << flush;
 			}
+			file << endl;
 		}
 	}
 	for(horizontalPosition = 0; horizontalPosition < drawingWidth;  ++horizontalPosition)
 	{
-		for(int j=0; j<borderWidth; j++)
+		for(j=0; j<borderWidth; ++j)
 		{
-			file << borderColor.col() << " " << flush;
+			file << grey << "\t" << flush;
 		}
 	}
 	file << endl;

@@ -1,4 +1,5 @@
 #include "output.h"
+#include <cstdio>
 #include <math.h>
 int main()
 {
@@ -7,11 +8,9 @@ int main()
 	int width = field.get_width();
 	int height = field.get_height();
 
-	if(freopen("output/output.test", "w", stdout))
-	{
-		printf("Error: freopen failed to redirect stdout to output/output.test");
-		return 1;
-	}
+	/* convert stdout output to writing to "output.log" so console output can be checked */
+	freopen("output.log", "w", stdout);
+	
 	/* define a field with arbitrarily different values for land, hare numbers and puma numbers */
 	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
 	{
@@ -26,15 +25,39 @@ int main()
 			}
 		}
 	}
-	if(freopen("CON", "w", stdout))
-	{
-		printf("Error: freopen failed to return printf to using stdout");
-	}
-	
-	
+
 	output_to_console(field, 0.0);
-	write_simple_ppm(field, 0.0);
-	write_simple_adjustable_ppm(field, 0.0, 35, 3);
-	write_fancy_ppm(field, 0.0);
+	fclose(stdout);	
+
+	ifstream check;
+	string line;
+	check.open("output.log");
+	getline(check, line);
+	if(line.find("Time") == string::npos)
+	{
+		cerr << "\tError: \"Time\" not printed" << endl;
+		return 1;
+	}
+	getline(check,line);
+	getline(check,line);
+	if(line.find("~") == string::npos)
+	{
+		fprintf(stderr, "\tError: did not print water\n");
+		return 1;
+	}
+	else if(line.find("H") == string::npos)
+	{
+		fprintf(stderr, "Error: did not find Hare content\n");
+		return 1;
+	}
+	getline(check,line);
+	if(line.find("P") == string::npos)
+	{
+		fprintf(stderr, "\tError: did not find Puma content\n");
+		return 1;
+	}
+
+	write_ppm(field, 0.0);
+	write_adjustable_ppm(field, 0.0, 35, 3, "adjustable");
 	return 0;
 }
