@@ -30,3 +30,7 @@ What Cian Did With His Time
 - switched simple ppm over to using fprintf
 - changed current fancy style to 'adjustable' style, which has borders and arbitrary tile size
 - started on the actual fancy size: need to find out how to draw pumas and hares
+
+06/10/12 - 07/10/12
+-------------------
+- wrote a basic qt program
