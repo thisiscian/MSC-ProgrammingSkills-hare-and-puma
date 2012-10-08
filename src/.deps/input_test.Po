@@ -1,4 +1,4 @@
-input_test.o: input_test.cpp input.h board.h /usr/include/stdlib.h \
+input_test.o: input_test.cpp board_setter.h board.h /usr/include/stdlib.h \
  /usr/include/features.h /usr/include/stdc-predef.h \
  /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h \
@@ -42,39 +42,39 @@ input_test.o: input_test.cpp input.h board.h /usr/include/stdlib.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/stl_bvector.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/range_access.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/vector.tcc \
- tile.h \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/string \
+ tile.h file_reader.h \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/fstream \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/istream \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/ios \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/iosfwd \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/stringfwd.h \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/char_traits.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/postypes.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/cwchar \
  /usr/include/wchar.h /usr/include/stdio.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/include/stdarg.h \
  /usr/include/bits/wchar.h \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/char_traits.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/localefwd.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/i686-pc-linux-gnu/bits/c++locale.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/clocale \
  /usr/include/locale.h /usr/include/bits/locale.h \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/iosfwd \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/cctype \
  /usr/include/ctype.h \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/ostream_insert.h \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/cxxabi_forced.h \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/stl_function.h \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/backward/binders.h \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/basic_string.h \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/ios_base.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/ext/atomicity.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/i686-pc-linux-gnu/bits/gthr.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/i686-pc-linux-gnu/bits/gthr-default.h \
  /usr/include/pthread.h /usr/include/sched.h /usr/include/bits/sched.h \
  /usr/include/bits/timex.h /usr/include/bits/setjmp.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/i686-pc-linux-gnu/bits/atomic_word.h \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/basic_string.tcc \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/fstream \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/istream \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/ios \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/ios_base.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/locale_classes.h \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/string \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/ostream_insert.h \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/cxxabi_forced.h \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/stl_function.h \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/backward/binders.h \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/basic_string.h \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/basic_string.tcc \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/locale_classes.tcc \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/streambuf \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/streambuf.tcc \
@@ -98,10 +98,11 @@ input_test.o: input_test.cpp input.h board.h /usr/include/stdlib.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/i686-pc-linux-gnu/bits/basic_file.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/i686-pc-linux-gnu/bits/c++io.h \
  /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/fstream.tcc \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/iostream \
- /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/cstdlib
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/cstdlib \
+ distribution.h \
+ /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/iostream
 
-input.h:
+board_setter.h:
 
 board.h:
 
@@ -219,11 +220,17 @@ board.h:
 
 tile.h:
 
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/string:
+file_reader.h:
+
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/fstream:
+
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/istream:
+
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/ios:
+
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/iosfwd:
 
 /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/stringfwd.h:
-
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/char_traits.h:
 
 /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/postypes.h:
 
@@ -237,6 +244,8 @@ tile.h:
 
 /usr/include/bits/wchar.h:
 
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/char_traits.h:
+
 /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/localefwd.h:
 
 /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/i686-pc-linux-gnu/bits/c++locale.h:
@@ -247,21 +256,11 @@ tile.h:
 
 /usr/include/bits/locale.h:
 
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/iosfwd:
-
 /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/cctype:
 
 /usr/include/ctype.h:
 
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/ostream_insert.h:
-
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/cxxabi_forced.h:
-
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/stl_function.h:
-
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/backward/binders.h:
-
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/basic_string.h:
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/ios_base.h:
 
 /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/ext/atomicity.h:
 
@@ -281,17 +280,21 @@ tile.h:
 
 /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/i686-pc-linux-gnu/bits/atomic_word.h:
 
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/basic_string.tcc:
-
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/fstream:
-
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/istream:
-
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/ios:
-
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/ios_base.h:
-
 /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/locale_classes.h:
+
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/string:
+
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/ostream_insert.h:
+
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/cxxabi_forced.h:
+
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/stl_function.h:
+
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/backward/binders.h:
+
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/basic_string.h:
+
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/basic_string.tcc:
 
 /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/locale_classes.tcc:
 
@@ -343,6 +346,8 @@ tile.h:
 
 /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/bits/fstream.tcc:
 
-/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/iostream:
-
 /usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/cstdlib:
+
+distribution.h:
+
+/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/../../../../include/c++/4.7.1/iostream:
