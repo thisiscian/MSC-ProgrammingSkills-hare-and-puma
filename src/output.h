@@ -1,5 +1,7 @@
 #include <iomanip>
-#include <stdio.h>
+#include <iostream>
+#include <sstream>
+#include <fstream>
 #include <string>
 #include "board.h"
 #include "tile.h"
@@ -19,10 +21,11 @@ class Color
 		set_color(red, green, blue);
 	}
 
-	const char* col()
+	string col()
 	{
-		const char* new_color = get_color().c_str();
-		return new_color;
+		stringstream color;
+		color << r << " " << g << " " << b;
+		return color.str();
 	}
 
 	private:
@@ -33,20 +36,10 @@ class Color
 		g = green;
 		b = blue;
 	}	
-	
-	string get_color()
-	{
-		char* buffer = new char[11];
-		sprintf(buffer, "%03i %03i %03i", r, g, b);
-		string color(buffer);
-		return color;
-	}
-
-};
+} borderColor(40,40,40);
 
 void output_to_console(Board<Tile> field, double time);
-void write_simple_ppm(Board<Tile> field, double time);
-void write_simple_adjustable_ppm(Board<Tile> field, double time, int tileSize, int borderWidth);
-void write_fancy_ppm(Board<Tile> field, double time);
+void write_ppm(Board<Tile> field, double time);
+void write_adjustable_ppm(Board<Tile> field, double time, int tileSize, int borderWidth);
 void output_averages(Board<Tile> field, double time);
 

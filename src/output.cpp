@@ -12,83 +12,54 @@ void output_to_console(Board<Tile> field, double time)
 	int width = field.get_width();
 	int height = field.get_height();
 
-	printf("Time: %2.1f\n", time);
+	cout << "Time: " << time << endl;
 	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
 	{
-			printf("----------");
+			cout << "----------" << flush;
 	}
-	printf("-\n");
+	cout << "-" << endl;
 	for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
 	{
 		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
 		{
 			if(field(horizontalPosition, verticalPosition).is_land())
 			{
-				printf("| H%6.1f ", field(horizontalPosition, verticalPosition).hare);
+				cout << "| H" << field(horizontalPosition, verticalPosition).hare << " " << flush;
 			}
 			else
 			{
-				printf("| ~~~~~~~ ");
+				cout << "| ~~~~~~~ " << flush;
 			}
 		}
-		printf("|\n");
+		cout << "|" << endl;
 		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
 		{
 			if(field(horizontalPosition, verticalPosition).is_land())
 			{
-				printf("| P%6.1f ", field(horizontalPosition, verticalPosition).puma);
+				cout << "| P" << field(horizontalPosition, verticalPosition).puma << " " << flush;
 			}
 			else
 			{
-				printf("| ~~~~~~~ ");
+				cout << "| ~~~~~~~ " << flush;
 			}
 		}
-		printf("|\n");
+		cout << "|" << endl;
 		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
 		{
-			printf("----------");
+			cout << "----------" << flush;
 		}
-		printf("-\n");
+		cout << "-" << endl;
 	}
-	printf("\n");
+	cout << endl;
 }
 
 /*A function that recieves the two populations and outputs a simple plain PPM file, named according to the current iteration to 'output/'*/
-void write_simple_ppm(Board<Tile> field, double time)
+void write_ppm(Board<Tile> field, double time)
 {
-	int verticalPosition, horizontalPosition;
-	int width = field.get_width();
-	int height = field.get_height();
-	int maxValue = 255; // This is not a good choice, as values could well exceed it
-
-	FILE *file;
-	char buffer[100];
-	sprintf(buffer, "output/population_%f.ppm", time);
-	file = fopen(buffer, "w");
-	
-	fprintf(file, "P3 %i %i %i\n", width, height, maxValue);
-	for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
-	{
-		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
-		{
-			int red = 0, green = 0, blue = 0;
-			red = (int) (field(horizontalPosition, verticalPosition).puma);
-			green = (int) (field(horizontalPosition, verticalPosition).hare);
-			if(!field(horizontalPosition, verticalPosition).is_land())
-			{
-				red = 0;
-				green = 0;
-				blue = 255;
-			}
-			fprintf(file, "%i %i %i ", red, green, blue);
-		}
-		fprintf(file, "\n");
-	}
-	fclose(file);	
+	write_adjustable_ppm(field, time, 1, 0);
 }
 
-/* A function that writes a fancy looking PPM file */
-void write_simple_adjustable_ppm(Board<Tile> field, double time, int tileSize, int borderWidth)
+void write_adjustable_ppm(Board<Tile> field, double time, int tileSize, int borderWidth)
 {
 	int verticalPosition, horizontalPosition;
 	int width = field.get_width();
@@ -98,25 +69,24 @@ void write_simple_adjustable_ppm(Board<Tile> field, double time, int tileSize, i
 	int drawingWidth = width*(borderWidth+tileSize)+borderWidth;
 	int drawingHeight = height*(borderWidth+tileSize)+borderWidth;
 
-	FILE *file;
-	char buffer[100];
-	Color borderColor(40,40,40);
-	sprintf(buffer, "output/adjustable_%f.ppm", time);
-	file = fopen(buffer, "w");
+	ofstream file;
+	stringstream fileName;
+	fileName << "output/population_" << time << ".ppm";
+	file.open(fileName.str().c_str());
 	
-	fprintf(file, "P3 %i %i %i\n", drawingWidth, drawingHeight, maxValue);
-	for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
+	file << "P3 " << drawingWidth << " " <<  drawingHeight << " " <<  maxValue << endl;
+	for(verticalPosition = 0; verticalPosition < drawingHeight; ++verticalPosition)
 	{
-		for(horizontalPosition = 0; horizontalPosition < drawingWidth ; ++horizontalPosition)
+		for(horizontalPosition = 0; horizontalPosition < drawingWidth;  ++horizontalPosition)
 		{
-			for(int j=0; j<borderWidth; j++)
-			{
-				fprintf(file, "%s ", borderColor.col());
-			}
+				for(int j=0; j<borderWidth; j++)
+				{
+					file << borderColor.col() << " " << flush;
+				}
 		}
 		for(int i=0; i<tileSize; i++)
 		{
-			for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
+			for(horizontalPosition = 0; horizontalPosition < drawingWidth;  ++horizontalPosition)
 			{
 				int red = 0, green = 0, blue = 0;
 				red = (int) (field(horizontalPosition, verticalPosition).puma);
@@ -129,96 +99,29 @@ void write_simple_adjustable_ppm(Board<Tile> field, double time, int tileSize, i
 				}
 				for(int j=0; j<borderWidth; j++)
 				{
-					fprintf(file, "%s ", borderColor.col());
+					file << borderColor.col() << " " << flush;
 				}
-				for(int i=0; i<tileSize; i++)
+				
+				for(int k=0; i<tileSize; k++)
 				{
-					fprintf(file, "%i %i %i ", red, green, blue);
+					file << red << " " <<  green << " " << blue << " " << flush;
 				}
 			}
 			for(int j=0; j<borderWidth; j++)
 			{
-				fprintf(file, "%s ", borderColor.col());
+				file << borderColor.col() << " " << flush;
 			}
 		}
 	}
-	for(horizontalPosition = 0; horizontalPosition < drawingWidth; ++horizontalPosition)
+	for(horizontalPosition = 0; horizontalPosition < drawingWidth;  ++horizontalPosition)
 	{
 		for(int j=0; j<borderWidth; j++)
 		{
-			fprintf(file, "%s \n", borderColor.col());
+			file << borderColor.col() << " " << flush;
 		}
 	}
-	fprintf(file, "\n");
-		fclose(file);	
-}
-
-void write_fancy_ppm(Board<Tile> field, double time)
-{
-	int verticalPosition, horizontalPosition;
-	int width = field.get_width();
-	int height = field.get_height();
-	int borderWidth = 3;
-	int tileSize = 45;
-	int maxValue = 255; // This is not a good choice, as values could well exceed it
-
-	int drawingWidth = width*(borderWidth+tileSize)+borderWidth;
-	int drawingHeight = height*(borderWidth+tileSize)+borderWidth;
-
-
-	FILE *file;
-	char buffer[100];
-	Color borderColor(40,40,40);
-	sprintf(buffer, "output/fancy_%f.ppm", time);
-	file = fopen(buffer, "w");
-	
-	fprintf(file, "P3 %i %i %i\n", drawingWidth, drawingHeight, maxValue);
-	for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
-	{
-		for(horizontalPosition = 0; horizontalPosition < drawingWidth ; ++horizontalPosition)
-		{
-			for(int j=0; j<borderWidth; j++)
-			{
-				fprintf(file, "%s ", borderColor.col());
-			}
-		}
-		for(int i=0; i<tileSize; i++)
-		{
-			for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
-			{
-				int red = 0, green = 0, blue = 0;
-				red = (int) (field(horizontalPosition, verticalPosition).puma);
-				green = (int) (field(horizontalPosition, verticalPosition).hare);
-				if(!field(horizontalPosition, verticalPosition).is_land())
-				{
-					red = 0;
-					green = 0;
-					blue = 255;
-				}
-				for(int j=0; j<borderWidth; j++)
-				{
-					fprintf(file, "%s ", borderColor.col());
-				}
-				for(int i=0; i<tileSize; i++)
-				{
-					fprintf(file, "%i %i %i ", red, green, blue);
-				}
-			}
-			for(int j=0; j<borderWidth; j++)
-			{
-				fprintf(file, "%s ", borderColor.col());
-			}
-		}
-	}
-	for(horizontalPosition = 0; horizontalPosition < drawingWidth; ++horizontalPosition)
-	{
-		for(int j=0; j<borderWidth; j++)
-		{
-			fprintf(file, "%s \n", borderColor.col());
-		}
-	}
-	fprintf(file, "\n");
-		fclose(file);	
+	file << endl;
+	file.close();	
 }
 
 /*A function that outputs the mean values of the populations of the hares and pumas*/
