@@ -2,12 +2,12 @@
 
 /*function that takes in the array of hares and updates it using the update equations*/
 
-void update_hares(board<tile> &field, double timeStep, double a, double k, double r)
+void update_hares(Board<Tile> &field, double timeStep, double a, double k, double r)
 {
 
 	int NY = field.get_height();
 	int NX = field.get_width();
-	board<tile> new_field(NX,NY);
+	Board<Tile> new_field(NX,NY);
 
 
 	for(int y=1; y<NY-1; y++)

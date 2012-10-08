@@ -2,7 +2,7 @@
 #include "tile.h"
 #include <iostream>
 
-struct two_dee
+struct TwoDee
 {
   size_t x;
   size_t y;
@@ -10,7 +10,7 @@ struct two_dee
 
 int main(void)
 {
-  board<two_dee> b(10,10);
+  Board<TwoDee> b(10,10);
 
   // ensure that board can be set and gotten
   // as expected

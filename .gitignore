@@ -19,7 +19,6 @@
 # Automake stuff
 autom4te.cache
 autom4te.cache/*
-*.m4
 configure
 config.*
 *Makefile
@@ -28,5 +27,7 @@ install-sh
 depcomp
 *.log
 *.in
-*.m4
 stamp-h1
+src/.deps
+libtool
+ltmain.sh

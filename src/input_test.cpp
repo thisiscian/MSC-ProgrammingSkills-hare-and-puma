@@ -1,4 +1,4 @@
-#include "input.h"
+#include "board_setter.h"
 #include <iostream>
 #include <fstream>
 #include "board.h"
@@ -70,8 +70,7 @@ const char* test_puma_filename = "../test_data/test_puma_input.dat";
 
 int main()
 {
-  board<tile> b;
-  board_setter input;
+  Board<Tile> b;
 
   std::ofstream file;
 
@@ -89,30 +88,29 @@ int main()
   file.close();
 
 
-  input
-    .set_board(b)
-    .read_land_file(test_land_filename)
-    .read_hare_file(test_hare_filename)
-    .read_puma_file(test_puma_filename);
+  BoardSetter::set_land_from_file(b,test_land_filename);
+  BoardSetter::set_hare_from_file(b,test_hare_filename);
+  BoardSetter::set_puma_from_file(b,test_puma_filename);
 
 
   for(size_t x=0; x<b.get_width();  ++x)
   for(size_t y=0; y<b.get_height(); ++y)
   {
-    if(b(x,y).is_land() != (test_land_array[x][y] == 1))
+    if(b(x,y).is_land() != (test_land_array[y][x] == 1))
     {
       std::cout << "land array not properly set" << std::endl;
-      std::cout << b(x,y).is_land() << ", " << test_land_array[x][y] << std::endl;
+      std::cout << b(x,y).is_land() << ", " << test_land_array[y][x] << std::endl;
       return 1;
     }
 
-    if(b(x,y).hare != test_hare_array[x][y])
+    if(b(x,y).hare != test_hare_array[y][x])
     {
       std::cout << "hare array not properly set" << std::endl;
+      std::cout << b(x,y).hare << ", " << test_hare_array[y][x] << std::endl;
       return 1;
     }
 
-    if(b(x,y).puma != test_puma_array[x][y])
+    if(b(x,y).puma != test_puma_array[y][x])
     {
       std::cout << "puma array not properly set" << std::endl;
       return 1;

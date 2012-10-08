@@ -3,7 +3,7 @@
 
 int main(void)
 {
-  tile t;
+  Tile t;
 
   /*
    * checking getting and setting of tile types
@@ -34,7 +34,7 @@ int main(void)
    */ 
 
   // land and water should be different
-  if(tile::land() == tile::water())
+  if(Tile::land() == Tile::water())
   {
     std::cout << "land and water are the same!!" << std::endl;
     return 1;
