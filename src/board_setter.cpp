@@ -8,13 +8,19 @@ void BoardSetter::set_land_from_file(
 
   if(board.get_height() == 0 || board.get_width() == 0)
   {
-    board.resize(temp_board.get_width(), temp_board.get_height());
+    board.resize(temp_board.get_width()+2, temp_board.get_height()+2);
   }
 
-  for(size_t column = 0; column < temp_board.get_width();  ++column)
-  for(size_t row    = 0; row    < temp_board.get_height(); ++row   )
+  for(size_t column = 0; column < temp_board.get_width()+2;  ++column)
+  for(size_t row    = 0; row    < temp_board.get_height()+2; ++row   )
   {
-    if(temp_board(column, row) == Tile::water())
+    // add boundary conditions
+    if(column == 0 || column == temp_board.get_width()+1
+        || row == 0 || row == temp_board.get_width()+1)
+    {
+      board(column, row).make_water();
+    }
+    else if(temp_board(column-1, row-1) == Tile::water())
     {
       board(column, row).make_water();
     }
@@ -32,13 +38,22 @@ void BoardSetter::set_hare_from_file(
 
   if(board.get_height() == 0 || board.get_width() == 0)
   {
-    board.resize(temp_board.get_width(), temp_board.get_height());
+    board.resize(temp_board.get_width()+2, temp_board.get_height()+2);
   }
 
-  for(size_t column = 0; column < temp_board.get_width();  ++column)
-  for(size_t row    = 0; row    < temp_board.get_height(); ++row   )
+  for(size_t column = 0; column < temp_board.get_width()+2;  ++column)
+  for(size_t row    = 0; row    < temp_board.get_height()+2; ++row   )
   {
-    board(column, row).hare = temp_board(column, row);
+    // add boundary conditions
+    if(column == 0 || column == temp_board.get_width()+1
+        || row == 0 || row == temp_board.get_width()+1)
+    {
+      board(column, row).hare = 0;
+    }
+    else
+    {
+      board(column, row).hare = temp_board(column-1, row-1);
+    }
   }
 
 }
@@ -49,13 +64,22 @@ void BoardSetter::set_puma_from_file(
 
   if(board.get_height() == 0 || board.get_width() == 0)
   {
-    board.resize(temp_board.get_width(), temp_board.get_height());
+    board.resize(temp_board.get_width()+2, temp_board.get_height()+2);
   }
 
-  for(size_t column = 0; column < temp_board.get_width();  ++column)
-  for(size_t row    = 0; row    < temp_board.get_height(); ++row   )
+  for(size_t column = 0; column < temp_board.get_width()+2;  ++column)
+  for(size_t row    = 0; row    < temp_board.get_height()+2; ++row   )
   {
-    board(column, row).puma = temp_board(column, row);
+    // add boundary conditions
+    if(column == 0 || column == temp_board.get_width()+1
+        || row == 0 || row == temp_board.get_width()+1)
+    {
+      board(column, row).puma = 0;
+    }
+    else
+    {
+      board(column, row).puma = temp_board(column-1, row-1);
+    }
   }
 
 }
