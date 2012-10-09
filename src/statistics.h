@@ -5,12 +5,11 @@ class BoardStatistics
 {
 
 	public:
-	BoardStatistics();	
+	BoardStatistics(Board<Tile>& field);	
 
-	double get_totals(Board<Tile> field);
-	double get_time_averages(Board<Tile> field, double time);
-
-	void trawl_for_statistics(Board<Tile> field, double time);
+	void set_totals(Board<Tile>& field);
+	void set_time_averages(Board<Tile>& field, double time);
+	void trawl_for_statistics(Board<Tile>& field, double time);
 
 	double get_hare_average();
 	double get_puma_average();
@@ -25,4 +24,4 @@ class BoardStatistics
 	double previousTime;
 	double previousHareTotal;
 	double previousPumaTotal;
-}
+};

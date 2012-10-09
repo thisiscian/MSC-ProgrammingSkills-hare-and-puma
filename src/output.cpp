@@ -13,90 +13,90 @@ void output_to_console(Board<Tile> field, double time)
 	int height = field.get_height();
 
 	cout << setprecision(3);
-	cout << "Time: " << time << endl;
+	cout << "Time: " << time << "\n";
 	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
 	{
-			cout << "----------" << flush;
+			cout << "----------";
 	}
-	cout << "-" << endl;
+	cout << "-" << "\n";
 	for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
 	{
 		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
 		{
 			if(field(horizontalPosition, verticalPosition).is_land())
 			{
-				cout << "| H" << setw(6) << setfill(' ') <<  field(horizontalPosition, verticalPosition).hare << " " << flush;
+				cout << "| H" << setw(6) << setfill(' ') <<  field(horizontalPosition, verticalPosition).hare << " ";
 			}
 			else
 			{
-				cout << "| ~~~~~~~ " << flush;
+				cout << "| ~~~~~~~ ";
 			}
 		}
-		cout << "|" << endl;
+		cout << "|" << "\n";
 		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
 		{
 			if(field(horizontalPosition, verticalPosition).is_land())
 			{
-				cout << "| P" << setw(6) << setfill(' ') <<  field(horizontalPosition, verticalPosition).puma << " " << flush;
+				cout << "| P" << setw(6) << setfill(' ') <<  field(horizontalPosition, verticalPosition).puma << " ";
 			}
 			else
 			{
-				cout << "| ~~~~~~~ " << flush;
+				cout << "| ~~~~~~~ ";
 			}
 		}
-		cout << "|" << endl;
+		cout << "|" << "\n";
 		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
 		{
-			cout << "----------" << flush;
+			cout << "----------";
 		}
-		cout << "-" << endl;
+		cout << "-" << "\n";
 	}
-	cout << endl;
+	cout << "\n";
 }
 
 /*A function that recieves the two populations and outputs a simple plain PPM file, named according to the current iteration to 'output/'*/
-void write_ppm(Board<Tile> field, double time)
+void write_ppm(Board<Tile> field, int iteration)
 {
-	write_adjustable_ppm(field, time, 1, 1, "population");
+	write_adjustable_ppm(field, iteration, 1, 1, "population");
 }
 
-void write_adjustable_ppm(Board<Tile> field, double time, int tileSize, int borderWidth, string title)
+void write_adjustable_ppm(Board<Tile> field, int iteration, int tileSize, int borderWidth, string title)
 {
 	int verticalPosition, horizontalPosition;
 	int width = field.get_width();
 	int height = field.get_height();
-	int maxValue = 255; // This is the value to be written to PPM, not the actual maximum value. Values could well exceed it
+	int maxValue = 255;
 
-	int drawingWidth = width*(borderWidth+tileSize)+borderWidth;
-	int drawingHeight = height*(borderWidth+tileSize)+borderWidth;
+	int drawingWidth = (width-2)*(borderWidth+tileSize)+borderWidth;
+	int drawingHeight = (height-2)*(borderWidth+tileSize)+borderWidth;
 	int red, green, blue;
 	int i,j,k;
 	string grey = " 40  40  40";
 	
 	ofstream file;
 	stringstream fileName;
-	fileName << "output/" << title << "_" << time << ".ppm";
+	fileName << "output/" << title << "_" << iteration << ".ppm";
 	file.open(fileName.str().c_str());
 	
-	file << "P3 " << drawingWidth << " " <<  drawingHeight << " " <<  maxValue << endl;
-	for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
+	file << "P3 " << drawingWidth << " " <<  drawingHeight << " " <<  maxValue << "\n";
+	for(verticalPosition = 1; verticalPosition < height-1; ++verticalPosition)
 	{
-		for(horizontalPosition = 0; horizontalPosition < drawingWidth;  ++horizontalPosition)
+		for(horizontalPosition = 1; horizontalPosition <= drawingWidth;  ++horizontalPosition)
 		{
 			for(i=0; i<borderWidth; ++i)
 			{
-				file << grey << "\t" << flush;
+				file << grey << "\t";
 			}
 		}
-		file << endl;
+		file << "\n";
 		for(i=0; i<tileSize; ++i)
 		{
-			for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
+			for(horizontalPosition = 1; horizontalPosition < width-1; ++horizontalPosition)
 			{
 				if(field(horizontalPosition, verticalPosition).is_land())	
 				{
-					red = floor(field(horizontalPosition, verticalPosition).puma);
-					green = floor(field(horizontalPosition, verticalPosition).hare);
+					red = min(floor(field(horizontalPosition, verticalPosition).puma),255.0);
+					green = min(floor(field(horizontalPosition, verticalPosition).hare),255.0);
 					blue = 0;
 				}
 				else
@@ -107,37 +107,39 @@ void write_adjustable_ppm(Board<Tile> field, double time, int tileSize, int bord
 				}
 				for(j=0; j<borderWidth; ++j)
 				{
-					file << grey << "\t" << flush;
+					file << grey << "\t";
 				}
 				for(k=0; k<tileSize; ++k)
 				{
-					file << setfill(' ' ) << setw(3) << red << " " <<  setw(3) << green << " " << setw(3) << blue << "\t" << flush;
+					file << setfill(' ' ) << setw(3) << red << " " <<  setw(3) << green << " " << setw(3) << blue << "\t";
 				}
 			}
 			for(j=0; j<borderWidth; ++j)
 			{
-				file << grey << "\t" << flush;
+				file << grey << "\t";
 			}
-			file << endl;
+			file << "\n";
 		}
 	}
-	for(horizontalPosition = 0; horizontalPosition < drawingWidth;  ++horizontalPosition)
+	for(horizontalPosition = 1; horizontalPosition <= drawingWidth;  ++horizontalPosition)
 	{
 		for(j=0; j<borderWidth; ++j)
 		{
-			file << grey << "\t" << flush;
+			file << grey << "\t";
 		}
 	}
-	file << endl;
+	file << "\n";
 	file.close();	
 }
 
 /*A function that outputs the mean values of the populations of the hares and pumas*/
-/*void output_averages(Board<Tile> field, double time, double timeStep)
+void output_averages(Board<Tile> field, double time, double timeStep)
 {
-
-	cout << "Mean Number of Hares (at time " << time << "): " << field.mean.hare << endl;
-	cout << "Mean Number of Pumas (at time " << time << "): " << field.mean.puma << endl;
+	BoardStatistics stats(field);
+	cout << "Total Number of Hares: " << stats.get_hare_total() << endl;
+	cout << "Total Number of Pumass: " << stats.get_puma_total() << endl;
+	cout << "Mean Number of Hares (at time " << time << "): " << stats.get_hare_average() << endl;
+	cout << "Mean Number of Pumas (at time " << time << "): " << stats.get_puma_average() << endl;
 	cout << endl;
 }
-*/
+

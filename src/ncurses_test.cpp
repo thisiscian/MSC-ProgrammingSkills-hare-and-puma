@@ -12,7 +12,7 @@ using namespace std;
 
 int main()
 {
-	Board<Tile> field(10,10);
+	Board<Tile> field(10,5);
 	int horizontalPosition, verticalPosition;
 	int width = field.get_width();
 	int height = field.get_height();
@@ -35,6 +35,7 @@ int main()
 
 	initscr();
 	WINDOW* draw_field;
+	WINDOW* draw_statistics;
 	noecho();
 	cbreak();
 	keypad(stdscr, TRUE);
@@ -46,9 +47,11 @@ int main()
  	init_pair(3,COLOR_WHITE,COLOR_GREEN); 
 
 
-	draw_field = newwin(4*width+2, 6*height+2, 1 , 1);
+	draw_field = newwin(4*height+2, 6*width+2, 1 , 1);
+	draw_statistics = newwin(5,5, 1, 4*width+2);
 	wattron(draw_field, COLOR_PAIR(1));
 	box(draw_field, 0, 0);
+	box(draw_statistics, 0,0);
 
 	refresh();
 	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)

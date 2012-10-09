@@ -19,13 +19,13 @@ What Ruairi Did With His Time
 
 08/10/12 20:00
 -wrote migration of pumas and hares test
--fixed bracketing mistake in update_hares formula
--made update_hares and update_pumas formulae more readable with new lines
+-fixed bracketing mistake in "update_hares" formula
+-made "update_hares" and "update_pumas" formulae more readable with new lines
 
 09/10/12 21:00
 -wrote test to check for negative animals
 -stopped negative animals from occuring by setting them to 0 if they happen
--fixed brackets in update_pumas.cpp to make sure they die
-
-HEY RUAIRI MAKE SURE WATER SITES DONT GET UPDATED!!!
-
+-fixed brackets in "update_pumas.cpp" to make sure they die
+-combined "update_hares.cpp" and "update_pumas.cpp" into one routine "update_animals.cpp"
+-included if statement to ensure animals arent being updated on water sites
+-wrote test to check if animals are being updated on water sites
