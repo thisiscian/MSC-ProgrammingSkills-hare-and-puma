@@ -67,6 +67,11 @@ double test_puma_array[5][5] = {
 
 const char* test_puma_filename = "../test_data/test_puma_input.dat";
 
+bool doubleEq(double a, double b)
+{
+  return abs(a-b) < 1E-10;
+}
+
 
 int main()
 {
@@ -96,21 +101,52 @@ int main()
   for(size_t x=0; x<b.get_width();  ++x)
   for(size_t y=0; y<b.get_height(); ++y)
   {
-    if(b(x,y).is_land() != (test_land_array[y][x] == 1))
+    // test land
+    if(x == 0 || x == b.get_width()-1
+        || y == 0 || y == b.get_height()-1)
+    {
+      if(b(x,y).is_land())
+      {
+        std::cout << "Land padding not working" << std::endl;
+        return 1;
+      }
+    }
+    else if(b(x,y).is_land() != (test_land_array[y-1][x-1] == 1))
     {
       std::cout << "land array not properly set" << std::endl;
-      std::cout << b(x,y).is_land() << ", " << test_land_array[y][x] << std::endl;
+      std::cout << "(" << x << "," << y << ")" << std::endl;
+      std::cout << b(x,y).is_land() << ", " << test_land_array[y-1][x-1] << std::endl;
       return 1;
     }
 
-    if(b(x,y).hare != test_hare_array[y][x])
+    // test hare
+    if(x == 0 || x == b.get_width()-1
+        || y == 0 || y == b.get_height()-1)
+    {
+      if(!doubleEq(b(x,y).hare, 0))
+      {
+        std::cout << "Hare padding not working" << std::endl;
+        return 1;
+      }
+    }
+    else if(!doubleEq(b(x,y).hare, test_hare_array[y-1][x-1]))
     {
       std::cout << "hare array not properly set" << std::endl;
-      std::cout << b(x,y).hare << ", " << test_hare_array[y][x] << std::endl;
+      std::cout << b(x,y).hare << ", " << test_hare_array[y-1][x-1] << std::endl;
       return 1;
     }
 
-    if(b(x,y).puma != test_puma_array[y][x])
+    // test puma
+    if(x == 0 || x == b.get_width()-1
+        || y == 0 || y == b.get_height()-1)
+    {
+      if(!doubleEq(b(x,y).puma, 0))
+      {
+        std::cout << "Puma padding not working" << std::endl;
+        return 1;
+      }
+    }
+    else if(!doubleEq(b(x,y).puma, test_puma_array[y-1][x-1]))
     {
       std::cout << "puma array not properly set" << std::endl;
       return 1;
