@@ -138,7 +138,6 @@ int main()
 	for(size_t j=1; j<9; ++j)
 	for(size_t i=1; i<9; ++i)
 	{
-		field(i,j).make_land();
 		field(i,j).hare = old_field(i,j).hare = 0.0;
 		field(i,j).puma = old_field(i,j).puma = 0.0;
 	}
@@ -186,6 +185,32 @@ int main()
 		}
 	}
 
+//
+// test for animals appearing on water in the map
+//
+
+
+	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<9; ++j)
+	{
+		field(i,j).hare = 0.9; //I know these values persist for a while
+		field(i,j).puma = 1.1;
+	} 	
+	
+	field(5,5).make_water();
+	field(2,2).make_water();
+
+	for(int i=0; i<1; ++i)
+	{
+		update_hares(field, timeStep, a, k, r);
+		update_pumas(field, timeStep, b, l, m, r);
+
+		if(field(5,5).hare != 0 || field(2,2).hare != 0 || field(5,5).puma != 0 || field(2,2).puma !=0)
+		{
+			cout << "error: animals appearing in water" << endl;
+			return 1;
+		} 
+	}
 
 	return 0;
 }
