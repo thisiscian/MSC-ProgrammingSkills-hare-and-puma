@@ -13,7 +13,7 @@ void update_pumas(Board<Tile> &field, double timeStep, double b, double l, doubl
 	for(int y=1; y<NY-1; y++)
 	for(int x=1; x<NX-1; x++)
 	{
-		if(field(x,y).is_land())
+		if(field(x,y).is_land() == 1)
 		{
 			new_field(x,y).puma = field(x,y).puma + timeStep* \
 			(b*field(x,y).hare*field(x,y).puma - m*field(x,y).puma + l* \
