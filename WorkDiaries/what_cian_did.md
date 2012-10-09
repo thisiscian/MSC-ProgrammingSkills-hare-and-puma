@@ -50,3 +50,4 @@ What Cian Did With His Time
 09/10/12
 --------
 - Created ncurses (g)ui, very rough, needs work, has a lot of promise
+- Created statistics class, which outputs very basic statistics about the field of hares and pumas
