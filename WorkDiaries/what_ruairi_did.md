@@ -26,3 +26,6 @@ What Ruairi Did With His Time
 -wrote test to check for negative animals
 -stopped negative animals from occuring by setting them to 0 if they happen
 -fixed brackets in update_pumas.cpp to make sure they die
+
+HEY RUAIRI MAKE SURE WATER SITES DONT GET UPDATED!!!
+
