@@ -33,11 +33,22 @@ int main()
 
 //
 // first test if the hares numbers are increasing and pumas staying at 0
+// and test for negative pumas or hares
 //
 
 	for(size_t j=0; j<10; ++j)
 	for(size_t i=0; i<10; ++i)
 	{
+		if(field(i,j).hare < 0)
+		{
+			cout << "error: negative hares appearing" << endl;
+			return 1;
+		}
+		if(field(i,j).puma < 0)
+		{
+			cout << "error: negative pumas appearing" << endl;
+			return 1;
+		}
 		newHareSum += field(i,j).hare;
 		oldHareSum += old_field(i,j).hare;
 		newPumaSum += field(i,j).puma;
@@ -77,6 +88,7 @@ int main()
 
 //
 // next test if the pumas die if there are no hares and the hares don't spawn
+// and test for negative pumas and hares
 //
 
 	newHareSum = oldHareSum = newPumaSum = oldPumaSum = 0;	
@@ -84,6 +96,16 @@ int main()
 	for(size_t j=0; j<10; ++j)
 	for(size_t i=0; i<10; ++i)
 	{
+		if(field(i,j).hare < 0)
+		{
+			cout << "error: negative hares appearing" << endl;
+			return 1;
+		}
+		if(field(i,j).puma < 0)
+		{
+			cout << "error: negative pumas appearing" << endl;
+			return 1;
+		}
 		newHareSum += field(i,j).hare;
 		oldHareSum += old_field(i,j).hare;
 		newPumaSum += field(i,j).puma;
@@ -122,7 +144,8 @@ int main()
 
 
 //
-// first test if the hares numbers are increasing and pumas staying at 0
+// test that pumas and hares are appearing in the squares adjacent to their
+// starting point
 //
 
 	
@@ -136,6 +159,26 @@ int main()
 		cout << "error: no pumas have moved" << endl;
 		return 1;
 	}
+
+//
+//	test for negative hares and pumas
+//
+
+	for(size_t j=0; j<10; ++j)
+	for(size_t i=0; i<10; ++i)
+	{
+		if(field(i,j).hare < 0)
+		{
+			cout << "error: negative hares appearing" << endl;
+			return 1;
+		}
+		if(field(i,j).puma < 0)
+		{
+			cout << "error: negative pumas appearing" << endl;
+			return 1;
+		}
+	}
+
 
 	return 0;
 }
