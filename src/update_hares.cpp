@@ -23,8 +23,16 @@ void update_hares(Board<Tile> &field, double timeStep, double a, double k, doubl
 
 	for(int y=1; y<NY-1; y++)
 	for(int x=1; x<NX-1; x++)
-	{	
+	{
+		if(new_field(x,y).hare < 0)
+		{
+			field(x,y).hare = 0;
+		}	
+		else
+		{
 			field(x,y).hare = new_field(x,y).hare;
+		}
+
 	}
 	
 

@@ -21,8 +21,15 @@ void update_pumas(Board<Tile> &field, double timeStep, double b, double l, doubl
 
 	for(int y=1; y<NY-1; y++)
 	for(int x=1; x<NX-1; x++)
-	{	
-			field(x,y).puma = new_field(x,y).puma;
+	{
+		if(new_field(x,y).puma < 0)
+		{
+			field(x,y).puma = 0;
+		}	
+		else
+		{
+		field(x,y).puma = new_field(x,y).puma;
+		}
 	}
 	
 }
