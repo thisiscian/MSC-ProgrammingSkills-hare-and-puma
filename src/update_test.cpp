@@ -3,6 +3,7 @@
 #include "board.h"
 #include "update.h"
 
+
 /*a piece of code to test the update routines*/
 
 int main()
@@ -13,18 +14,25 @@ int main()
 	a = b = k = l = m = r = timeStep = 1.0; // chosen so there are values
 
 //
-// initialise without pumas to test hare growth
+// initialise without pumas to test hare growth also make boundaries 0
 //
 
 	for(size_t j=0; j<10; ++j)
 	for(size_t i=0; i<10; ++i)
 	{
-		field(i,j).make_land();
-		field(i,j).hare = old_field(i,j).hare = 1.0;
-		field(i,j).puma = old_field(i,j).puma = 0.0;
+		if(j == 0 || i == 0 || j == 9 || i == 9)
+		{
+			field(i,j).make_water();
+			field(i,j).hare = old_field(i,j).hare = 0.0;
+			field(i,j).puma = old_field(i,j).puma = 0.0;
+		}
+		else
+		{
+			field(i,j).make_land();
+			field(i,j).hare = old_field(i,j).hare = 1.0;
+			field(i,j).puma = old_field(i,j).puma = 0.0;
+		}
 	}
-
-	
 
 	update_hares(field, timeStep, a, k, r);
 	update_pumas(field, timeStep, b, l, m, r);	
@@ -71,15 +79,14 @@ int main()
 // this requires a short loop over updates
 //
 	
-	for(size_t j=0; j<10; ++j)
-	for(size_t i=0; i<10; ++i)
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
 	{
-		field(i,j).make_land();
 		field(i,j).hare = old_field(i,j).hare = 0.0;
 		field(i,j).puma = old_field(i,j).puma = 1.0;
 	}
 
-	for(int i=0;i<5;++i)
+	for(int i=0;i<10;++i)
 	{
 		update_hares(field, timeStep, a, k, r);
 		update_pumas(field, timeStep, b, l, m, r);	
@@ -93,8 +100,8 @@ int main()
 
 	newHareSum = oldHareSum = newPumaSum = oldPumaSum = 0;	
 
-	for(size_t j=0; j<10; ++j)
 	for(size_t i=0; i<10; ++i)
+	for(size_t j=0; j<10; ++j)
 	{
 		if(field(i,j).hare < 0)
 		{
@@ -128,8 +135,8 @@ int main()
 // initialise one square with pumas and hares to test migration
 //
 
-	for(size_t j=0; j<10; ++j)
-	for(size_t i=0; i<10; ++i)
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
 	{
 		field(i,j).make_land();
 		field(i,j).hare = old_field(i,j).hare = 0.0;
@@ -139,8 +146,8 @@ int main()
 	field(5,5).hare = 10.0;
 	field(5,5).puma = 10.0;
 	
-		update_hares(field, timeStep, a, k, r);
-		update_pumas(field, timeStep, b, l, m, r);	
+	update_hares(field, timeStep, a, k, r);
+	update_pumas(field, timeStep, b, l, m, r);	
 
 
 //
