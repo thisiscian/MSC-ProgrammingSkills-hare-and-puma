@@ -34,8 +34,7 @@ int main()
 		}
 	}
 
-	update_hares(field, timeStep, a, k, r);
-	update_pumas(field, timeStep, b, l, m, r);	
+	update_animals(field, timeStep, a, b, k, l, m, r);
 
 	newHareSum = oldHareSum = newPumaSum = oldPumaSum = 0;	
 
@@ -88,8 +87,7 @@ int main()
 
 	for(int i=0;i<10;++i)
 	{
-		update_hares(field, timeStep, a, k, r);
-		update_pumas(field, timeStep, b, l, m, r);	
+		update_animals(field, timeStep, a, b, k, l, m, r);
 	}
 
 
@@ -145,8 +143,7 @@ int main()
 	field(5,5).hare = 10.0;
 	field(5,5).puma = 10.0;
 	
-	update_hares(field, timeStep, a, k, r);
-	update_pumas(field, timeStep, b, l, m, r);	
+	update_animals(field, timeStep, a, b, k, l, m, r);
 
 
 //
@@ -202,8 +199,7 @@ int main()
 
 	for(int i=0; i<1; ++i)
 	{
-		update_hares(field, timeStep, a, k, r);
-		update_pumas(field, timeStep, b, l, m, r);
+		update_animals(field, timeStep, a, b, k, l, m, r);
 
 		if(field(5,5).hare != 0 || field(2,2).hare != 0 || field(5,5).puma != 0 || field(2,2).puma !=0)
 		{
