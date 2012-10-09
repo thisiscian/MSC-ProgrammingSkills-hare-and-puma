@@ -38,3 +38,15 @@ What Cian Did With His Time
 08/10/12 11.10
 --------------
 - switched from using printf to cout
+
+08/10/12 19.00
+--------------
+- started coding for using wxwidgets (qt is a bit of a hassle)
+- gave up on that, wxwidgets is not installed on cp-labs, probably safer this way
+- might start ncurses work
+- fixed the output stuff working correctly
+- might have to change output to account for boundary data (easier for roar)
+
+09/10/12
+--------
+- Created ncurses (g)ui, very rough, needs work, has a lot of promise
