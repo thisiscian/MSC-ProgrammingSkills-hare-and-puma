@@ -6,6 +6,4 @@
 
 using namespace std;
 
-void update_hares(Board<Tile> &field, double timeStep, double a, double k, double r);
-
-void update_pumas(Board<Tile> &field, double timeStep, double b, double l, double m, double r);
+void update_animals(Board<Tile> &field, double timeStep, double a, double b, double k, double l, double m, double r);
