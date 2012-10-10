@@ -51,3 +51,8 @@ What Cian Did With His Time
 --------
 - Created ncurses (g)ui, very rough, needs work, has a lot of promise
 - Created statistics class, which outputs very basic statistics about the field of hares and pumas
+
+10/10/12
+--------
+- Enforced ncurses field image taking up no more than half the visible screen
+- Need to be able to scale overly large images

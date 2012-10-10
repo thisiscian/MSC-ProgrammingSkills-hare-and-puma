@@ -12,11 +12,20 @@ using namespace std;
 
 int main()
 {
-	Board<Tile> field(10,5);
+	Board<Tile> field(10,10);
 	int horizontalPosition, verticalPosition;
 	int width = field.get_width();
 	int height = field.get_height();
 	stringstream value;
+
+	WINDOW* draw_field;
+	int fieldWindowWidth;
+	int fieldWindowHeight;
+	int maxNumberOfTilesVisible;
+	int fieldDisplayableWidth;
+	int fieldDisplayableHeight;
+
+	WINDOW* draw_statistics;
 
 	/* define a field with arbitrarily different values for land, hare numbers and puma numbers */
 	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
@@ -34,8 +43,12 @@ int main()
 	}
 
 	initscr();
-	WINDOW* draw_field;
-	WINDOW* draw_statistics;
+	fieldWindowWidth = COLS/2-1;
+	fieldWindowHeight = LINES-2;
+	maxNumberOfTilesVisible = min(fieldWindowHeight/4, fieldWindowWidth/6);
+	fieldWindowWidth = min(6*maxNumberOfTilesVisible+2, 6*width+2);
+	fieldWindowHeight = min(4*maxNumberOfTilesVisible+2, 4*height+2) ;
+	
 	noecho();
 	cbreak();
 	keypad(stdscr, TRUE);
@@ -47,7 +60,8 @@ int main()
  	init_pair(3,COLOR_WHITE,COLOR_GREEN); 
 
 
-	draw_field = newwin(4*height+2, 6*width+2, 1 , 1);
+	draw_field = newwin(fieldWindowHeight, fieldWindowWidth, 1 , 1);
+	//draw_field = newwin(4*height+2, 6*width+2, 1 , 1);
 	draw_statistics = newwin(5,5, 1, 4*width+2);
 	wattron(draw_field, COLOR_PAIR(1));
 	box(draw_field, 0, 0);
@@ -95,4 +109,6 @@ int main()
 	wrefresh(draw_field);
 	getch();
 	endwin();
+	cerr << fieldWindowWidth << " " << fieldWindowHeight << endl;
+	cerr << "max num = " << maxNumberOfTilesVisible << endl;	
 }
