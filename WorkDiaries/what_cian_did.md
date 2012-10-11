@@ -51,3 +51,17 @@ What Cian Did With His Time
 --------
 - Created ncurses (g)ui, very rough, needs work, has a lot of promise
 - Created statistics class, which outputs very basic statistics about the field of hares and pumas
+
+10/10/12 11:10
+--------------
+- Enforced ncurses field image taking up no more than half the visible screen
+- Need to be able to scale overly large images
+
+10/10/12 14.00
+--------------
+- Simplified Ncurses display
+- Added Key, statistics and Input windows
+- fleshed out Key and Statistics windows
+- made a nice class for Ncurses, everything is nicer, and it took bloody ages
+- did some quick calculations, hares need to be 3-8 times larger to feed the pumas
+- http://cheezdailysquee.files.wordpress.com/2011/09/aeeca634-041e-45ed-976f-6db73452da09.jpg

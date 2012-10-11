@@ -12,6 +12,15 @@
 *.la
 *.a
 
+# Vim .swp files
+*.swp
+
+# output files
+output
+output/*
+src/output
+src/output/*
+
 #whatever the hell .deps is
 .deps
 .deps/*
