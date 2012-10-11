@@ -25,6 +25,10 @@ void update_animals(Board<Tile> &field, double timeStep, double a, double b, dou
       ((field(x-1,y).puma + field(x+1,y).puma + field(x,y-1).puma + field(x,y+1).puma) - \
       (field(x-1,y).is_land() + field(x+1,y).is_land() + field(x,y-1).is_land() + field(x,y+1).is_land())*field(x,y).puma));
 		}
+		else
+		{
+			new_field(x,y).hare = new_field(x,y).puma = 0;
+		}
 	}
 
 	for(int y=1; y<NY-1; y++)
