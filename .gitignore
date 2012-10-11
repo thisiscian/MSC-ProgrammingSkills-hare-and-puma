@@ -12,6 +12,9 @@
 *.la
 *.a
 
+# Vim .swp files
+*.swp
+
 # output files
 output
 output/*
