@@ -12,9 +12,11 @@ AC_PROG_CXX
 BOOST_REQUIRE
 BOOST_PROGRAM_OPTIONS
 
-#require Qt
-AT_WITH_QT
-
+#require ncurses installed
+AC_CHECK_HEADER([ncurses.h],[], AC_MSG_ERROR([ncurses header not found]))
+AC_SEARCH_LIBS([initscr], [ncurses], [], [
+  AC_MSG_ERROR([ncurses must be installed.])
+])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
