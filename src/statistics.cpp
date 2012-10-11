@@ -1,6 +1,15 @@
 #include "statistics.h"
+BoardStatistics::BoardStatistics(){}
 
 BoardStatistics::BoardStatistics(Board<Tile>& field)
+{
+	init(field);
+	hareAverage = 0;
+	pumaAverage = 0;
+	previousTime = 0;
+}
+
+void BoardStatistics::init(Board<Tile>& field)
 {
 	set_totals(field);
 	set_maxima(field);
@@ -31,8 +40,18 @@ void BoardStatistics::set_totals(Board<Tile>& field)
 
 void BoardStatistics::set_time_averages(Board<Tile>& field, double time)
 {
-	hareAverage = (previousHareTotal*previousTime+currentHareTotal*(time-previousTime))/time;
-	pumaAverage = (previousPumaTotal*previousTime+currentPumaTotal*(time-previousTime))/time;
+	if(time < pow(10,-10))
+	{
+		hareAverage = 0;
+		pumaAverage = 0;
+	}
+	else
+	{
+		hareAverage = ( hareAverage*previousTime + currentHareTotal )/time;
+		pumaAverage = ( pumaAverage*previousTime + currentPumaTotal )/time;
+	}
+//	hareAverage = (previousHareTotal*previousTime+currentHareTotal*(time-previousTime))/time;
+//	pumaAverage = (previousPumaTotal*previousTime+currentPumaTotal*(time-previousTime))/time;
 	previousTime = time;
 }
 

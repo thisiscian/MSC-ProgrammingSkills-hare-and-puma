@@ -1,5 +1,6 @@
 #include "tile.h"
 #include "board.h"
+#include <cmath>
 #include <algorithm>
 using namespace std;
 
@@ -7,8 +8,10 @@ class BoardStatistics
 {
 
 	public:
+	BoardStatistics();	
 	BoardStatistics(Board<Tile>& field);	
 
+	void init(Board<Tile>& field);
 	void set_totals(Board<Tile>& field);
 	void set_time_averages(Board<Tile>& field, double time);
 	void set_maxima(Board<Tile>& field);

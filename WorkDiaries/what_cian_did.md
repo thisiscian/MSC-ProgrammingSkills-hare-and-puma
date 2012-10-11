@@ -62,3 +62,6 @@ What Cian Did With His Time
 - Simplified Ncurses display
 - Added Key, statistics and Input windows
 - fleshed out Key and Statistics windows
+- made a nice class for Ncurses, everything is nicer, and it took bloody ages
+- did some quick calculations, hares need to be 3-8 times larger to feed the pumas
+- http://cheezdailysquee.files.wordpress.com/2011/09/aeeca634-041e-45ed-976f-6db73452da09.jpg
