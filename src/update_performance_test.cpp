@@ -2,7 +2,7 @@
 #include <ctime>
 #include "tile.h"
 #include "board.h"
-#include "update.h"
+#include "update_p.h"
 
 
 /*a piece of code to test the update routines*/
