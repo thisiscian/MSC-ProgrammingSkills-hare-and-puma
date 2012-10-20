@@ -17,3 +17,27 @@ output_test_SOURCES = tile.cpp output.cpp output_test.cpp statistics.cpp
 distribution_test_SOURCES = distribution_test.cpp
 ncurses_test_SOURCES = tile.cpp ncurses_test.cpp statistics.cpp ncurses_lib.cpp test_field.cpp update_animals.cpp
 ncurses_test_CXXFLAGS = -lncurses
+
+
+GUI_TESTS = board_test tile_test
+
+
+#
+# Guitest macro. Builds and runs gui tests by running "make guitest".
+# A proxy target exists in the root Makefile.am that cds into this
+# directory and makes this one.
+#
+#   Useage:
+#     // in Makefile.am:
+#     GUI_TESTS = test_1 test_2 test_3 ...
+#     // on command line:
+#     make guitest
+#
+.PHONY : guitest
+guitest : $(GUI_TESTS)
+	@pass_count=0;\
+	for i in $(GUI_TESTS); do \
+		./$$i \
+		&& echo "PASS: $$i" \
+		|| echo FAIL: $$i; \
+	done;
