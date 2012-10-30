@@ -1,6 +1,8 @@
 #include "ncurses_lib.h"
 #include <string>
 
+using namespace std;
+
 NcursesField::NcursesField(Board<Tile>& board_in, int x, int y)
 {
 	board = &board_in;

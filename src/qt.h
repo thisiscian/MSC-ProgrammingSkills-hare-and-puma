@@ -1,3 +1,6 @@
+#ifndef __QT_H__
+#define __QT_H__
+
 #include <QtGui>
 class MainWindow : public QMainWindow
 {
@@ -21,3 +24,5 @@ class MainWindow : public QMainWindow
 		int harePopulation;
 		int pumaPopulation;
 };
+
+#endif

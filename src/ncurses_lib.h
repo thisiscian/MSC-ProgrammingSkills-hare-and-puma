@@ -1,3 +1,6 @@
+#ifndef __NCURSES_LIB_H__
+#define __NCURSES_LIB_H__
+
 #include <ncurses.h>
 #include <cmath>
 #include <algorithm>
@@ -36,9 +39,11 @@ class NcursesField
 	
 	void initialise_ncurses();
 	void set_window_size();
-	void set_title(WINDOW* win, string title);
+	void set_title(WINDOW* win, std::string title);
 	void update_field();
 	void update_input();
 	void update_statistics(double time);
 	void update_key();
 };
+
+#endif

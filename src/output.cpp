@@ -5,6 +5,8 @@
 
 #include "output.h"
 
+using namespace std;
+
 /*A function that recieves the populations of the hares and pumas, and outputs their values to the console*/
 void output_to_console(Board<Tile> field, double time)
 {

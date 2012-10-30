@@ -18,13 +18,13 @@ int main(void)
 
   if(t.hare != 0.06)
   {
-    std::cout << "hare not set properly" << std::endl;
+    std::cerr << "hare not set properly" << std::endl;
     return 1;
   }
 
   if(t.puma != 10.2)
   {
-    std::cout << "puma not set properly" << std::endl;
+    std::cerr << "puma not set properly" << std::endl;
     return 1;
   }
 
@@ -36,7 +36,7 @@ int main(void)
   // land and water should be different
   if(Tile::land() == Tile::water())
   {
-    std::cout << "land and water are the same!!" << std::endl;
+    std::cerr << "land and water are the same!!" << std::endl;
     return 1;
   }
 
@@ -44,7 +44,7 @@ int main(void)
   t.make_land();
   if(!t.is_land())
   {
-    std::cout << "t was set to land, but doesn't recognize this" << std::endl;
+    std::cerr << "t was set to land, but doesn't recognize this" << std::endl;
     return 1;
   }
 
@@ -52,7 +52,7 @@ int main(void)
   t.make_water();
   if(t.is_land())
   {
-    std::cout << "t was set to water, but doesn't recognize this" << std::endl;
+    std::cerr << "t was set to water, but doesn't recognize this" << std::endl;
     return 1;
   }
 

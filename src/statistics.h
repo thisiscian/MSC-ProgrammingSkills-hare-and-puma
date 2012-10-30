@@ -1,8 +1,10 @@
+#ifndef __STASTICS_H__
+#define __STASTICS_H__
+
 #include "tile.h"
 #include "board.h"
 #include <cmath>
 #include <algorithm>
-using namespace std;
 
 class BoardStatistics
 {
@@ -35,3 +37,5 @@ class BoardStatistics
 	double maxHare;
 	double maxPuma;
 };
+
+#endif

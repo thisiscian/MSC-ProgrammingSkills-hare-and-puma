@@ -1,3 +1,6 @@
+#ifndef __DISTRIBUTION_H__
+#define __DISTRIBUTION_H__
+
 #include <cstdlib>
 
 template<class T>
@@ -65,3 +68,5 @@ class RandomDistribution: public DistributionBase<double>
   double _min;
   double _max;
 };
+
+#endif

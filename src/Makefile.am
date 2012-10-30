@@ -6,15 +6,21 @@ hare_and_puma_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 hare_and_puma_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
  
 
-check_PROGRAMS = board_test tile_test update_test input_test output_test distribution_test
-TESTS = board_test tile_test update_test input_test output_test distribution_test
+check_PROGRAMS = board_test tile_test update_test board_setter_test output_test distribution_test options_test
+TESTS = board_test tile_test update_test board_setter_test output_test distribution_test options_test
 
 board_test_SOURCES = board_test.cpp
 tile_test_SOURCES = tile.cpp tile_test.cpp
-input_test_SOURCES = board_setter.cpp tile.cpp input_test.cpp
+board_setter_test_SOURCES = board_setter.cpp tile.cpp board_setter_test.cpp
 update_test_SOURCES = tile.cpp update_test.cpp update_animals.cpp
 output_test_SOURCES = tile.cpp output.cpp output_test.cpp statistics.cpp
 distribution_test_SOURCES = distribution_test.cpp
+
+options_test_SOURCES = options.cpp options_test.cpp
+options_test_CPPFLAGS = $(BOOST_CPPFLAGS)
+options_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
+options_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
+
 ncurses_test_SOURCES = tile.cpp ncurses_test.cpp statistics.cpp ncurses_lib.cpp test_field.cpp update_animals.cpp
 ncurses_test_CXXFLAGS = -lncurses
 

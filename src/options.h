@@ -1,3 +1,6 @@
+#ifndef __OPTIONS_H__
+#define __OPTIONS_H__
+
 #include <string>
 #include <boost/program_options.hpp>
 #include <iostream>
@@ -40,3 +43,5 @@ class Options
 
   void parse_input(int argc, char** argv);
 };
+
+#endif

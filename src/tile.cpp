@@ -24,6 +24,9 @@ bool Tile::is_land()
   {
     return true;
   }
+
+  // default false
+  return false;
 }
 
 // set land types

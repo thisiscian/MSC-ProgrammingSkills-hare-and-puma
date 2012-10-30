@@ -1,4 +1,7 @@
 #include "statistics.h"
+
+using namespace std;
+
 BoardStatistics::BoardStatistics(){}
 
 BoardStatistics::BoardStatistics(Board<Tile>& field)

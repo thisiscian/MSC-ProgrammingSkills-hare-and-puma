@@ -1,5 +1,6 @@
 #include "test_field.h"
 
+using namespace std;
 
 /* define a field with constant values for land, hare numbers and puma numbers */
 void defineConstantField(Board<Tile>& field)

@@ -1,6 +1,9 @@
 #include "output.h"
 #include <cstdio>
 #include <math.h>
+
+using namespace std;
+
 int main()
 {
 	Board<Tile> field(10,10);

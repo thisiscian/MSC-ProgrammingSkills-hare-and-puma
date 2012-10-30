@@ -1,3 +1,6 @@
+#ifndef __FILE_READER_H__
+#define __FILE_READER_H__
+
 #include <fstream>
 #include <string>
 #include <vector>
@@ -70,3 +73,5 @@ class FileReader : public std::ifstream
   }
 
 };
+
+#endif

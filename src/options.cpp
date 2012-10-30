@@ -26,72 +26,76 @@ void Options::parse_input(int argc, char** argv)
     // time steps
     (
      "run_time,t",
-     po::value<double>(&run_time)->default_value(run_time),
+     po::value<double>(&run_time),
      "set total running time"
     )
     (
      "time_step,dt",
-     po::value<double>(&time_step)->default_value(time_step),
+     po::value<double>(&time_step),
      "set time step"
     )
     // hare equation values
     (
      "hare_birth,r",
-     po::value<double>(&hare_birth)->default_value(hare_birth),
+     po::value<double>(&hare_birth),
      "set hare birth rate"
     )
     (
      "puma_predation,a",
-     po::value<double>(&puma_predation)->default_value(puma_predation),
+     po::value<double>(&puma_predation),
      "set puma predation rate"
     )
     (
      "hare_diffusion,k",
-     po::value<double>(&hare_diffusion)->default_value(hare_diffusion),
+     po::value<double>(&hare_diffusion),
      "set hare diffusion rate"
     )
     // puma equation values
     (
      "puma_birth,b",
-     po::value<double>(&puma_birth)->default_value(puma_birth),
+     po::value<double>(&puma_birth),
      "set puma birth rate"
     )
     (
      "puma_death,m",
-     po::value<double>(&puma_death)->default_value(puma_death),
+     po::value<double>(&puma_death),
      "set puma death rate"
     )
     (
      "puma_diffusion,l",
-     po::value<double>(&puma_diffusion)->default_value(puma_diffusion),
+     po::value<double>(&puma_diffusion),
      "set puma diffusion rate"
     );
+
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
   po::notify(vm);
 
-  std::ifstream ifs(config_filename.c_str());
-  if (!ifs)
-  {
-      std::cout << "can not open config file: " << config_filename << "\n";
-      exit(1);
-  }
-  else
-  {
-      store(parse_config_file(ifs, desc), vm);
-      notify(vm);
-  }
-
 
   /*
    * Process arguments
    */
-
   if(vm.count("help")){
     std::cout << desc<< std::endl;
     exit(1);
   }
+
+  if(!config_filename.empty())
+  {
+    std::ifstream ifs(config_filename.c_str());
+    if (!ifs)
+    {
+        std::cout << "can not open config file: " << config_filename << "\n";
+        exit(1);
+    }
+    else
+    {
+        store(parse_config_file(ifs, desc), vm);
+        notify(vm);
+    }
+  }
+
 
   if(!vm.count("land")){
     std::cerr << "You must specify a land input file"
