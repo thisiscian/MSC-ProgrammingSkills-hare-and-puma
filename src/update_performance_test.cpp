@@ -39,14 +39,14 @@ int main()
 	
 	start = time(NULL);
 
-	for(int i=0; i<100; ++i)
+	for(int i=0; i<50; ++i)
 	{
-		update_animals(field, timeStep, a, b, k, l, m, r);
+		update_animals_p(field, timeStep, a, b, k, l, m, r);
 	}
 	
 	elapsedTime = time(NULL) - start;
 
-	cout << "time taken using y outer, x inner was: " << elapsedTime << "\n";
+	cout << "time taken using wrong land checking (in-line) was: " << elapsedTime << "\n";
 
 
 //
@@ -72,14 +72,14 @@ int main()
 	
 	start = time(NULL);
 
-	for(int i=0; i<100; ++i)
+	for(int i=0; i<50; ++i)
 	{
-		update_animals_p(field, timeStep, a, b, k, l, m, r);
+		update_animals(field, timeStep, a, b, k, l, m, r);
 	}
 	
 	elapsedTime = time(NULL) - start;
 
-	cout << "time taken using x outer, y inner was: " << elapsedTime << "\n";
+	cout << "time taken using proper land checking was: " << elapsedTime << "\n";
 
 	return 0;
 
