@@ -29,3 +29,13 @@ What Ruairi Did With His Time
 -combined "update_hares.cpp" and "update_pumas.cpp" into one routine "update_animals.cpp"
 -included if statement to ensure animals arent being updated on water sites
 -wrote test to check if animals are being updated on water sites
+
+29/10/12 20:00
+-wrote performance test to determine best loop index ordering. Determined that the outer loop should be over the second coordinate in field
+-considered updating in-place but decided against due to needing to know old hare values for pumas and vice versa
+-changed land checking so that it is used properly
+-deleted old performance test (results done and finished with, didnt need it anymore) and used framework to test performance of land checking
+-found correct land checking to be faster
+
+30/10/12 09:00
+-wrote parallel version of update operation
