@@ -1,6 +1,6 @@
 bin_PROGRAMS = hare-and-puma ncurses_test
 
-hare_and_puma_SOURCES = board_setter.cpp tile.cpp options.cpp main.cpp
+hare_and_puma_SOURCES = board_setter.cpp tile.cpp options.cpp hare-and-puma_main.cpp test_field.cpp update_animals.cpp output.cpp statistics.cpp
 hare_and_puma_CPPFLAGS = $(BOOST_CPPFLAGS)
 hare_and_puma_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 hare_and_puma_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
@@ -25,7 +25,7 @@ ncurses_test_SOURCES = tile.cpp ncurses_test.cpp statistics.cpp ncurses_lib.cpp 
 ncurses_test_CXXFLAGS = -lncurses
 
 
-GUI_TESTS = board_test tile_test
+GUI_TESTS = board_test tile_test ncurses_test
 
 
 #
