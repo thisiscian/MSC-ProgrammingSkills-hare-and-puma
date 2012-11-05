@@ -5,8 +5,8 @@ using namespace std;
 
 int main()
 {
-	Board<Tile> field(12,12);
-	defineNonLinearField(field);
+	Board<Tile> field(6,6);
+	defineConstantField(field);
 	NcursesField nfield(field, 4, 6);	
 	Options options;
 	options.run_time = 10000;
