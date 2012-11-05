@@ -39,3 +39,4 @@ What Ruairi Did With His Time
 
 30/10/12 09:00
 -wrote parallel version of update operation
+-noted that it is probably an unnecessarily large amount of work to parallelize in a general sense though one can see very good speed-ups if the grid size is large

@@ -60,20 +60,8 @@ void update_animals_p(Board<Tile> &field, double timeStep, double a, double b, d
 			new_field(x,y).hare = new_field(x,y).puma = 0;
 		}
 	}
-}
 
-#pragma omp parallel default(none) shared(NY, NX, field, new_field, totalThreads) private(thread)
-{
-	if(NY > 10)
-	{
-		thread = omp_get_thread_num();
-		totalThreads = omp_get_num_threads();
-	}
-	else
-	{
-		thread = 0;
-		totalThreads = 1;
-	}
+	#pragma omp barrier
 
 	for(int y=(thread+(NY-2)/totalThreads)+1; y<((thread+1)*(NY-2)/totalThreads)+1; ++y)
 	for(int x=1; x<NX-1; x++)
