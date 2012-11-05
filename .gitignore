@@ -1,33 +1,26 @@
-# Compiled Object files
 *.slo
 *.lo
 *.o
 
-# Compiled Dynamic libraries
 *.so
 *.dylib
 
-# Compiled Static libraries
 *.lai
 *.la
 *.a
 
-# Vim .swp files
 *.swp
 
-# output files
 output
 output/*
 src/output
 src/output/*
 
-#whatever the hell .deps is
 .deps
 .deps/*
 src/.deps
 src/.deps/*
 
-# Automake stuff
 autom4te.cache
 autom4te.cache/*
 configure
@@ -42,3 +35,13 @@ stamp-h1
 src/.deps
 libtool
 ltmain.sh
+
+# Compiled binaries
+src/hare-and-puma
+src/ncurses_test
+src/board_test
+src/tile_test
+src/update_test
+src/input_test
+src/output_test
+src/distribution_test
