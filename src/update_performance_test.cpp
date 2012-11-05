@@ -4,12 +4,13 @@
 #include "board.h"
 #include "update_p.h"
 
+using namespace std;
 
 /*a piece of code to test the update routines*/
 
 int main()
 {
-	double timeStep, a, b, k, l, m, r, newHareSum, oldHareSum, newPumaSum, oldPumaSum;
+	double timeStep, a, b, k, l, m, r;
 	Board<Tile> field(1000, 1000), old_field(1000,1000);
 
 	double start, elapsedTime;
@@ -23,7 +24,7 @@ int main()
 	for(size_t j=0; j<field.get_height(); ++j)
 	for(size_t i=0; i<field.get_width(); ++i)
 	{
-		if(j == 0 || i == 0 || j == 9 || i == 9)
+		if(j == 0 || i == 0 || j == field.get_height()-1 || i == field.get_height()-1)
 		{
 			field(i,j).make_water();
 			field(i,j).hare = old_field(i,j).hare = 0.0;
@@ -33,20 +34,20 @@ int main()
 		{
 			field(i,j).make_land();
 			field(i,j).hare = old_field(i,j).hare = 1.0;
-			field(i,j).puma = old_field(i,j).puma = 0.0;
+			field(i,j).puma = old_field(i,j).puma = 0.5;
 		}
 	}
 	
 	start = time(NULL);
 
-	for(int i=0; i<100; ++i)
+	for(int i=0; i<50; ++i)
 	{
-		update_animals(field, timeStep, a, b, k, l, m, r);
+		update_animals_p(field, timeStep, a, b, k, l, m, r);
 	}
 	
 	elapsedTime = time(NULL) - start;
 
-	cout << "time taken using y outer, x inner was: " << elapsedTime << "\n";
+	cout << "time on multiple threads was: " << elapsedTime << "\n";
 
 
 //
@@ -56,7 +57,7 @@ int main()
 	for(size_t j=0; j<field.get_height(); ++j)
 	for(size_t i=0; i<field.get_width(); ++i)
 	{
-		if(j == 0 || i == 0 || j == 9 || i == 9)
+		if(j == 0 || i == 0 || j == field.get_height()-1 || i == field.get_height()-1)
 		{
 			field(i,j).make_water();
 			field(i,j).hare = old_field(i,j).hare = 0.0;
@@ -66,20 +67,20 @@ int main()
 		{
 			field(i,j).make_land();
 			field(i,j).hare = old_field(i,j).hare = 1.0;
-			field(i,j).puma = old_field(i,j).puma = 0.0;
+			field(i,j).puma = old_field(i,j).puma = 0.5;
 		}
 	}
 	
 	start = time(NULL);
 
-	for(int i=0; i<100; ++i)
+	for(int i=0; i<50; ++i)
 	{
-		update_animals_p(field, timeStep, a, b, k, l, m, r);
+		update_animals(field, timeStep, a, b, k, l, m, r);
 	}
 	
 	elapsedTime = time(NULL) - start;
 
-	cout << "time taken using x outer, y inner was: " << elapsedTime << "\n";
+	cout << "time on one thread was: " << elapsedTime << "\n";
 
 	return 0;
 
