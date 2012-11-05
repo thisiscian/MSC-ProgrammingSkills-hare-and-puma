@@ -3,7 +3,10 @@
 
 // Initially
 //    ./hare-and-puma -r rabbit_file -p puma_file -l land_file -c config_file
-void Options::parse_input(int argc, char** argv)
+//
+//    Return 0 on success or 1 on invalid input.
+//
+int Options::parse_input(int argc, char** argv)
 {
   namespace po = boost::program_options;
 
@@ -30,7 +33,7 @@ void Options::parse_input(int argc, char** argv)
      "set total running time"
     )
     (
-     "time_step,dt",
+     "time_step,d",
      po::value<double>(&time_step),
      "set time step"
     )
@@ -76,9 +79,10 @@ void Options::parse_input(int argc, char** argv)
   /*
    * Process arguments
    */
-  if(vm.count("help")){
-    std::cout << desc<< std::endl;
-    exit(1);
+  // if help flag passed or no arguments passed
+  if(vm.count("help") || argc == 0){
+    std::cerr << desc<< std::endl;
+    return 1;
   }
 
   if(!config_filename.empty())
@@ -86,8 +90,8 @@ void Options::parse_input(int argc, char** argv)
     std::ifstream ifs(config_filename.c_str());
     if (!ifs)
     {
-        std::cout << "can not open config file: " << config_filename << "\n";
-        exit(1);
+        std::cerr << "can not open config file: " << config_filename << "\n";
+        return 1;
     }
     else
     {
@@ -102,7 +106,9 @@ void Options::parse_input(int argc, char** argv)
               << std::endl
               << std::endl;
     std::cerr << desc<< std::endl;
-    exit(1);
+    return 1;
   }
+
+  return 0;
 
 }
