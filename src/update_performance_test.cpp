@@ -4,6 +4,7 @@
 #include "board.h"
 #include "update_p.h"
 
+using namespace std;
 
 /*a piece of code to test the update routines*/
 
