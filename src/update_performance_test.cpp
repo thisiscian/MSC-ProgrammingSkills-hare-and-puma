@@ -11,7 +11,7 @@ using namespace std;
 int main()
 {
 	double timeStep, a, b, k, l, m, r, newHareSum, oldHareSum, newPumaSum, oldPumaSum;
-	Board<Tile> field(1000, 1000), old_field(1000,1000);
+	Board<Tile> field(500, 500), old_field(500,500);
 
 	double start, elapsedTime;
 
@@ -42,12 +42,12 @@ int main()
 
 	for(int i=0; i<50; ++i)
 	{
-		update_animals_p(field, timeStep, a, b, k, l, m, r);
+		update_animals(field, timeStep, a, b, k, l, m, r);
 	}
 	
 	elapsedTime = time(NULL) - start;
 
-	cout << "time taken using wrong land checking (in-line) was: " << elapsedTime << "\n";
+	cout << "time taken was: " << elapsedTime << "\n";
 
 
 //

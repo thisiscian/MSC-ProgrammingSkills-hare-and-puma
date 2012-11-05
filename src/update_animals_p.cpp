@@ -8,11 +8,24 @@ void update_animals(Board<Tile> &field, double timeStep, double a, double b, dou
 	int NY = field.get_height();
 	int NX = field.get_width();
 	int landSum;
+	int thread, totalThreads;
 	Board<Tile> new_field(NX,NY);
 
-#pragma omp parallel for default(none) shared(field, timeStep, a, b, k, l, m, r, NX, NY, new_field) private(x, y, i, landSum)
-	for(int y=1; y<NY-1; y++)
-	for(int x=1; x<NX-1; x++)
+#pragma omp parallel default(none) shared(field, timeStep, a, b, k, l, m, r, NX, NY, new_field) private(x, y, i, landSum)
+{
+	if(NY > 10)
+	{
+		thread = omp_get_thread_num();
+		totalThreads = omp_get_num_threads();
+	}
+	else
+	{
+		thread = 0;
+		totalThreads = 1;
+	}
+
+	for(int y=(thread+(NY-2)/totalThreads)+1; y<((thread+1)*(NY-2)/totalThreads)+1; ++y)
+	for(int x=1; x<NX-1; ++x)
 	{
 		if(field(x,y).is_land())
 		{
@@ -47,9 +60,22 @@ void update_animals(Board<Tile> &field, double timeStep, double a, double b, dou
 			new_field(x,y).hare = new_field(x,y).puma = 0;
 		}
 	}
+}
 
-#pragma omp parallel for default(none) shared(field, new_field) private(x, y)
-	for(int y=1; y<NY-1; y++)
+#pragma omp parallel default(none) shared(field, new_field) private(x, y)
+{
+	if(NY > 10)
+	{
+		thread = omp_get_thread_num();
+		totalThreads = omp_get_num_threads();
+	}
+	else
+	{
+		thread = 0;
+		totalThreads = 1;
+	}
+
+	for(int y=(thread+(NY-2)/totalThreads)+1; y<((thread+1)*(NY-2)/totalThreads)+1; ++y)
 	for(int x=1; x<NX-1; x++)
 	{
 		if(new_field(x,y).hare < 0)
@@ -71,6 +97,7 @@ void update_animals(Board<Tile> &field, double timeStep, double a, double b, dou
     }
 
 	}
+}
 	
 
 }

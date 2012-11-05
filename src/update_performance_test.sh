@@ -1,6 +1,6 @@
 #! /bin/bash
 
-g++ -o update_performance_test update_performance_test.cpp update_animals.cpp update_animals_p.cpp tile.cpp
+g++ -o update_performance_test update_performance_test.cpp update_animals.cpp update_animals_p tile.cpp -lm -mp
 
 echo Compilation complete. 
 echo To continue please type 1, to stop type anything else
