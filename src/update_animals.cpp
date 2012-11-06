@@ -1,5 +1,4 @@
 #include "update.h"
-#include <omp.h>
 
 /*function that takes in the arrays of hares and pumas and updates them using the update equations*/
 

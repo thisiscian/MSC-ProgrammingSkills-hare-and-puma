@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <stdlib.h>
+#include <omp.h>
 #include "board.h"
 #include "tile.h"
 /*header file containing the update routines*/
