@@ -25,7 +25,6 @@ autom4te.cache
 autom4te.cache/*
 *Makefile
 *.log
-*.in
 stamp-h1
 src/.deps
 libtool
