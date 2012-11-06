@@ -282,6 +282,15 @@ void NcursesField::update_field()
 					}
 				}
 			}
+			if(block[x+fieldWindowHeight*y].is_land())
+			{
+				wattroff(field,COLOR_PAIR(3));
+			}
+			else
+			{
+				wattroff(field, COLOR_PAIR(5));
+			}
+			wattroff(field, A_BOLD);	
 		}
 	}
 	set_title(field, "FIELD");
@@ -309,7 +318,12 @@ void NcursesField::set_field_window_size()
 	
 	widthBuffer = (COLS/2-1-fieldWindowWidth)/2;
 	heightBuffer = (LINES-2-fieldWindowHeight)/2;
-	
+
+	set_field_block_sizes();
+}
+
+void NcursesField::set_field_block_sizes()
+{	
 	size_t x=0, y=0;
 	size_t x_range = max((size_t) 1,board->get_width()/fieldWindowWidth);
 	size_t y_range = max((size_t) 1,board->get_height()/fieldWindowHeight);
