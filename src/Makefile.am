@@ -13,6 +13,7 @@ board_test_SOURCES = board_test.cpp
 tile_test_SOURCES = tile.cpp tile_test.cpp
 board_setter_test_SOURCES = board_setter.cpp tile.cpp board_setter_test.cpp
 update_test_SOURCES = tile.cpp update_test.cpp update_animals.cpp
+update_test_CXXFLAGS = -fopenmp
 output_test_SOURCES = tile.cpp output.cpp output_test.cpp statistics.cpp
 distribution_test_SOURCES = distribution_test.cpp
 

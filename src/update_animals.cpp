@@ -1,4 +1,5 @@
 #include "update.h"
+#include <omp.h>
 
 /*function that takes in the arrays of hares and pumas and updates them using the update equations*/
 
@@ -10,8 +11,9 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
 	int landSum;
 	Board<Tile> new_board(NX,NY);
 
-	for(int y=1; y<NY-1; y++)
-	for(int x=1; x<NX-1; x++)
+#pragma omp parallel for default(none) shared(board, timeStep, a, b, k, l, m, r, NX, NY, new_board) private(landSum)
+	for(int y=1; y<NY-1; ++y)
+	for(int x=1; x<NX-1; ++x)
 	{
 		if(board(x,y).is_land())
 		{
@@ -47,8 +49,9 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
 		}
 	}
 
-	for(int y=1; y<NY-1; y++)
-	for(int x=1; x<NX-1; x++)
+#pragma omp parallel for default(none) shared(NX, NY, new_board, board)
+	for(int y=1; y<NY-1; ++y)
+	for(int x=1; x<NX-1; ++x)
 	{
 		if(new_board(x,y).hare < 0)
 		{
