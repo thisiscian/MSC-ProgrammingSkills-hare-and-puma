@@ -1,3 +1,5 @@
+Ran on multiple threads using 1000x1000 grid for 50 iterations
+
 now running on 1 threads
 time on multiple threads was: 34
 time on one thread was: 34
