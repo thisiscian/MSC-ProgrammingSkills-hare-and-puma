@@ -10,8 +10,6 @@ hare_and_puma_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
 check_PROGRAMS = board_test tile_test update_test board_setter_test output_test distribution_test options_test ncurses_test update_performance_test
 TESTS = board_test tile_test update_test board_setter_test output_test distribution_test options_test
 
-update_performance_test_SOURCES = update_performance_test.cpp update_animals.cpp update_animals_p.cpp tile.cpp
-update_performance_test_CXXFLAGS = -fopenmp
 board_test_SOURCES = board_test.cpp
 tile_test_SOURCES = tile.cpp tile_test.cpp
 board_setter_test_SOURCES = board_setter.cpp tile.cpp board_setter_test.cpp
@@ -32,12 +30,19 @@ ncurses_test_CXXFLAGS = -lncurses $(BOOST_CPPFLAGS)
 ncurses_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 ncurses_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
  
+PERFORMANCE_TESTS = update_performance_test
+update_performance_test_SOURCES = update_performance_test.cpp update_animals.cpp update_animals_p.cpp tile.cpp
+update_performance_test_CXXFLAGS = -fopenmp
 
 
 #
-# Guitest macro. Builds and runs gui tests by running "make guitest".
+# Custom targets. Build and runs targets by running "make target".
 # A proxy target exists in the root Makefile.am that cds into this
 # directory and makes this one.
+#
+
+#
+#   guitest
 #
 #   Useage:
 #     // in Makefile.am:
@@ -52,4 +57,10 @@ guitest : $(GUI_TESTS)
 		./$$i \
 		&& echo "PASS: $$i" \
 		|| echo FAIL: $$i; \
+	done;
+
+.PHONY : performancetest
+performancetest : $(PERFORMANCE_TESTS)
+	@for i in $(PERFORMANCE_TESTS); do \
+		./$$i; \
 	done;
