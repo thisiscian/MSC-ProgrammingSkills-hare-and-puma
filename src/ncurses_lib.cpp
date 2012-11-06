@@ -282,6 +282,15 @@ void NcursesField::update_field()
 					}
 				}
 			}
+			if(block[x+fieldWindowHeight*y].is_land())
+			{
+				wattroff(field,COLOR_PAIR(3));
+			}
+			else
+			{
+				wattroff(field, COLOR_PAIR(5));
+			}
+			wattroff(field, A_BOLD);	
 		}
 	}
 	set_title(field, "FIELD");
@@ -309,8 +318,18 @@ void NcursesField::set_field_window_size()
 	
 	widthBuffer = (COLS/2-1-fieldWindowWidth)/2;
 	heightBuffer = (LINES-2-fieldWindowHeight)/2;
+
+	set_field_block_sizes();
 	
-	size_t x=0, y=0;
+}
+
+void NcursesField::set_field_block_sizes()
+{	
+
+//delete
+	bool any_water = false;
+//
+	size_t x=1, y=1;
 	size_t x_range = max((size_t) 1,board->get_width()/fieldWindowWidth);
 	size_t y_range = max((size_t) 1,board->get_height()/fieldWindowHeight);
 	for(int j=0; j<fieldWindowWidth;j++)
@@ -320,11 +339,22 @@ void NcursesField::set_field_window_size()
 			int x_max =  min(board->get_width(), x+x_range);
 			int y_max =  min(board->get_height(), y+y_range);
 			block.push_back(FieldBlock(board, x, y, x_max, y_max));
+//delete
+			if(!block[i+j*fieldWindowHeight].is_land()){any_water = true;}
+//
 			x += x_range;
 		}
 		y += y_range;
 		x = 0;
 	}
+
+//delete
+	if(any_water)
+	{
+		endwin();
+		std::cout << "THERE IS NO WATER HERE YOU NUMBSKULL" << std::endl;
+	}
+//
 }
 
 void NcursesField::update(double time)
@@ -363,9 +393,11 @@ void FieldBlock::find_land_state()
 		for(int i=x_min; i<x_max; i++)
 		{
 			if((*board)(i,j).is_land()){land_count++;}
+			std::cout << "is this land?" << (*board)(i,j).is_land() << std::endl;
 		}
 	}
-	if(land_count >= (y_max-y_min)*(x_max-x_min)/2)
+	std::cout << land_count << " >= " << (y_max-y_min)*(x_max-x_min)/2.0 << std::endl; 
+	if(land_count >= (y_max-y_min)*(x_max-x_min)/2.0)
 	{
 		is_this_land = true;
 	}
