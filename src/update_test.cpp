@@ -11,7 +11,7 @@ using namespace std;
 int main()
 {
 	double timeStep, a, b, k, l, m, r, newHareSum, oldHareSum, newPumaSum, oldPumaSum;
-	Board<Tile> field(10, 10), old_field(10,10);
+	Board<Tile> board(10, 10), old_board(10,10);
 
 	a = b = k = l = m = r = timeStep = 1.0; // chosen so there are values
 
@@ -24,19 +24,19 @@ int main()
 	{
 		if(j == 0 || i == 0 || j == 9 || i == 9)
 		{
-			field(i,j).make_water();
-			field(i,j).hare = old_field(i,j).hare = 0.0;
-			field(i,j).puma = old_field(i,j).puma = 0.0;
+			board(i,j).make_water();
+			board(i,j).hare = old_board(i,j).hare = 0.0;
+			board(i,j).puma = old_board(i,j).puma = 0.0;
 		}
 		else
 		{
-			field(i,j).make_land();
-			field(i,j).hare = old_field(i,j).hare = 1.0;
-			field(i,j).puma = old_field(i,j).puma = 0.0;
+			board(i,j).make_land();
+			board(i,j).hare = old_board(i,j).hare = 1.0;
+			board(i,j).puma = old_board(i,j).puma = 0.0;
 		}
 	}
 
-	update_animals(field, timeStep, a, b, k, l, m, r);
+	update_animals(board, timeStep, a, b, k, l, m, r);
 
 	newHareSum = oldHareSum = newPumaSum = oldPumaSum = 0;	
 
@@ -48,20 +48,20 @@ int main()
 	for(size_t j=0; j<10; ++j)
 	for(size_t i=0; i<10; ++i)
 	{
-		if(field(i,j).hare < 0)
+		if(board(i,j).hare < 0)
 		{
 			cout << "error: negative hares appearing" << endl;
 			return 1;
 		}
-		if(field(i,j).puma < 0)
+		if(board(i,j).puma < 0)
 		{
 			cout << "error: negative pumas appearing" << endl;
 			return 1;
 		}
-		newHareSum += field(i,j).hare;
-		oldHareSum += old_field(i,j).hare;
-		newPumaSum += field(i,j).puma;
-		oldPumaSum += old_field(i,j).puma;
+		newHareSum += board(i,j).hare;
+		oldHareSum += old_board(i,j).hare;
+		newPumaSum += board(i,j).puma;
+		oldPumaSum += old_board(i,j).puma;
 	}
 	
 	if(newHareSum <= oldHareSum)
@@ -83,13 +83,13 @@ int main()
 	for(size_t j=1; j<9; ++j)
 	for(size_t i=1; i<9; ++i)
 	{
-		field(i,j).hare = old_field(i,j).hare = 0.0;
-		field(i,j).puma = old_field(i,j).puma = 1.0;
+		board(i,j).hare = old_board(i,j).hare = 0.0;
+		board(i,j).puma = old_board(i,j).puma = 1.0;
 	}
 
 	for(int i=0;i<10;++i)
 	{
-		update_animals(field, timeStep, a, b, k, l, m, r);
+		update_animals(board, timeStep, a, b, k, l, m, r);
 	}
 
 
@@ -103,20 +103,20 @@ int main()
 	for(size_t i=0; i<10; ++i)
 	for(size_t j=0; j<10; ++j)
 	{
-		if(field(i,j).hare < 0)
+		if(board(i,j).hare < 0)
 		{
 			cout << "error: negative hares appearing" << endl;
 			return 1;
 		}
-		if(field(i,j).puma < 0)
+		if(board(i,j).puma < 0)
 		{
 			cout << "error: negative pumas appearing" << endl;
 			return 1;
 		}
-		newHareSum += field(i,j).hare;
-		oldHareSum += old_field(i,j).hare;
-		newPumaSum += field(i,j).puma;
-		oldPumaSum += old_field(i,j).puma;
+		newHareSum += board(i,j).hare;
+		oldHareSum += old_board(i,j).hare;
+		newPumaSum += board(i,j).puma;
+		oldPumaSum += old_board(i,j).puma;
 	}
 	
 	if(newHareSum != 0)
@@ -138,14 +138,14 @@ int main()
 	for(size_t j=1; j<9; ++j)
 	for(size_t i=1; i<9; ++i)
 	{
-		field(i,j).hare = old_field(i,j).hare = 0.0;
-		field(i,j).puma = old_field(i,j).puma = 0.0;
+		board(i,j).hare = old_board(i,j).hare = 0.0;
+		board(i,j).puma = old_board(i,j).puma = 0.0;
 	}
 
-	field(5,5).hare = 10.0;
-	field(5,5).puma = 10.0;
+	board(5,5).hare = 10.0;
+	board(5,5).puma = 10.0;
 	
-	update_animals(field, timeStep, a, b, k, l, m, r);
+	update_animals(board, timeStep, a, b, k, l, m, r);
 
 
 //
@@ -154,12 +154,12 @@ int main()
 //
 
 	
-	if(field(4,5).hare == 0 && field(6,5).hare == 0 && field(5,4).hare == 0 && field(5,6).hare == 0)
+	if(board(4,5).hare == 0 && board(6,5).hare == 0 && board(5,4).hare == 0 && board(5,6).hare == 0)
 	{
 		cout << "error: no hares have moved" << endl;
 		return 1;
 	}
-	else if(field(4,5).puma == 0 && field(6,5).puma == 0 && field(5,4).puma == 0 && field(5,6).puma == 0)
+	else if(board(4,5).puma == 0 && board(6,5).puma == 0 && board(5,4).puma == 0 && board(5,6).puma == 0)
 	{
 		cout << "error: no pumas have moved" << endl;
 		return 1;
@@ -172,12 +172,12 @@ int main()
 	for(size_t j=0; j<10; ++j)
 	for(size_t i=0; i<10; ++i)
 	{
-		if(field(i,j).hare < 0)
+		if(board(i,j).hare < 0)
 		{
 			cout << "error: negative hares appearing" << endl;
 			return 1;
 		}
-		if(field(i,j).puma < 0)
+		if(board(i,j).puma < 0)
 		{
 			cout << "error: negative pumas appearing" << endl;
 			return 1;
@@ -192,18 +192,18 @@ int main()
 	for(size_t i=1; i<9; ++i)
 	for(size_t j=1; j<9; ++j)
 	{
-		field(i,j).hare = 0.9; //I know these values persist for a while
-		field(i,j).puma = 1.1;
+		board(i,j).hare = 0.9; //I know these values persist for a while
+		board(i,j).puma = 1.1;
 	} 	
 	
-	field(5,5).make_water();
-	field(2,2).make_water();
+	board(5,5).make_water();
+	board(2,2).make_water();
 
 	for(int i=0; i<1; ++i)
 	{
-		update_animals(field, timeStep, a, b, k, l, m, r);
+		update_animals(board, timeStep, a, b, k, l, m, r);
 
-		if(field(5,5).hare != 0 || field(2,2).hare != 0 || field(5,5).puma != 0 || field(2,2).puma !=0)
+		if(board(5,5).hare != 0 || board(2,2).hare != 0 || board(5,5).puma != 0 || board(2,2).puma !=0)
 		{
 			cout << "error: animals appearing in water" << endl;
 			return 1;

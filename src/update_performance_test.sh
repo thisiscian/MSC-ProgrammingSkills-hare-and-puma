@@ -1,6 +1,6 @@
 #! /bin/bash
 
-pgCC -o update_performance_test update_performance_test.cpp update_animals.cpp update_animals_p.cpp tile.cpp -lm -mp
+g++ -fopenmp -o update_performance_test update_performance_test.cpp update_animals.cpp update_animals_p.cpp tile.cpp -lm
 
 echo Compilation complete. 
 echo To continue please type 1, to stop type anything else
@@ -8,9 +8,9 @@ echo To continue please type 1, to stop type anything else
 read checkVal
 
 if [ 1 -eq "$checkVal" ]; then
-echo Now running test, time will be measured in seconds
+echo Now  submitting test to Morar, time will be measured in seconds
 
-./update_performance_test
+qsub -cwd -pe omp 4 update.sge
 
 echo Test complete
 fi
