@@ -7,23 +7,40 @@ void update_animals(Board<Tile> &field, double timeStep, double a, double b, dou
 
 	int NY = field.get_height();
 	int NX = field.get_width();
+	int landSum;
 	Board<Tile> new_field(NX,NY);
 
 
 	for(int y=1; y<NY-1; y++)
 	for(int x=1; x<NX-1; x++)
 	{
-		if(field(x,y).is_land() == 1)
+		if(field(x,y).is_land())
 		{
+		landSum = 0;
+			for(int i=x-1; i<=x+1; i+=2)
+			{
+				if(field(i,y).is_land())
+				{
+					landSum++;
+				}
+			}
+			for(int i=y-1; i<=y+1; i+=2)
+			{
+				if(field(x,i).is_land())
+				{
+					landSum++;
+				}	
+			}
+
 			new_field(x,y).hare = field(x,y).hare + timeStep* \
 			(r*field(x,y).hare - a*field(x,y).hare * field(x,y).puma + k* \
 			(field(x-1,y).hare + field(x+1,y).hare + field(x,y-1).hare + field(x,y+1).hare - \
-			(field(x+1,y).is_land() + field(x-1,y).is_land() + field(x,y+1).is_land() + field(x,y-1).is_land())*field(x,y).hare));
+			(landSum)*field(x,y).hare));
 
 			new_field(x,y).puma = field(x,y).puma + timeStep* \
       (b*field(x,y).hare*field(x,y).puma - m*field(x,y).puma + l* \
       ((field(x-1,y).puma + field(x+1,y).puma + field(x,y-1).puma + field(x,y+1).puma) - \
-      (field(x-1,y).is_land() + field(x+1,y).is_land() + field(x,y-1).is_land() + field(x,y+1).is_land())*field(x,y).puma));
+      (landSum)*field(x,y).puma));
 		}
 		else
 		{

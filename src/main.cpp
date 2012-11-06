@@ -23,6 +23,7 @@ int main(int argc, char* argv[])
    */
 
   BoardSetter::set_land_from_file(board, options.land_filename);
+
   // set hares
   if(!options.hare_filename.empty())
   {
