@@ -40,3 +40,7 @@ What Ruairi Did With His Time
 30/10/12 09:00
 -wrote parallel version of update operation
 -noted that it is probably an unnecessarily large amount of work to parallelize in a general sense though one can see very good speed-ups if the grid size is large
+
+6/11/12 09:00
+-added -Wall to compilation flags
+-decided to simply add documentation to say that it can be run in parallel and it will show better performance for large grids but not for small ones of large number of processors are used
