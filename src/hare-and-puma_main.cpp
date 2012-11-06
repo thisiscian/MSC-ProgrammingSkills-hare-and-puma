@@ -22,6 +22,7 @@ int main()
 	double m = options.puma_death;
 	double r = options.hare_birth;
 
+	create_output_folder("output");
 	while(time <= finalTime)
 	{
 		update_animals(field, timeStep, a, b, k, l, m, r);
