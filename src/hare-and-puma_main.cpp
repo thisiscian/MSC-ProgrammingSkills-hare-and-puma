@@ -8,9 +8,13 @@ int main(int argc, char* argv[])
 {
   Board<Tile> board;
   Options options;
-  options.parse_input(argc, argv);
+  if(options.parse_input(argc, argv) != 0)
+  {
+    return 1;
+  }
 
   BoardSetter::set_land_from_file(board, options.land_filename);
+
   if(!options.hare_filename.empty())
   {
     BoardSetter::set_hare_from_file(board, options.hare_filename);
@@ -20,6 +24,7 @@ int main(int argc, char* argv[])
     BoardSetter::set_hare_from_distribution(board, RandomDistribution());
   }
 
+
   if(!options.puma_filename.empty())
   {
     BoardSetter::set_puma_from_file(board, options.puma_filename);
@@ -28,6 +33,7 @@ int main(int argc, char* argv[])
   {
     BoardSetter::set_puma_from_distribution(board, RandomDistribution());
   }
+
 
   int i=0;        
   int finalTime = options.run_time;
