@@ -26,7 +26,9 @@ int test_scaling(int argc, char* argv[])
   Options options;
   options.parse_input(argc, argv);
 
-	options.land_filename = "../test_data/small.dat";
+	options.land_filename = "../test_data/test_land_input_all_land.dat";
+	options.hare_filename = "../test_data/test_no_hares.dat";
+	options.puma_filename = "../test_data/test_no_pumas.dat";
 	options.run_time = 1.0;
 	options.time_step = 1.0;
   BoardSetter::set_land_from_file(board, options.land_filename);
