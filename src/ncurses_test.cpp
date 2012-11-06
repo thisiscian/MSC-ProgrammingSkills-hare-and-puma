@@ -1,4 +1,5 @@
 #include "ncurses_lib.h"
+#include "test_field.h"
 #include "update.h"
 #include "options.h"
 using namespace std;
@@ -6,7 +7,7 @@ using namespace std;
 int main()
 {
 	Board<Tile> field(6,6);
-	defineConstantField(field);
+	defineAllWater(field);
 	NcursesField nfield(field, 4, 6);	
 	Options options;
 	options.run_time = 10000;

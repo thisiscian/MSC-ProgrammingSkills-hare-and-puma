@@ -266,6 +266,10 @@ void NcursesField::update_field()
 					{
 						mvwprintw(field, tileLine*y+j, tileCols*x+i, " ");
 					}
+					if(symbolWorth == 0)
+					{
+						mvwprintw(field, tileLine*y+j, tileCols*x+i, "#");
+					}
 					else if(val >= 2*symbolWorth)
 					{
 						mvwprintw(field, tileLine*y+j, tileCols*x+i, "P");

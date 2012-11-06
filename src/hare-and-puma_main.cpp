@@ -6,10 +6,10 @@ using namespace std;
 
 int main()
 {
-	Board<Tile> field(2002,2002);
+	Board<Tile> field(12,12);
 	defineGaussian(field);
 	Options options;
-	options.run_time = 10;
+	options.run_time = 1000;
 	
 	int i = 0;
 	int finalTime = options.run_time;
