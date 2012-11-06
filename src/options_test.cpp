@@ -173,6 +173,11 @@ int main()
   test_option("--puma_diffusion", "10", options.puma_diffusion == 10);
   test_option("-l", "0.1", options.puma_diffusion == 0.1);
 
+  test_option("--output", "some_output_directory",
+      options.output_directory == "some_output_directory");
+  test_option("-o", "some_output_directory",
+      options.output_directory == "some_output_directory");
+
 
   // check input config file
   {

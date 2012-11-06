@@ -17,7 +17,8 @@ class Options
     hare_diffusion(0.02),
     puma_birth(0.02),
     puma_death(0.02),
-    puma_diffusion(0.06)
+    puma_diffusion(0.06),
+    output_directory("output")
   {
   }
 
@@ -26,6 +27,9 @@ class Options
   std::string land_filename;
   std::string hare_filename;
   std::string puma_filename;
+
+  std::string output_directory;
+
 
   // time values
   double run_time;       // t
