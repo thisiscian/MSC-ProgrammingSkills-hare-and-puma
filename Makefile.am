@@ -1,5 +1,8 @@
 ACLOCAL_AMFLAGS = -I m4
 
+CFLAGS = -Wall
+CXXFLAGS = -Wall
+
 SUBDIRS = src
 
 
@@ -9,3 +12,4 @@ SUBDIRS = src
 .PHONY : guitest
 guitest :
 	cd src && $(MAKE) $(AM_MAKEFLAGS) $@
+
