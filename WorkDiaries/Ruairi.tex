@@ -1,0 +1,218 @@
+% A '%' character causes TeX to ignore all remaining text on the line,
+% and is used for comments like this one.
+
+\documentclass[12pt]{article}    % Specifies the document style.
+\linespread{1.25}
+\setlength\textwidth{7in}
+\usepackage[margin=2.5cm, a4paper]{geometry}
+\usepackage{palatino}
+%\usepackage{dsfont}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{array}
+\usepackage{verbatim}
+\usepackage{color}
+\usepackage{graphics}
+%\usepackage{hyperref}
+\numberwithin{equation}{section}
+
+\graphicspath{{../}}
+%theoremstyle{plain}
+%\newtheorem{example}{Example}[subsection]
+
+
+\newcommand{\spand}{\hspace{5mm} \& \hspace{5mm}}
+\newcommand{\rasp}{\hspace{5mm} \Rightarrow \hspace{5mm}}
+\newcommand{\cf}[2]{\left(\frac{#1}{#2}\right)}
+\newcommand{\pf}[2]{\frac{\partial{#1}}{\partial{#2}}}
+\newcommand{\lm}[2]{\lim_{#1\rightarrow #2}}
+
+\title{Threaded Programming, Coursework Part 1}  % Declares the document's title.
+\author{a878-575d7e}    % Declares the author's name.
+
+
+\date{}   % Deleting this command produces today's date.
+
+\begin{document}           % End of preamble and beginning of text.
+\pagenumbering{roman}
+
+\maketitle                 % Produces the title.
+\begin{center}
+
+\abstract{A program with two loops of different exection time was parallised using OpenMP parralel for directives. Different scheduling options for these two loops on 4 threads were tested. It was discovered that for the first loop a static schedule with chunksize of 2 gave the best load balancing and least overheads, and thus best performance. For the second loop the dynamic scheduling option was seen to be the best with chunksizes of 8 and 16 performing equally well. These scheduling options were then tested on different numbers of threads and it was found that loop 1 scaled extremely well up to 16 threads. Loop 2 scaled better with a chunksize of 8, linear up to 8 threads, than 16, linear up to 4 threads, due to cache coherency problems arising}
+\clearpage
+\pagenumbering{roman}
+\end{center}
+
+\pagenumbering{arabic}
+\section{Introduction}
+We were given code that executed two loops in serial.
+These two loops were executed 100 times each.
+Each loop consisted of some operations on array elements and re-assigning them to a different array.
+The first loop had an even load for the entire iteration set while the second loop had some iterations that were smaller than others.
+After the loops a check was performed on the data so that it was easy to see if the operations were remaining correct.
+The first loop was noted to be significantly faster than the second with the times approximately an order of magnitude in difference meaning that the limiting factors in the two loops could easily be different.
+The objective was to parallelise this code and find the best scheduling options for 4 threads and find out how these scaled to higher numbers of threads.\\
+
+\section{Method}
+Parallel for statements were inserted into the functions containing the calls to the loops and the appropriate variables to be marked shared or private were identified.
+For each of the two loops a number of scheduling options needed to be compared.
+These were static, guided and dynamic, each with varying chunksize, and the auto scheduling option.
+Only a small piece of code needed to be changed in order to switch between schedules and chunksizes.
+In order to exploit this, a temporary c file was written and a bash script used to reliably change the appropriate piece of code for each run.
+This allowed for ease of control of the source code since there was only one master copy.\\
+
+Two compilation strategies were tested, compiling on the front-end, on the cp-lab machines, and on the back-end of Morar.
+It was noted that when the compilation was performed on the backend the time taken for execution was shorter.
+Since we were interested in the fastest run times and it makes most sense to compile in the environment that the program will be run in the compilation for all data was done on the back-end.\\
+
+Each scheduling option was then run on 4 threads on Morar with an entire node of 64 cores reserved in order to ensure there was no interference from other users.
+The run times of the different options on 4 threads were then compared and graphed, and the best scheduling option for loops 1 and 2 were taken.
+The code was run again on Morar with these best scheduling options on 1, 2, 4, 6, 8 and 16 threads, again with 64 cores reseerved.
+These results were also compared and graphed.\\
+
+\section{Results}
+\subsection{Loop 1}
+For loop one the best scheduling option was found to be static with a chunksize of 2 as can be seen in figure 1.
+	\begin{figure}[ht]
+		\centering
+		\input{../loop1-comp}
+		\caption{Performance of different scheduling against chunksize for loop 1}
+		\label{Figure 1:}
+	\end{figure}
+
+The automatic scheduling option was tested and had an execution time of $0.19\,s$.
+This is quite fast, being almost as good as the dynamic and static options and would be a viable option if no time for testing was available.\\
+
+The static option with no chunksize specified was also tested.
+It maintained an execution time of $0.31\,s$.
+This is almost identical to the guided schedule.\\
+
+For the guided option it is noted that the execution time is almost exactly the same for different chunksizes.
+This is most likely because the first and largest chunksize dominates the time.
+While the serial code takes $0.70\,s$ to complete, the guided schedule on 4 threads takes approximately $0.31\,s$ for all chunksizes.
+This suggests that the first chunk is too big.
+Comparing this to the standard static option and noting that the time is the same suggests that the first chunk is approximately one quarter of the total job meaning that it dominates the calculation time.
+In order to improve performance reducing this would be the first step.\\
+
+The dynamic option can be seen to be improving from chunksize 1 until 32.
+Performance then deteriorates for a chunksize of 64.
+This is most likely due to thet fact that the loops considered had 729 iterations each.
+The result is poor load balancing with a chunksize of 64 as only 3 of the 4 threads will have to do the bulk of the iterations on the last chunk allocation, with one thread only getting 25 iterations and the other three, 64.
+It is however not as bad as static with chunksize 64 since the threads that have to do extra work will have done the rest faster.
+With smaller chunksizes there is better load balancing but since the loop iteration time is quite short the overhead associated with having to dynamically allocate jobs to threads means that performance is not as good as the static scheduling option.\\
+
+The static scheduling option shows the best performance on this loop for small chunksizes but does deteriorate with chunksizes 16 and above.
+This is due to the fact that with larger chunksizes, like with the dynamic, load balancing becomes an issue.
+It becomes worse than dynamic as there is no possibility to share out the extra work between processors since the work distribution is decided at compile time.
+With lower chunksizes static is the best option since the load is well balanced with the work most likely split evenly between all threads (one thread does one more iteration that the others for chunksize 2).
+There is also less overhead than with the dynamic scheduling as it is known even at compile time with threads will have to work on which data and this can be optimised.
+To this end static with chunksize 2 taking $0.18\,s$ to complete the loop was chosen as the best scheduling option for loop 1 on 4 threads.\\
+
+
+\subsection{Loop 2}
+The results for loop 2 are considered in figure 2.
+This loop gave different threads different amounts of work do as the first inner loop either had N iterations or 1 depending on the outer loop iteration number.
+
+	\begin{figure}[ht]
+		\centering
+		\input{../loop2-comp}
+		\caption{Performance of different scheduling against chunksize for loop 1}
+		\label{Figure 2:}
+	\end{figure}
+
+The automatic scheduling otion was tested and had an execution time of $20.71\,s$.
+This is slower than all the other options and it would be a bad idea to use this when trying to scale to larger numbers of threads.
+This suggests that testing is a much better option than just using automatic scheduling unless one knows exactly how the loop is going to work.\\
+
+For loop 2 the guided scheduling was again noted to be very consistent with different chunksizes.
+This is for the same reasons as outlined in the loop 1 section.
+However, it was noted to outperform the static and dynamic options for small chunksizes due to smaller overheads in assigning work to threads.\\
+
+Static displays similar behaviour to dynamic with the times for completion being only slightly different.
+Loop 2 takes longer than loop 1 and as such the overheads associated with assigning jobs to threads have less of an impact.
+Still, for lower chunksizes too much work needs to be done in order to dynamically allocate iterations to threads at runtime and as such static performs better up to a chunksize of 4.
+Once the chunksize is 8 or larger dynamic is seen to outperform static since the iterations have to be assigned less often and the load has the ability to be more balanced.
+It is noted that there is very little difference between dynamic with chunksize 8 and 16.
+This is since both load balancing and the overheads of scheduling have reached an optimum level.
+Upon looking at the speeds one notes that the serial code takes approximately $14.2\,s$ and dynamic with chunksize 8 or 16 takes around $3.6\,s$ to execute.
+This is extremely close to one quarter of the time of the serial code and suggests that this scheduling option has obtained linear speedup up to 4 cores for these chunksizes and as such cannot execute the code any faster.
+This explains why the times observed for both chunksizes are so similar.
+As in the case of loop 1, the larger chunksizes of 32 and 64 result in poor load balancing which itself results in poorer performance for both static and dynamic scheduling options but with dynamic outperforming static since it has inherently better load balancing.\\
+It was decided to bring dynamic with both chunksizes 8 and 16 to the second testing phase to compare their scalability.\\
+
+\subsection{Best Choice}
+The best options for loop 1 (static with chunksize 2) and loop 2 (dynamic with chunksizes 8 and 16) were then run on 1, 2, 4, 6, 8, 10, 12 and 16 threads on Morar.
+A graph of the speedup against the number of threads was then produced for both loop 1 and loop 2 and these can be seen in figures 3, 4 and 5.
+
+	\begin{figure}[ht]
+		\centering
+		\input{../loop1}
+		\caption{Speedup of loop 1 versus no. of Threads}
+		\label{Figure 3:}
+	\end{figure}
+
+	\begin{figure}
+		\centering
+		\input{../loop28}
+		\caption{Speedup of loop 2 with dynamic, 8 versus No. of Threads}
+		\label{Figure 4:}
+	\end{figure}
+
+	\begin{figure}
+		\centering
+		\input{../loop216}
+		\caption{Speedup of loop 2 with dynamic, 16 versus No. of Threads}
+		\label{Figure 5:}
+	\end{figure}
+
+As is easily seen from the figure 3, the speed up on loop 1 goes almost linearly as the number of processors increases.
+There is a small tail off above 8 threads.
+At these numbers of threads it is most likely that communication is starting to become an issue but the short loop is still dominating the calculation.
+This is due to the architecture of Morar with has 8 threads on one chip which allows for very good communication at this scale but performance at higher numbers of threads will not be as good.\\
+
+For loop 2, since dynamic with chunksize 8 and 16 were so similar on 4 threads, they were both tested on multiple threads.
+The results obtained were quite interesting.
+For a chunk size of 8, which on 4 threads was slightly slower than chunksize of 16, linear speedup was seen up until 4 threads.
+There is then a slight decrease in speedup as the number of threads is increased to 8.
+It is likely that there is a slightly larger overhead associated with 8 or 6 cores communicating on the chip than if only 4 are running.
+There is also an increase in contention for the L3 cache that is shared between 8 cores on Morar.
+Above 8 threads the performance very noticably tails off, becoming almost flat and increasing the the number of threads has next to no impact on the execution time.
+In order to fully understand this the dynamic option with chunksize 16 needed to be considered.
+When it is used linear scaling is seen up until 4 threads and then there is a plateau for numbers higher than this.
+Here the chunksize is twice as big and thus there is more competition for cache lines.
+For both chunksizes the chunks are allocated on a first come first served basis to threads, some of which share some levels of cache and there is competition for cache usage.
+Since cache only has a small number of lines that a piece of data can be copied into it is very likely that when two threads working on seperate pieces of data  (especially since it is essentially strided array acceses) that the threads often overwrite the data needed by other threads sharing that cache and invalidate the cache of all other threads, even if they didnt overwrite the specific piece of data requiring more flushes to the bus and accesses to main memory. 
+This quickly becomes the limiting factor and governs the speed at which the cade can run.
+It is worth noting that in both examples, with chunksize 8 and 16, that the linear scaling is seen to stop when $\text{chunksize}\times\text{no. of threads}=64$. 
+In order to test this, loop 2 was also run with a chunksize of 32, where linear scaling stopped at 2 threads.
+This suggests that the caches probably have 64-way associativity.
+When the array c in the program is accessed in strides greater than 64 the cache lines it is stored in get overwritten resulting in a significant decrase in performance.
+In conclusion dynamic with chunksize 8 showed the best scaling for loop 2 and was able complete execution twice as fast as wih chunksize 16 for higher numbers of threads.\\
+
+
+\section{Conclusions}
+Firstly it was noted the the code to be run should be compiled on the system it will be run on in order to get the best performance.
+
+It can be concluded from the results obtained that in general, for this kind of problem, guided is a bad scheduling option to use.
+It might be better if the problem had a smaller weighting of work near the start of the iterations.
+
+Auto scheduling can show good performance on small loops but on the larger loop 2 it showed very poor performance.
+This suggests that in general it should not be used unless we can be sure of what it will do and only if there is no time to experiment with different scheduling options.
+
+For loop 1 the best scheduling option was found to be static with a chunksize of 2 since this allows for lower overheads in allocating jobs and good load balancing.
+This scaled very well up to 16 threads, maintaining close to linear scaling the entire time since there was enough cache space to store all the data and very little communication necessary combined with good architecture on Morar for communications between up to 16 threads.
+
+For loop 2 the best scheduling on 4 threads was found to be either dynamic with a chunksize of 8 or 16, with 16 performing very slightly better than 8.
+The scalability of the different chunksizes were found to differ, with 8 scaling well to 8 threads and 16 only scaling well up to 4 threads.
+This is due to the caches becoming overused and the main time in the calculation comes from main memory acceses as more threads are used.
+
+In conclusion, if, during the testing phase, different scheduling options are found to to be quite similar it is worth testing both of them as there may be quite significant differences in their scalability that depend on factors such as memory access patterns that can be hard to predict.
+
+
+\end{document}

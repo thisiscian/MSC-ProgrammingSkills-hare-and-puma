@@ -52,7 +52,7 @@ int main()
   elapsedTime = time(NULL) - start;
 
   cout << "seconds for 50 updates of 1000x1000 board and current incarnation of update_animals: " << elapsedTime << "\n";
-  cout << "Flops: " << (1000*1000*50*35)/elapsedTime << "\n";
+  cout << "Flops: " << (1000*1000*50*28)/elapsedTime << "\n";
 
 
   return 0;

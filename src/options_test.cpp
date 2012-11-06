@@ -9,7 +9,7 @@
   int argc = 5;\
   char *argv[] = {\
     (char*) EXECUTABLE, \
-    (char*) "--land", (char*) "../test_data/test_land_input.dat", \
+    (char*) "--landfile", (char*) "../test_data/test_land_input.dat", \
     (char*) option, (char*) value, (char*) NULL\
   };\
 \
@@ -78,7 +78,7 @@ int main()
     int argc = 3;
     char *argv[] = {
       (char*) EXECUTABLE,
-      (char*) "--land", (char*) "../test_data/test_land_input.dat",
+      (char*) "--landfile", (char*) "../test_data/test_land_input.dat",
       (char*) NULL
     };
 
@@ -134,11 +134,11 @@ int main()
 
 
   // check hare file
-  test_option("--hare", "../test_data/test_hare_input.dat",
+  test_option("--harefile", "../test_data/test_hare_input.dat",
       options.hare_filename == "../test_data/test_hare_input.dat");
 
   // check puma file
-  test_option("--puma", "../test_data/test_puma_input.dat",
+  test_option("--pumafile", "../test_data/test_puma_input.dat",
       options.puma_filename == "../test_data/test_puma_input.dat");
 
   // check running time
