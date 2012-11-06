@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
   double m = options.puma_death;
   double r = options.hare_birth;
 
-  create_output_folder("output");
+  create_output_directory(options.output_directory);
   while(time <= finalTime)
   {
           update_animals(board, timeStep, a, b, k, l, m, r);
