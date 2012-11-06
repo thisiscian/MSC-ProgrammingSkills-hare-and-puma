@@ -1,0 +1,8 @@
+#! /bin/bash
+
+for t in 1 2 3 4
+do
+export OMP_NUM_THREADS=$t
+echo now running on $t threads
+./update_performance_test
+done

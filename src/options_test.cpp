@@ -8,7 +8,9 @@
   Options options;\
   int argc = 5;\
   char *argv[] = {\
-    EXECUTABLE, "--land", "../test_data/test_land_input.dat", option, value, NULL\
+    (char*) EXECUTABLE, \
+    (char*) "--land", (char*) "../test_data/test_land_input.dat", \
+    (char*) option, (char*) value, (char*) NULL\
   };\
 \
   int ret = options.parse_input(argc, argv);\
@@ -17,6 +19,7 @@
   if(ret != 0)\
   {\
     std::cerr.rdbuf(oldCerrStreamBuf);\
+    std::cout.rdbuf(oldCoutStreamBuf);\
     std::cerr << option << " test returned error" << std::endl;\
     return 1;\
   }\
@@ -25,6 +28,7 @@
   if(!(assertion))\
   {\
     std::cerr.rdbuf(oldCerrStreamBuf);\
+    std::cout.rdbuf(oldCoutStreamBuf);\
     std::cerr << "There was an error processing the " << option << " option"\
               << std::endl;\
     return 1;\
@@ -37,9 +41,9 @@ int main()
 {
 
   // redirect cout and cerr
-  //std::streambuf* oldCoutStreamBuf = std::cout.rdbuf();
-  //std::stringstream strCout;
-  //std::cout.rdbuf( strCout.rdbuf() );
+  std::streambuf* oldCoutStreamBuf = std::cout.rdbuf();
+  std::stringstream strCout;
+  std::cout.rdbuf( strCout.rdbuf() );
 
   std::streambuf* oldCerrStreamBuf = std::cerr.rdbuf();
   std::stringstream strCerr;
@@ -58,6 +62,8 @@ int main()
     if( ret != 1 )
     {
       std::cerr.rdbuf(oldCerrStreamBuf);
+      std::cout.rdbuf(oldCoutStreamBuf);
+
       std::cerr << "Empty initialization did not return error"
                 << std::endl;
       return 1;
@@ -71,7 +77,9 @@ int main()
     Options options;
     int argc = 3;
     char *argv[] = {
-      EXECUTABLE, "--land", "../test_data/test_land_input.dat", NULL
+      (char*) EXECUTABLE,
+      (char*) "--land", (char*) "../test_data/test_land_input.dat",
+      (char*) NULL
     };
 
     int ret = options.parse_input(argc, argv);
@@ -80,6 +88,8 @@ int main()
     if(ret != 0)
     {
       std::cerr.rdbuf(oldCerrStreamBuf);
+      std::cout.rdbuf(oldCoutStreamBuf);
+
       std::cerr << "Land test returned error" << std::endl;
       return 1;
     }
@@ -88,6 +98,8 @@ int main()
     if(options.land_filename != "../test_data/test_land_input.dat")
     {
       std::cerr.rdbuf(oldCerrStreamBuf);
+      std::cout.rdbuf(oldCoutStreamBuf);
+
       std::cerr << "There was an error processing the land file name"
                 << std::endl;
       return 1;
@@ -101,7 +113,9 @@ int main()
     Options options;
     int argc = 3;
     char *argv[] = {
-      EXECUTABLE, "--run_time", "10", NULL
+      (char*) EXECUTABLE,
+      (char*) "--run_time", (char*) "10",
+      (char*) NULL
     };
 
     int ret = options.parse_input(argc, argv);
@@ -110,6 +124,8 @@ int main()
     if(ret != 1)
     {
       std::cerr.rdbuf(oldCerrStreamBuf);
+      std::cout.rdbuf(oldCoutStreamBuf);
+
       std::cerr << "Land file not specified and no error given" << std::endl;
       return 1;
     }
@@ -157,13 +173,20 @@ int main()
   test_option("--puma_diffusion", "10", options.puma_diffusion == 10);
   test_option("-l", "0.1", options.puma_diffusion == 0.1);
 
+  test_option("--output", "some_output_directory",
+      options.output_directory == "some_output_directory");
+  test_option("-o", "some_output_directory",
+      options.output_directory == "some_output_directory");
+
 
   // check input config file
   {
     Options options;
     int argc = 3;
     char *argv[] = {
-      EXECUTABLE, "-c", "../test_data/test_config_file.cfg", NULL
+      (char*) EXECUTABLE,
+      (char*) "-c", (char*) "../test_data/test_config_file.cfg",
+      (char*) NULL
     };
 
     int ret = options.parse_input(argc, argv);
@@ -172,6 +195,8 @@ int main()
     if(ret != 0)
     {
       std::cerr.rdbuf(oldCerrStreamBuf);
+      std::cout.rdbuf(oldCoutStreamBuf);
+
       std::cerr << "Config test returned error" << std::endl;
       return 1;
     }
@@ -180,6 +205,8 @@ int main()
     if(options.config_filename != "../test_data/test_config_file.cfg")
     {
       std::cerr.rdbuf(oldCerrStreamBuf);
+      std::cout.rdbuf(oldCoutStreamBuf);
+
       std::cerr << "There was an error processing the config file name"
                 << std::endl;
       return 1;
@@ -193,6 +220,8 @@ int main()
       )
     {
       std::cerr.rdbuf(oldCerrStreamBuf);
+      std::cout.rdbuf(oldCoutStreamBuf);
+
       std::cerr << options.land_filename << std::endl;
       std::cerr << options.puma_filename << std::endl;
       std::cerr << options.hare_filename << std::endl;
@@ -202,6 +231,9 @@ int main()
       return 1;
     }
   }
+
+  std::cerr.rdbuf(oldCerrStreamBuf);
+  std::cout.rdbuf(oldCoutStreamBuf);
 
   return 0;
 }

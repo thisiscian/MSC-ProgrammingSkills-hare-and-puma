@@ -1,5 +1,24 @@
 #include "distribution.h"
 #include <iostream>
+#include <cmath>
+
+template<class T>
+bool fleq(T a, T b)
+{
+  T diff = a-b;
+
+  if(diff < 0)
+  {
+    diff *=-1;
+  }
+
+  return diff < 10E-5;
+}
+
+float cossum(size_t x, size_t y)
+{
+  return cos(static_cast<float>(x+y));
+}
 
 int main()
 {
@@ -53,6 +72,41 @@ int main()
         std::cerr << "CheckerDistribution broken for max and min init" << std::endl;
         return 1;
       }
+    }
+  }
+
+
+  // test ZeroDistribution
+  for(size_t i=0; i<10; ++i)
+  for(size_t j=0; j<10; ++j)
+  {
+    if(UniformDistribution<int>(0)(i,j) != 0)
+    {
+      std::cerr << "UniformDistribution<int>(0) doesn't return zero"
+                << std::endl;
+      return 1;
+    }
+    if(UniformDistribution<bool>(false)(i,j) != false)
+    {
+      std::cerr << "UniformDistribution<bool>(false) doesn't return false"
+                << std::endl;
+      return 1;
+    }
+  }
+
+  // test FunctionDistribution
+  for(size_t i=0; i<10; ++i)
+  for(size_t j=0; j<10; ++j)
+  {
+    if(!fleq<float>(
+          FunctionDistribution<float>(cossum)(i,j),
+          cos(static_cast<float>(i+j))
+        )
+      )
+    {
+      std::cerr << "Function distribution doesn't return correct value"
+                << std::endl;
+      return 1;
     }
   }
 

@@ -2,15 +2,64 @@
 #include "test_field.h"
 #include "update.h"
 #include "options.h"
+#include "board_setter.h"
 using namespace std;
 
-int main()
+int test_scaling(int argc, char* argv[]);
+
+int main(int argc, char* argv[])
 {
+<<<<<<< HEAD
 	Board<Tile> field(6,6);
 	defineAllWater(field);
 	NcursesField nfield(field, 4, 6);	
 	Options options;
 	options.run_time = 10000;
+=======
+	if(test_scaling(argc, argv) != 0)
+	{
+		cout << "Scaling failed" << endl;
+		return 1;
+	}
+}
+
+int test_scaling_interior()
+{
+
+}
+
+int test_scaling(int argc, char* argv[])
+{
+	Board<Tile> board;
+  Options options;
+  options.parse_input(argc, argv);
+
+	options.land_filename = "../test_data/test_land_input_all_land.dat";
+	options.hare_filename = "../test_data/test_no_hares.dat";
+	options.puma_filename = "../test_data/test_no_pumas.dat";
+	options.run_time = 1.0;
+	options.time_step = 1.0;
+  BoardSetter::set_land_from_file(board, options.land_filename);
+  if(!options.hare_filename.empty())
+  {
+    BoardSetter::set_hare_from_file(board, options.hare_filename);
+  }
+  else
+  {
+    BoardSetter::set_hare_from_distribution(board, RandomDistribution());
+  }
+  if(!options.puma_filename.empty())
+  {
+    BoardSetter::set_puma_from_file(board, options.puma_filename);
+  }
+  else
+  {
+    BoardSetter::set_puma_from_distribution(board, RandomDistribution());
+  }
+
+	NcursesField nfield(board, 4, 6);
+
+>>>>>>> d2765d85db0e8637d5b7a898d0bf1d66f8e5e630
 	
 	int finalTime = options.run_time;
 	double timeStep = options.time_step;
@@ -24,9 +73,10 @@ int main()
 
 	for(time = 0.0; time < finalTime; time+=timeStep)
 	{
-		update_animals(field, timeStep, a, b, k, l, m, r);	
+		update_animals(board, timeStep, a, b, k, l, m, r);	
 		nfield.update(time);
 		getch();
 	}
 	endwin();
+	return 1;
 }

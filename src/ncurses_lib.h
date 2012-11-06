@@ -59,6 +59,7 @@ class NcursesField
 	int widthBuffer;
 	int heightBuffer;
 	
+	void set_field_block_sizes();
 	void initialise_ncurses();
 	void set_field_window_size();
 	void set_title(WINDOW* win, std::string title);
