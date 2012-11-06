@@ -7,9 +7,9 @@
 
 using namespace std;
 
-void create_output_folder(string folder_name)
+void create_output_directory(string directory_name)
 {
-	int err = mkdir(folder_name.c_str(), S_IRWXU);
+	int err = mkdir(directory_name.c_str(), S_IRWXU);
 	// the mode S_IRWXU allows the user read, write and execute permissions
 }
 
