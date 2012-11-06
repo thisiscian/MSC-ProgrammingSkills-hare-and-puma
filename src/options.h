@@ -41,7 +41,7 @@ class Options
   double puma_death;     // m
   double puma_diffusion; // l
 
-  void parse_input(int argc, char** argv);
+  int parse_input(int argc, char** argv);
 };
 
 #endif

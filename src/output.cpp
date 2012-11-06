@@ -7,6 +7,12 @@
 
 using namespace std;
 
+void create_output_folder(string folder_name)
+{
+	int err = mkdir(folder_name.c_str(), S_IRWXU);
+	// the mode S_IRWXU allows the user read, write and execute permissions
+}
+
 /*A function that recieves the populations of the hares and pumas, and outputs their values to the console*/
 void output_to_console(Board<Tile> field, double time)
 {

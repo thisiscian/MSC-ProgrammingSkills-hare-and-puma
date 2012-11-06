@@ -78,16 +78,16 @@ void defineLinearField(Board<Tile>& field)
 /* define a field with non linear values for land, hare numbers and puma numbers */
 void defineGaussian(Board<Tile>& field)
 {
+	int x,y;
 	int width = field.get_width();
 	int height = field.get_height();
-	int x, y;	
 	for(x = 0; x < width; ++x)
 	{
 		for(y = 0; y < height; ++y)
 		{
 			field(x,y).make_land();
-			field(x,y).hare = 255*exp(-pow(x-0.5*width,2)/(2*pow(0.25*width,2))-pow(y-0.5*height,2)/(2*pow(0.25*height,2)));
-			field(x,y).puma = 2*exp(-pow(x-0.75*width,2)/(2*pow(0.25*width,2))-pow(y-height/2,2)/(2*pow(0.25*height,2)))+2*exp(-pow(x-0.25*width,2)/(2*pow(0.25*width,2))-pow(y-height/2,2)/(2*pow(0.25*height,2)));
+			field(x,y).hare = 255*exp(-pow(x-0.5*width,2)/(2*pow(0.25*width,2))-pow(y-0.5*height,2)/(2*pow(0.01*height,2)));
+			field(x,y).puma = 2*exp(-pow(x-0.75*width,2)/(2*pow(0.25*width,2))-pow(y-height/2,2)/(2*pow(0.01*height,2)))+2*exp(-pow(x-0.25*width,2)/(2*pow(0.25*width,2))-pow(y-height/2,2)/(2*pow(0.25*height,2)));
 		}
 	}
 }

@@ -50,12 +50,12 @@ int main()
 	{
 		if(board(i,j).hare < 0)
 		{
-			cout << "error: negative hares appearing" << endl;
+			cout << "error: test 1: negative hares appearing" << endl;
 			return 1;
 		}
 		if(board(i,j).puma < 0)
 		{
-			cout << "error: negative pumas appearing" << endl;
+			cout << "error: test 1: negative pumas appearing" << endl;
 			return 1;
 		}
 		newHareSum += board(i,j).hare;
@@ -105,12 +105,12 @@ int main()
 	{
 		if(board(i,j).hare < 0)
 		{
-			cout << "error: negative hares appearing" << endl;
+			cout << "error: test 2:negative hares appearing" << endl;
 			return 1;
 		}
 		if(board(i,j).puma < 0)
 		{
-			cout << "error: negative pumas appearing" << endl;
+			cout << "error: test 2: negative pumas appearing" << endl;
 			return 1;
 		}
 		newHareSum += board(i,j).hare;
@@ -174,12 +174,12 @@ int main()
 	{
 		if(board(i,j).hare < 0)
 		{
-			cout << "error: negative hares appearing" << endl;
+			cout << "error: test 3: negative hares appearing" << endl;
 			return 1;
 		}
 		if(board(i,j).puma < 0)
 		{
-			cout << "error: negative pumas appearing" << endl;
+			cout << "error: test 3: negative pumas appearing" << endl;
 			return 1;
 		}
 	}

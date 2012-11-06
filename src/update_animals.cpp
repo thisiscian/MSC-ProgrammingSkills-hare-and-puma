@@ -10,7 +10,6 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
 	int landSum;
 	Board<Tile> new_board(NX,NY);
 
-
 	for(int y=1; y<NY-1; y++)
 	for(int x=1; x<NX-1; x++)
 	{

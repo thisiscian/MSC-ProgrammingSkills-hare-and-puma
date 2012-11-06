@@ -1,15 +1,34 @@
 #include "ncurses_lib.h"
 #include "update.h"
 #include "options.h"
+#include "board_setter.h"
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
-	Board<Tile> field(6,6);
-	defineConstantField(field);
-	NcursesField nfield(field, 4, 6);	
-	Options options;
-	options.run_time = 10000;
+	Board<Tile> board;
+  Options options;
+  options.parse_input(argc, argv);
+
+  BoardSetter::set_land_from_file(board, options.land_filename);
+  if(!options.hare_filename.empty())
+  {
+    BoardSetter::set_hare_from_file(board, options.hare_filename);
+  }
+  else
+  {
+    BoardSetter::set_hare_from_distribution(board, RandomDistribution());
+  }
+  if(!options.puma_filename.empty())
+  {
+    BoardSetter::set_puma_from_file(board, options.puma_filename);
+  }
+  else
+  {
+    BoardSetter::set_puma_from_distribution(board, RandomDistribution());
+  }
+
+	NcursesField nfield(board, 4, 6);	
 	
 	int finalTime = options.run_time;
 	double timeStep = options.time_step;
@@ -23,7 +42,7 @@ int main()
 
 	for(time = 0.0; time < finalTime; time+=timeStep)
 	{
-		update_animals(field, timeStep, a, b, k, l, m, r);	
+		update_animals(board, timeStep, a, b, k, l, m, r);	
 		nfield.update(time);
 		getch();
 	}
