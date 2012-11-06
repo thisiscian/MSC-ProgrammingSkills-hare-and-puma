@@ -332,20 +332,20 @@ void NcursesField::set_field_block_sizes()
 	size_t x=1, y=1;
 	size_t x_range = max((size_t) 1,board->get_width()/fieldWindowWidth);
 	size_t y_range = max((size_t) 1,board->get_height()/fieldWindowHeight);
-	for(int j=0; j<fieldWindowWidth;j++)
+	for(int j=0; j<fieldWindowHeight/tileLine;j++)
 	{
-		for(int i=0; i<fieldWindowHeight;i++)
+		for(int i=0; i<fieldWindowWidth/tileCols;i++)
 		{	
-			int x_max =  min(board->get_width(), x+x_range);
-			int y_max =  min(board->get_height(), y+y_range);
+			int x_max =  min(board->get_width()-1, x+x_range);
+			int y_max =  min(board->get_height()-1, y+y_range);
 			block.push_back(FieldBlock(board, x, y, x_max, y_max));
 //delete
-			if(!block[i+j*fieldWindowHeight].is_land()){any_water = true;}
+			if(!block[i+j*fieldWindowHeight/tileLine].is_land()){any_water = true;}
 //
 			x += x_range;
 		}
 		y += y_range;
-		x = 0;
+		x = 1;
 	}
 
 //delete
@@ -353,6 +353,15 @@ void NcursesField::set_field_block_sizes()
 	{
 		endwin();
 		std::cout << "THERE IS NO WATER HERE YOU NUMBSKULL" << std::endl;
+		for(int j=0; j<fieldWindowHeight/tileLine;j++)
+		{
+			for(int i=0; i<fieldWindowWidth/tileCols;i++)
+			{	
+				std::cout << block[i+j*fieldWindowHeight/tileLine].is_land();
+				
+			}
+			std::cout << std::endl;
+		}
 	}
 //
 }
