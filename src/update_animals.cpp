@@ -50,7 +50,7 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
 			(r*board(x,y).hare - a*board(x,y).hare * board(x,y).puma + k* \
 			(hareSum - landSum*board(x,y).hare));
 
-			new_board(x,y).puma = board(x,y).puma + timeStep* \
+      new_board(x,y).puma = board(x,y).puma + timeStep* \
       (b*board(x,y).hare*board(x,y).puma - m*board(x,y).puma + l* \
       (pumaSum - landSum*board(x,y).puma));
 		}
@@ -72,8 +72,7 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
 		{
 			board(x,y).hare = new_board(x,y).hare;
 		}
-
-		if(new_board(x,y).puma < 0) 
+    if(new_board(x,y).puma < 0) 
     { 
       board(x,y).puma = 0; 
     }  
@@ -82,7 +81,6 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
     board(x,y).puma = new_board(x,y).puma;
     }
 
-	}
-	
+  }
 
 }

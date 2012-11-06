@@ -7,9 +7,10 @@ SUBDIRS = src
 
 
 #
-# Proxy definition to make guitest target in src directory
+# Proxy definition to make targets in src directory
 #
 .PHONY : guitest
-guitest :
+.PHONY : performancetest
+guitest performancetest:
 	cd src && $(MAKE) $(AM_MAKEFLAGS) $@
 

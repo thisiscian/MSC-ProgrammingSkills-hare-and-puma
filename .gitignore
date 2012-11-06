@@ -29,9 +29,10 @@ stamp-h1
 src/.deps
 libtool
 
+src/input_test
+
 # Compiled binaries
 src/hare-and-puma
-src/ncurses_test
 src/board_test
 src/tile_test
 src/update_test
@@ -39,4 +40,5 @@ src/board_setter_test
 src/output_test
 src/distribution_test
 src/options_test
-src/input_test
+src/ncurses_test
+src/update_performance_test
