@@ -12,6 +12,10 @@ class DistributionBase
 };
 
 
+/*
+ * DirectDistribution
+ *  f(x,y) = a_x*x + a_y*y
+ */
 template<class T>
 class DirectDistribution: public DistributionBase<T>
 {
@@ -30,6 +34,13 @@ class DirectDistribution: public DistributionBase<T>
 };
 
 
+/*
+ * CheckerDistribution
+ *  f(x,y) = {
+ *            true if (x+y)%2 = 0
+ *            false otherwise
+ *           }
+ */
 class CheckerDistribution: public DistributionBase<bool>
 {
   public:
@@ -41,6 +52,10 @@ class CheckerDistribution: public DistributionBase<bool>
 };
 
 
+/*
+ * RandomDistribution
+ *  f(x,y) = random between min and max
+ */
 class RandomDistribution: public DistributionBase<double>
 {
   public:
@@ -67,6 +82,50 @@ class RandomDistribution: public DistributionBase<double>
   double _rand_max;
   double _min;
   double _max;
+};
+
+
+/*
+ * UniformDistribution<T>(T value)
+ *  f(x,y) = value
+ */
+template<class T>
+class UniformDistribution: public DistributionBase<T>
+{
+  public:
+  UniformDistribution(T value): _value(value)
+  {
+  }
+
+  T operator()(size_t x, size_t y) const
+  {
+    return _value;
+  }
+
+  private:
+  T _value;
+};
+
+/*
+ * FunctionDistribution<T>(T function(size_t i, size_t j))
+ *  f(x,y) = function(x,y)
+ */
+template<class T>
+class FunctionDistribution: public DistributionBase<T>
+{
+  public:
+
+  FunctionDistribution(T (*value)(size_t,size_t)): _value(value)
+  {
+  }
+
+  T operator()(size_t x, size_t y) const
+  {
+    return _value(x,y);
+  }
+
+  private:
+  T (*_value)(size_t,size_t);
 };
 
 #endif

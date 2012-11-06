@@ -23,18 +23,12 @@ src/.deps/*
 
 autom4te.cache
 autom4te.cache/*
-configure
-config.*
 *Makefile
-missing
-install-sh
-depcomp
 *.log
 *.in
 stamp-h1
 src/.deps
 libtool
-ltmain.sh
 
 # Compiled binaries
 src/hare-and-puma

@@ -145,7 +145,7 @@ void BoardSetter::set_land_from_distribution(
 )
 {
   for(size_t x=0; x<board.get_width(); ++x)
-  for(size_t y=0; y<board.get_width(); ++y)
+  for(size_t y=0; y<board.get_height(); ++y)
   {
     // set halo to water
     if(  x==0 || x==board.get_width()-1
@@ -176,8 +176,9 @@ void BoardSetter::set_hare_from_distribution(
 )
 {
   for(size_t x=0; x<board.get_width(); ++x)
-  for(size_t y=0; y<board.get_width(); ++y)
+  for(size_t y=0; y<board.get_height(); ++y)
   {
+    //std::cerr << "HARE: (" << x << "," << y << ")" << std::endl;
     // set boundaries to zero
     if(  x==0 || x==board.get_width()-1
       || y==0 || y==board.get_height()-1)
@@ -208,7 +209,7 @@ void BoardSetter::set_puma_from_distribution(
 )
 {
   for(size_t x=0; x<board.get_width(); ++x)
-  for(size_t y=0; y<board.get_width(); ++y)
+  for(size_t y=0; y<board.get_height(); ++y)
   {
     // set boundaries to zero
     if(  x==0 || x==board.get_width()-1
