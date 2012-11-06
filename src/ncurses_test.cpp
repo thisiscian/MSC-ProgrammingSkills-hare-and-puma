@@ -4,12 +4,31 @@
 #include "board_setter.h"
 using namespace std;
 
+int test_scaling(int argc, char* argv[]);
+
 int main(int argc, char* argv[])
+{
+	if(test_scaling(argc, argv) != 0)
+	{
+		cout << "Scaling failed" << endl;
+		return 1;
+	}
+}
+
+int test_scaling_interior()
+{
+
+}
+
+int test_scaling(int argc, char* argv[])
 {
 	Board<Tile> board;
   Options options;
   options.parse_input(argc, argv);
 
+	options.land_filename = "../test_data/small.dat";
+	options.run_time = 1.0;
+	options.time_step = 1.0;
   BoardSetter::set_land_from_file(board, options.land_filename);
   if(!options.hare_filename.empty())
   {
@@ -28,7 +47,8 @@ int main(int argc, char* argv[])
     BoardSetter::set_puma_from_distribution(board, RandomDistribution());
   }
 
-	NcursesField nfield(board, 4, 6);	
+	NcursesField nfield(board, 4, 6);
+
 	
 	int finalTime = options.run_time;
 	double timeStep = options.time_step;
@@ -47,4 +67,5 @@ int main(int argc, char* argv[])
 		getch();
 	}
 	endwin();
+	return 1;
 }
