@@ -2,36 +2,62 @@
 #include "output.h"
 #include "update.h"
 #include "options.h"
+#include "board_setter.h"
 using namespace std;
 
-int main()
+int main(int argc, char *argv[])
 {
-	Board<Tile> field(2002,2002);
-	defineGaussian(field);
-	Options options;
-	options.run_time = 10;
-	
-	int i = 0;
-	int finalTime = options.run_time;
-	double timeStep = options.time_step;
-	double time = 0.0;
-	double a = options.puma_predation;
-	double k = options.hare_diffusion;
-	double b = options.puma_birth;
-	double l = options.puma_diffusion;
-	double m = options.puma_death;
-	double r = options.hare_birth;
+  // define board
+  Board<Tile> field;
+  //defineGaussian(field);
+  Options options;
 
-	create_output_folder("output");
-	while(time <= finalTime)
-	{
-		update_animals(field, timeStep, a, b, k, l, m, r);
-		if(i%1 == 0)
-		{
-			cout << "writing ppm for time: " << time << endl;
-			write_ppm(field, time);
-		}
-		time += timeStep;
-		i++;	
-	}
+  // parse command line options
+  options.parse_input(argc, argv);
+  BoardSetter::set_land_from_file(field, options.land_filename);
+
+  // set hares
+  if(!options.hare_filename.empty())
+  {
+    BoardSetter::set_hare_from_file(field, options.hare_filename);
+  }
+  else
+  {
+    BoardSetter::set_hare_from_distribution(field, RandomDistribution());
+  }
+  // set pumas
+  if(!options.puma_filename.empty())
+  {
+    BoardSetter::set_puma_from_file(field, options.puma_filename);
+  }
+  else
+  {
+    BoardSetter::set_puma_from_distribution(field, RandomDistribution());
+  }
+
+  options.run_time = 10;
+  
+  int i = 0;
+  int finalTime = options.run_time;
+  double timeStep = options.time_step;
+  double time = 0.0;
+  double a = options.puma_predation;
+  double k = options.hare_diffusion;
+  double b = options.puma_birth;
+  double l = options.puma_diffusion;
+  double m = options.puma_death;
+  double r = options.hare_birth;
+
+  create_output_folder("output");
+  while(time <= finalTime)
+  {
+          update_animals(field, timeStep, a, b, k, l, m, r);
+          if(i%1 == 0)
+          {
+                  cout << "writing ppm for time: " << time << endl;
+                  write_ppm(field, time);
+          }
+          time += timeStep;
+          i++;	
+  }
 }
