@@ -45,7 +45,7 @@ int main()
 	getline(check,line);
 	if(line.find("~") == string::npos)
 	{
-		fprintf(stderr, "\tError: did not print water\n");
+		fprintf(stderr, "\tError: did not print small values\n");
 		return 1;
 	}
 	else if(line.find("H") == string::npos)

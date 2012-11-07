@@ -5,6 +5,7 @@
 #include "board.h"
 #include <cmath>
 #include <algorithm>
+#include <vector>
 
 class BoardStatistics
 {

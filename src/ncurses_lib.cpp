@@ -10,6 +10,7 @@ NcursesField::NcursesField(Board<Tile>& board_in, int x, int y)
 	tileCols = y;
 	set_field_window_size();
 	stats.init(*board);
+	old_time = clock();
 	update(0.0);
 }
 
@@ -27,42 +28,64 @@ void NcursesField::initialise_ncurses()
 	// removes the cursor and any keypresses the user makes
 	noecho();
 	curs_set(0);
+	halfdelay(1);
 
-	cbreak();
 	keypad(stdscr, TRUE);
 }
 
 // resets input window: deletes old window, and redraws the entire window
 void NcursesField::update_input()
 {
+	int l = 1;
 	delwin(input);
 	input = newwin(LINES/2+1,COLS/4-1, LINES/2, 3*COLS/4-1);
 	set_title(input, "INPUT");
+	
+	mvwprintw(input, l, 1, " q/Q  ");
+	mvwprintw(input, l, 7, " - quits the program");
+	++l;	
+	mvwprintw(input, l, 1, " p/P  ");
+	mvwprintw(input, l, 7, " - pause and unpause");
+	++l;	
+
+	wrefresh(input);
+
 }
 
 // resets statistics window: deletes old window, redraws new window, recalculates and displays statistics
 void NcursesField::update_statistics(double time)
 {
+	int l = 1;
 	stringstream text;
 	stats.trawl_for_statistics(*board, time);
 
 	delwin(statistics);	
 	statistics = newwin(LINES/2-1,COLS/2-1, 1, COLS/2-1);
+
+	text.str("");
+	text << "Simulation Time: " << time << endl;
+	mvwprintw(statistics, l, 1, text.str().c_str());
+	l++;
+
 	text.str("");
 	text << "Total Density of Hares: " << stats.get_hare_total() << endl;
-	mvwprintw(statistics, 1, 1, text.str().c_str());
+	mvwprintw(statistics, l, 1, text.str().c_str());
+	l++;
 	
 	text.str("");
 	text << "Total Density of Pumas: " << stats.get_puma_total() << endl;
-	mvwprintw(statistics, 2, 1, text.str().c_str());
+	mvwprintw(statistics, l, 1, text.str().c_str());
+	l++;
 
 	text.str("");
 	text << "Largest Density of Hares: " << stats.get_hare_max() << endl;
-	mvwprintw(statistics, 3, 1, text.str().c_str());
+	mvwprintw(statistics, l, 1, text.str().c_str());
+	l++;
 
 	text.str("");
 	text << "Largest Density of Pumas: " << stats.get_puma_max() << endl;
-	mvwprintw(statistics, 4, 1, text.str().c_str());
+	mvwprintw(statistics, l, 1, text.str().c_str());
+	l++;
 
 	// if the time is very close to zero, the average density should not be displayed
 	text.str("");
@@ -71,13 +94,14 @@ void NcursesField::update_statistics(double time)
 	{	
 		for(int i=1; i<=text.str().length(); i++)
 		{	
-			mvwprintw(statistics, 5, i, " ");
+			mvwprintw(statistics, l, i, " ");
 		}
 	}
 	else
 	{
-		mvwprintw(statistics, 5, 1, text.str().c_str());
+		mvwprintw(statistics, l, 1, text.str().c_str());
 	}
+	l++;
 
 	// as above	
 	text.str("");
@@ -86,21 +110,42 @@ void NcursesField::update_statistics(double time)
 	{	
 		for(int i=1; i<=text.str().length(); i++)
 		{	
-			mvwprintw(statistics, 5, i, " ");
+			mvwprintw(statistics, l, i, " ");
 		}
 	}
 	else
 	{
-		mvwprintw(statistics, 6, 1, text.str().c_str());
+		mvwprintw(statistics, l, 1, text.str().c_str());
 	}
 
 	set_title(statistics, "STATISTICS");
 }
 
+double NcursesField::get_hare_max()
+{
+	int max = 0;
+	for(int i=1; i<block.size(); i++)
+	{
+		if(block[max].hare <  block[i].hare){max = i;}
+	}
+	return block[max].hare;
+}
+
+double NcursesField::get_puma_max()
+{
+	int max = 0;
+	for(int i=1; i<block.size(); i++)
+	{
+		if(block[max].puma <  block[i].puma){max = i;}
+	}
+	return block[max].puma;
+}
+
 void NcursesField::get_symbol_worth()
 {
-	//each symbol is equal to the total amount of hares and pumas divided by the number of options there are
-	symbolWorth = (stats.get_hare_total()+stats.get_puma_total())/((tileCols-2)*(tileLine-2)*4);
+	//each symbol is a proportion of the maximum number of animals	
+	hareSymbolWorth = get_hare_max()/((tileCols-2)*(tileLine-2));
+	pumaSymbolWorth = get_puma_max()/((tileCols-2)*(tileLine-2));
 }
 
 // draws a decription of what each key means
@@ -126,7 +171,7 @@ void NcursesField::update_key()
 	++l;	
 
 	text.str("");
-	text << " - 0-" << symbolWorth << " Hares";
+	text << " - 0-" << hareSymbolWorth << " Hares";
 	wattron(key, A_BOLD);
 	wattron(key, COLOR_PAIR(2));
 	mvwprintw(key, l, 1, "   ");
@@ -137,17 +182,17 @@ void NcursesField::update_key()
 
 	wattron(key, COLOR_PAIR(1));
 	text.str("");
-	text << " - " << symbolWorth << "-"<< 2*symbolWorth << " Hares";
+	text << " - " << hareSymbolWorth << "-"<< 2*hareSymbolWorth << " Hares";
 	wattron(key, A_BOLD);
 	wattron(key, COLOR_PAIR(2));
-	mvwprintw(key, l, 1, " h ");
+	mvwprintw(key, l, 1, " ~ ");
 	wattroff(key, COLOR_PAIR(2));
 	wattroff(key, A_BOLD);
 	mvwprintw(key, l, 5, text.str().c_str());
 	++l;	
 
 	text.str("");
-	text << " - " << symbolWorth << " Hares";
+	text << " - " << 2*hareSymbolWorth << " Hares";
 	wattron(key, A_BOLD);
 	wattron(key, COLOR_PAIR(2));
 	mvwprintw(key, l, 1, " H ");
@@ -157,7 +202,7 @@ void NcursesField::update_key()
 	++l;	
 
 	text.str("");
-	text << " - 0-" << symbolWorth << " Pumas";
+	text << " - 0-" << pumaSymbolWorth << " Pumas";
 	wattron(key, A_BOLD);
 	wattron(key, COLOR_PAIR(3));
 	mvwprintw(key, l, 1, "   ");
@@ -167,17 +212,17 @@ void NcursesField::update_key()
 	++l;	
 
 	text.str("");
-	text << " - " << symbolWorth << "-"<< 2*symbolWorth << " Pumas";
+	text << " - " << pumaSymbolWorth << "-"<< 2*pumaSymbolWorth << " Pumas";
 	wattron(key, A_BOLD);
 	wattron(key, COLOR_PAIR(3));
-	mvwprintw(key, l, 1, " p ");
+	mvwprintw(key, l, 1, " ~ ");
 	wattroff(key, COLOR_PAIR(3));
 	wattroff(key, A_BOLD);
 	mvwprintw(key, l, 5, text.str().c_str());
 	++l;	
 
 	text.str("");
-	text << " - " << 2*symbolWorth << " Pumas";
+	text << " - " << 2*pumaSymbolWorth << " Pumas";
 	wattron(key, A_BOLD);
 	wattron(key, COLOR_PAIR(3));
 	mvwprintw(key, l, 1, " P ");
@@ -198,83 +243,91 @@ void NcursesField::update_key()
 	set_title(key, "KEY");
 }
 
-void NcursesField::update_field()
+void NcursesField::update_field(double time)
 {
-	int x, y;
+	int x, y, draw_land;
 	int width = board->get_width();
 	int height = board->get_height();
 	double val;
 
 	delwin(field);
-	field = newwin(fieldWindowHeight,fieldWindowWidth, 1+heightBuffer , widthBuffer);
-
-	// for each element of the field, check if it's 'block' is mostly water or mostly land
-	for(y = 0; y < fieldWindowHeight; y++)
+	field = newwin(fieldNumVerticalTiles*tileLine+2,fieldNumHorizontalTiles*tileCols+2, 1+heightBuffer , widthBuffer);
+	for(y = 0; y < fieldNumVerticalTiles; y++)
 	{
-		for(x = 0; x < fieldWindowWidth; x++)
+		for(x = 0; x < fieldNumHorizontalTiles; x++)
 		{
-			wattron(field, A_BOLD);
-			if(block[x+fieldWindowHeight*y].is_land())
-			{
-				wattron(field, COLOR_PAIR(2));	
-			}
-			else
-			{
-				wattron(field, COLOR_PAIR(4));	
-			}
-			val = block[x+fieldWindowHeight*y].hare_count();
+			val = block[x+fieldNumVerticalTiles*y].hare;
+			draw_land = block[x+fieldNumVerticalTiles*y].land_count*(tileLine*tileCols/(double)block[x+fieldNumVerticalTiles*y].total);
 			for(int j=1; j<=tileLine/2; j++)
 			{
 				for(int i=1; i<=tileCols; i++)
 				{
+					if(draw_land > 0)
+					{
+						wattron(field, COLOR_PAIR(2));	
+					}
+					else
+					{
+						wattron(field, COLOR_PAIR(4));	
+					}
+					wattron(field, A_BOLD);
 					if(j==1 || i==1 || i==tileCols)
 					{
 						mvwprintw(field, tileLine*y+j, tileCols*x+i, " ");
 					}
-					else if(val >= 2*symbolWorth)
+					else if(hareSymbolWorth == 0)
+					{
+						mvwprintw(field, tileLine*y+j, tileCols*x+i, "#");
+					}
+					else if(val >= 2*hareSymbolWorth)
 					{
 						mvwprintw(field, tileLine*y+j, tileCols*x+i, "H");
-						val -= 2*symbolWorth;
+						val -= 2*hareSymbolWorth;
 					}
-					else if(val >= symbolWorth)
+					else if(val >= hareSymbolWorth)
 					{
 						mvwprintw(field, tileLine*y+j, tileCols*x+i, "~");
-						val -= symbolWorth;
+						val -= hareSymbolWorth;
 					}
 					else
 					{
 						mvwprintw(field, tileLine*y+j, tileCols*x+i, " ");
 					}
+					--draw_land;
 				}
 			}
-			if(block[x+fieldWindowHeight*y].is_land())
-			{
-				wattroff(field,COLOR_PAIR(2));
-				wattron(field, COLOR_PAIR(3));	
-			}
-			else
-			{
-				wattroff(field, COLOR_PAIR(4));
-				wattron(field, COLOR_PAIR(5));	
-			}
-			val = block[x+fieldWindowHeight*y].hare_count();
+			val = block[x+fieldNumVerticalTiles*y].puma;
 			for(int j=tileLine/2+1; j<=tileLine; j++)
 			{
 				for(int i=1; i<=tileCols; i++)
 				{
+					if(draw_land > 0)
+					{
+						wattroff(field,COLOR_PAIR(2));
+						wattron(field, COLOR_PAIR(3));	
+					}
+					else
+					{
+						wattroff(field, COLOR_PAIR(4));
+						wattron(field, COLOR_PAIR(5));	
+					}
 					if(j==tileLine || i==1 || i==tileCols)
 					{
 						mvwprintw(field, tileLine*y+j, tileCols*x+i, " ");
 					}
-					else if(val >= 2*symbolWorth)
+					else if(pumaSymbolWorth == 0)
+					{
+						mvwprintw(field, tileLine*y+j, tileCols*x+i, "#");
+					}
+					else if(val >= 2*pumaSymbolWorth)
 					{
 						mvwprintw(field, tileLine*y+j, tileCols*x+i, "P");
-						val -= 2*symbolWorth;
+						val -= 2*pumaSymbolWorth;
 					}
-					else if(val >= symbolWorth)
+					else if(val >= pumaSymbolWorth)
 					{
 						mvwprintw(field, tileLine*y+j, tileCols*x+i, "~");
-						val -= symbolWorth;
+						val -= pumaSymbolWorth;
 					}
 					else
 					{
@@ -282,7 +335,7 @@ void NcursesField::update_field()
 					}
 				}
 			}
-			if(block[x+fieldWindowHeight*y].is_land())
+			if(draw_land > 0)
 			{
 				wattroff(field,COLOR_PAIR(3));
 			}
@@ -308,16 +361,16 @@ void NcursesField::set_title(WINDOW* win, string title)
 
 void NcursesField::set_field_window_size()
 {
-	fieldWindowWidth = COLS/2-1;
-	fieldWindowHeight = LINES-2;
+	fieldNumHorizontalTiles = (COLS/2-1)/tileCols;
+	fieldNumVerticalTiles = (LINES-2)/tileLine;
 
-	size_t maxNumberOfTilesVisible = min(fieldWindowHeight/tileLine, fieldWindowWidth/tileCols);
+	size_t maxNumberOfTilesVisible = min(fieldNumVerticalTiles, fieldNumHorizontalTiles);
 
-	fieldWindowWidth = min(tileCols*maxNumberOfTilesVisible+2, tileCols*(board->get_width()-2)+2);
-	fieldWindowHeight = min(tileLine*maxNumberOfTilesVisible+2, tileLine*(board->get_height()-2)+2);
+	fieldNumHorizontalTiles = min(maxNumberOfTilesVisible, (board->get_width()-2));
+	fieldNumVerticalTiles = min(maxNumberOfTilesVisible, (board->get_height()-2));
 	
-	widthBuffer = (COLS/2-1-fieldWindowWidth)/2;
-	heightBuffer = (LINES-2-fieldWindowHeight)/2;
+	widthBuffer = (COLS/2-1-fieldNumHorizontalTiles*tileCols)/2;
+	heightBuffer = (LINES-2-fieldNumVerticalTiles*tileLine)/2;
 
 	set_field_block_sizes();
 	
@@ -325,51 +378,52 @@ void NcursesField::set_field_window_size()
 
 void NcursesField::set_field_block_sizes()
 {	
-
-//delete
-	bool any_water = false;
-//
 	size_t x=1, y=1;
-	size_t x_range = max((size_t) 1,board->get_width()/fieldWindowWidth);
-	size_t y_range = max((size_t) 1,board->get_height()/fieldWindowHeight);
-	for(int j=0; j<fieldWindowHeight/tileLine;j++)
+	size_t x_range = max((size_t) 1,board->get_width()/fieldNumHorizontalTiles);
+	size_t y_range = max((size_t) 1,board->get_height()/fieldNumVerticalTiles);
+	for(int j=0; j<fieldNumVerticalTiles;j++)
 	{
-		for(int i=0; i<fieldWindowWidth/tileCols;i++)
+		for(int i=0; i<fieldNumHorizontalTiles;i++)
 		{	
 			int x_max =  min(board->get_width()-1, x+x_range);
 			int y_max =  min(board->get_height()-1, y+y_range);
 			block.push_back(FieldBlock(board, x, y, x_max, y_max));
-//delete
-			if(!block[i+j*fieldWindowHeight/tileLine].is_land()){any_water = true;}
-//
 			x += x_range;
 		}
 		y += y_range;
 		x = 1;
 	}
-
-//delete
-	if(any_water)
-	{
-		endwin();
-		std::cout << "THERE IS NO WATER HERE YOU NUMBSKULL" << std::endl;
-		for(int j=0; j<fieldWindowHeight/tileLine;j++)
-		{
-			for(int i=0; i<fieldWindowWidth/tileCols;i++)
-			{	
-				std::cout << block[i+j*fieldWindowHeight/tileLine].is_land();
-				
-			}
-			std::cout << std::endl;
-		}
-	}
-//
 }
 
-void NcursesField::update(double time)
+void NcursesField::quit_program()
 {
-	update_statistics(time);
-	update_field();
+	string quit_message = "Are you sure you want to quit? y/n";	
+	quit = newwin(3, quit_message.length()+4, (LINES-3)/2 , (COLS-quit_message.length()-4)/2);
+	mvwprintw(quit, 1, 2, quit_message.c_str());
+	box(quit, 0,0);
+	wrefresh(quit);
+	int c = getch();
+	while(true)
+	{
+		if(c == 110 || c == 78)
+		{
+			delwin(quit);
+			break;
+		}
+		else if(c == 121 || c == 89)
+		{
+			endwin();
+			exit(0);
+		}
+		c = getch();
+	}
+}
+
+void NcursesField::update(double simulation_time)
+{
+	update_statistics(simulation_time);
+	count_animals_in_blocks();
+	update_field(simulation_time);
 	update_key();
 	update_input();
 	wrefresh(field);
@@ -377,6 +431,29 @@ void NcursesField::update(double time)
 	wrefresh(key);
 	wrefresh(input);
 	refresh();
+	if(simulation_time < pow(10,-10)){return;}	
+	int c = getch();
+
+	if(c == 113 || c == 81)
+	{
+		quit_program();
+	}
+	if(c == 112 || c == 80)
+	{
+		c = 0;
+		while(!(c == 112 || c == 80) )
+		{
+			set_title(field, "PAUSED");
+			wrefresh(field);
+			c = getch();
+			if(c == 113)
+			{
+				quit_program();
+			}
+		};
+	}
+	while(clock() <= old_time + delay){}
+	old_time = clock();
 }
 
 FieldBlock::FieldBlock(Board<Tile>* board_in, size_t i, size_t j, size_t i_max, size_t j_max)
@@ -384,6 +461,7 @@ FieldBlock::FieldBlock(Board<Tile>* board_in, size_t i, size_t j, size_t i_max, 
 	board = board_in;
 	set_range(i,j,i_max,j_max);
 	find_land_state();
+	total = (i_max-i)*(j_max-j);
 }
 
 void FieldBlock::set_range(size_t i, size_t j, size_t i_max, size_t j_max)
@@ -396,53 +474,31 @@ void FieldBlock::set_range(size_t i, size_t j, size_t i_max, size_t j_max)
 
 void FieldBlock::find_land_state()
 {
-	int land_count = 0;
+	land_count = 0;
 	for(int j=y_min; j<y_max; j++)
 	{
 		for(int i=x_min; i<x_max; i++)
 		{
-			if((*board)(i,j).is_land()){land_count++;}
-			std::cout << "is this land?" << (*board)(i,j).is_land() << std::endl;
+			if((*board)(i,j).is_land()){land_count += 1.0;}
 		}
-	}
-	std::cout << land_count << " >= " << (y_max-y_min)*(x_max-x_min)/2.0 << std::endl; 
-	if(land_count >= (y_max-y_min)*(x_max-x_min)/2.0)
-	{
-		is_this_land = true;
-	}
-	else
-	{
-		is_this_land = false;
 	}
 }
 
-double FieldBlock::hare_count()
+double NcursesField::count_animals_in_blocks()
 {
-	double count = 0;
-	for(int j=y_min; j<y_max; j++)
+	for(int k = 0; k<block.size(); k++)
 	{
-		for(int i=x_min; i<x_max; i++)
+		double hare_count = 0;
+		double puma_count = 0;
+		for(int j=block[k].y_min; j<block[k].y_max; j++)
 		{
-			count += (*board)(i,j).hare;
+			for(int i=block[k].x_min; i<block[k].x_max; i++)
+			{
+				hare_count += (*block[k].board)(i,j).hare;
+				puma_count += (*block[k].board)(i,j).puma;
+			}
 		}
+		block[k].hare = hare_count;
+		block[k].puma = puma_count;
 	}
-	return count;
-}
-
-double FieldBlock::puma_count()
-{
-	double count = 0;
-	for(int j=y_min; j<y_max; j++)
-	{
-		for(int i=x_min; i<x_max; i++)
-		{
-			count += (*board)(i,j).puma;
-		}
-	}
-	return count;
-}
-
-bool FieldBlock::is_land()
-{
-	return is_this_land;
 }
