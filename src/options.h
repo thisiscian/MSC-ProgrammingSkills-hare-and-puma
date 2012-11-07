@@ -35,7 +35,7 @@ class Options
   // time values
   double run_time;       // t
   double time_step;      // dt
-	int delay;
+	int delay;						 // delay between frames in ms
 
   // hare equation values
   double hare_birth;     // r

@@ -36,13 +36,14 @@ class FieldBlock
 	Board<Tile>* board;
 	void set_range(size_t x, size_t y, size_t x_max, size_t y_max);
 	int total;
+	bool is_fully_water;
 	private:
 };
 
 class NcursesField
 {
 	public:
-	NcursesField(Board<Tile>& board, int tileLine, int tileCols);
+	NcursesField(Board<Tile>& board, int delay, int tileLine, int tileCols);
 	void update(double time);
 	int delay;
 

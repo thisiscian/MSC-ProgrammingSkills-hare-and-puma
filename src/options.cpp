@@ -45,7 +45,7 @@ int Options::parse_input(int argc, char** argv)
 		(
 		 "delay,D",
 			po::value<int>(&delay),
-			"set delay between frames in microseconds"
+			"set delay between frames in milliseconds"
 		)
     // hare equation values
     (
