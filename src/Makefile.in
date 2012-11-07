@@ -59,7 +59,7 @@ check_PROGRAMS = board_test$(EXEEXT) tile_test$(EXEEXT) \
 	update_performance_test$(EXEEXT)
 TESTS = board_test$(EXEEXT) tile_test$(EXEEXT) update_test$(EXEEXT) \
 	board_setter_test$(EXEEXT) output_test$(EXEEXT) \
-	distribution_test$(EXEEXT) options_test$(EXEEXT)
+	distribution_test$(EXEEXT) options_test$(EXEEXT) main_test.sh
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4

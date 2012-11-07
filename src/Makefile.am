@@ -8,7 +8,7 @@ hare_and_puma_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
  
 
 check_PROGRAMS = board_test tile_test update_test board_setter_test output_test distribution_test options_test ncurses_test update_performance_test
-TESTS = board_test tile_test update_test board_setter_test output_test distribution_test options_test
+TESTS = board_test tile_test update_test board_setter_test output_test distribution_test options_test main_test.sh
 
 board_test_SOURCES = board_test.cpp
 tile_test_SOURCES = tile.cpp tile_test.cpp

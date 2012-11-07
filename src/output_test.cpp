@@ -60,7 +60,7 @@ int main()
 		return 1;
 	}
 
-	write_ppm(field, 0.0);
-	write_adjustable_ppm(field, 0.0, 35, 3, "adjustable");
+	write_ppm(field, 0.0, "output");
+	write_adjustable_ppm(field, 0.0, 35, 3, "adjustable", "output");
 	return 0;
 }
