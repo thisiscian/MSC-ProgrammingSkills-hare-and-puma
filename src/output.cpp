@@ -1,7 +1,14 @@
-//
-//	This file is made by, and should be kept update by Cian Booth
-//	this.is.cian@gmail.com
-//
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+// ----------                                                                //
+// output.cpp 			                                                         //
+// ----------                                                                //
+//                                                                           //
+// maintained by Cian Booth                                                  //
+// email issues to this.is.cian@gmail.com                                    //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
 
 #include "output.h"
 
@@ -9,8 +16,8 @@ using namespace std;
 
 void create_output_directory(string directory_name)
 {
-	int err = mkdir(directory_name.c_str(), S_IRWXU);
 	// the mode S_IRWXU allows the user read, write and execute permissions
+	int err = mkdir(directory_name.c_str(), S_IRWXU);
 }
 
 /*A function that recieves the populations of the hares and pumas, and outputs their values to the console*/
