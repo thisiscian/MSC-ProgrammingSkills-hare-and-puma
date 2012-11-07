@@ -1,59 +1,81 @@
-#include "ncurses_lib.h"
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+// ---------------                                                           //
+// ncurses_lib.cpp                                                           //
+// ---------------                                                           //
+//                                                                           //
+// This program contains all of the functions required to start the gui.     //
+// The 'board' is taken in, and scaled to fit the terminal window the        //
+// program is ran in. Each section of the board relates to a displayed       //
+// 'tile', which is coloured according to the type of ground that it is      //
+// made of.                                                                  //
+//                                                                           //
+// Blue: tile is completely water                                            //
+// Green: tile contains at least some land                                   //
+// Cyan: tile contains at least some water                                   //
+//                                                                           //
+// If a tile has cyan and green colours in it, then it is known as           //
+// 'wetlands', which contain some water and some land elements. The ratio of //
+// visible green and cyan is the ratio of land and water in that tile.       //
+//                                                                           //
+// maintained by Cian Booth                                                  //
+// email issues to this.is.cian@gmail.com                                    //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 
+#include "ncurses_lib.h"
 using namespace std;
+
 // Constructor for ncursesfield, sets sizes
-NcursesField::NcursesField(Board<Tile>& board_in, int delay_in, int x, int y)
+NcursesField::NcursesField(Board<Tile>& board_in, Options& options_in, int x, int y)
 {
-	board = &board_in;
-	initialise_ncurses();
-	tileLine = x;
-	tileCols = y;
-	set_field_window_size();
-	stats.init(*board);
-	delay = delay_in*1000;
-	old_time = clock();
-	update(0.0);
+	board = &board_in; 						// take in a pointer to the main board
+	options = &options_in;				// options contains some useful stuff
+
+	initialise_ncurses();					// intialise all the things to do with ncurses
+	tileLines = x; 								// this is the height of each tile
+	tileCols = y;									// the width of each tile
+	set_field_window_size();		  // sets the field window's size and scaling
+	stats.init(*board);						// initialise statistics based on board; 
+	delay = options->delay*1000;	// the delay between frames in milliseconds;
+	old_time = clock();       		// starts clock, for frame refreshing
 }
 
 void NcursesField::initialise_ncurses()
 {
 	initscr();
-	// allows use of color, and sets the values of some initial colors
-	start_color(); 
- 	init_pair(1,COLOR_CYAN,COLOR_BLUE); 
- 	init_pair(2,COLOR_BLACK,COLOR_GREEN); 
- 	init_pair(3,COLOR_WHITE,COLOR_GREEN); 
- 	init_pair(4,COLOR_BLACK,COLOR_CYAN); 
- 	init_pair(5,COLOR_WHITE,COLOR_CYAN); 
+	start_color();  											// allows use of colour
+ 	init_pair(1,COLOR_CYAN,COLOR_BLUE); 	// pure ocean
+ 	init_pair(2,COLOR_BLACK,COLOR_GREEN); // pure land, with hares
+ 	init_pair(3,COLOR_WHITE,COLOR_GREEN); // pure land, with pumas
+ 	init_pair(4,COLOR_BLACK,COLOR_CYAN);  // 'wetlands' with hares
+ 	init_pair(5,COLOR_WHITE,COLOR_CYAN);  // 'wetlands' with pumas
 
-	// removes the cursor and any keypresses the user makes
-	noecho();
-	curs_set(0);
-	halfdelay(1);
-
-	keypad(stdscr, TRUE);
+	noecho();			// stops writing keypresses to screen
+	curs_set(0);	// hides the cursor
+	halfdelay(1);	// makes getch() nonblocking, after 0.1 seconds
 }
 
-// resets input window: deletes old window, and redraws the entire window
 void NcursesField::update_input()
 {
 	int l = 1;
+	
+	//this section entirely redraws the input window
 	delwin(input);
 	input = newwin(4,COLS/4-1, LINES-5, 3*COLS/4-1);
 	set_title(input, "INPUT");
 	
-	mvwprintw(input, l, 1, " q/Q  ");
-	mvwprintw(input, l, 7, " - quits the program");
+	mvwprintw(input, l, 1, " q/Q - quits the program");
 	++l;	
-	mvwprintw(input, l, 1, " p/P  ");
-	mvwprintw(input, l, 7, " - pause and unpause");
+	mvwprintw(input, l, 1, " p/P  - pause and unpause");
 	++l;	
 
 	wrefresh(input);
 
 }
 
-// resets statistics window: deletes old window, redraws new window, recalculates and displays statistics
+// resets statistics window: deletes old window, redraws new window,
+// recalculates and displays statistics
 void NcursesField::update_statistics(double time)
 {
 	int l = 1;
@@ -88,65 +110,53 @@ void NcursesField::update_statistics(double time)
 	mvwprintw(statistics, l, 1, text.str().c_str());
 	l++;
 
-	// if the time is very close to zero, the average density should not be displayed
-	text.str("");
-	text << "Average Hare Density: " << stats.get_hare_average() << endl;
-	if(time < pow(10,-10))
-	{	
-		for(int i=1; i<=text.str().length(); i++)
-		{	
-			mvwprintw(statistics, l, i, " ");
-		}
-	}
-	else
+	// if the time is very close to zero,
+	// the average density should not be displayed
+	if(time >= options->time_step)
 	{
+		text.str("");
+		text << "Average Hare Density: " << stats.get_hare_average() << endl;
 		mvwprintw(statistics, l, 1, text.str().c_str());
-	}
-	l++;
-
-	// as above	
-	text.str("");
-	text << "Average Puma Density: " << stats.get_puma_average() << endl;
-	if(time < pow(10,-10))
-	{	
-		for(int i=1; i<=text.str().length(); i++)
-		{	
-			mvwprintw(statistics, l, i, " ");
-		}
-	}
-	else
-	{
+		
+		l++;
+		text.str("");
+		text << "Average Puma Density: " << stats.get_puma_average() << endl;
 		mvwprintw(statistics, l, 1, text.str().c_str());
 	}
 
 	set_title(statistics, "STATISTICS");
 }
 
+// gets the maximum number of hares in any tile
 double NcursesField::get_hare_max()
 {
 	int max = 0;
-	for(int i=1; i<block.size(); i++)
+	for(int i=1; i<fieldtile.size(); i++)
 	{
-		if(block[max].hare <  block[i].hare){max = i;}
+		if(fieldtile[max].hare <  fieldtile[i].hare){max = i;}
 	}
-	return block[max].hare;
+	return fieldtile[max].hare;
 }
 
+// gets the maximum number of pumas in any tile
 double NcursesField::get_puma_max()
 {
 	int max = 0;
-	for(int i=1; i<block.size(); i++)
+	for(int i=1; i<fieldtile.size(); i++)
 	{
-		if(block[max].puma <  block[i].puma){max = i;}
+		if(fieldtile[max].puma <  fieldtile[i].puma){max = i;}
 	}
-	return block[max].puma;
+	return fieldtile[max].puma;
 }
 
 void NcursesField::get_symbol_worth()
 {
-	//each symbol is a proportion of the maximum number of animals	
-	hareSymbolWorth = get_hare_max()/((tileCols-2)*(tileLine-2));
-	pumaSymbolWorth = get_puma_max()/((tileCols-2)*(tileLine-2));
+	// each animal's symbol is worth a proportion of their current maximum value.
+	// The ratio here, is the number of symbols available, e.g. 2 for H and ~
+	// multiplied by the drawable area, e.g tileCols*tileLines without the borders
+	// and divided by two, because the tile is split two species
+	hareSymbolWorth = get_hare_max()/((tileCols-2)*(tileLines-2));
+	pumaSymbolWorth = get_puma_max()/((tileCols-2)*(tileLines-2));
 }
 
 // draws a decription of what each key means
@@ -237,7 +247,8 @@ void NcursesField::update_key()
 	wattroff(key, COLOR_PAIR(3));
 	wattroff(key, A_BOLD);
 	mvwprintw(key, l, 5, text.str().c_str());
-	++l;	
+	++l;
+	++l;
 
 	text.str("");
 	text << "Tile Width: " << tileCols << " Columns";	
@@ -245,7 +256,7 @@ void NcursesField::update_key()
 	++l;	
 	
 	text.str("");
-	text << "Tile Height: " << tileLine << " Lines";	
+	text << "Tile Height: " << tileLines << " Lines";	
 	mvwprintw(key, l, 1, text.str().c_str());
 	++l;
 	set_title(key, "KEY");
@@ -256,113 +267,142 @@ void NcursesField::update_field(double time)
 	int x, y, draw_land;
 	int width = board->get_width();
 	int height = board->get_height();
-	double val;
+	double hares_unrepresented_in_tile;
+	double pumas_unrepresented_in_tile;
 
+	// delete and redraw the field window
 	delwin(field);
-	field = newwin(fieldNumVerticalTiles*tileLine+2,fieldNumHorizontalTiles*tileCols+2, 1+heightBuffer , widthBuffer);
+	field = newwin(fieldNumVerticalTiles*tileLines+2,fieldNumHorizontalTiles*tileCols+2, 1+heightBuffer , widthBuffer);
+
+	// the following loops are a bit complicated, due to ncurses
+	// here is a breakdown of what they do;
+	//
+	// for every tile, determine the number of hares and pumas not yet
+	// represented on the tile, check if it is_only_water (i.e. Ocean)
+	// and the amount of land that needs to be drawn
+	//
+	// the tile is then drawn systematically;
+	//
+	// if the tile is_only_water, then set the color to blue
+	// and only whitespace is drawn
+	//
+	// if the tile contains land, then each segment of the tile is drawn
+	// green, until the ratio of land in the tile is achieved, and the 
+	// rest are drawn as wetlands
+	//
+	// similarly, the symbols 'H' (hares), 'P' (pumas) and '~' (half a hare or puma)
+	// are used to represent the number of each animal on the tile, until
+	// the full number is represented, and then the rest is printed as 
+	// whitespace
+	//
+	// the borders of each tile are also drawn as whitespaces, to distinguish
+	// one tile from another
+	
+
 	for(y = 0; y < fieldNumVerticalTiles; y++)
 	{
 		for(x = 0; x < fieldNumHorizontalTiles; x++)
 		{
-			val = block[x+fieldNumVerticalTiles*y].hare;
-			bool is_fully_water = block[x+fieldNumVerticalTiles*y].is_fully_water;
-			draw_land = block[x+fieldNumVerticalTiles*y].land_count*(tileLine*tileCols/(double)block[x+fieldNumVerticalTiles*y].total);
-			for(int j=1; j<=tileLine/2; j++)
+			hares_unrepresented_in_tile= fieldtile[x+fieldNumVerticalTiles*y].hare;
+			pumas_unrepresented_in_tile= fieldtile[x+fieldNumVerticalTiles*y].puma;
+
+			bool is_only_water = fieldtile[x+fieldNumVerticalTiles*y].is_only_water;
+			draw_land = fieldtile[x+fieldNumVerticalTiles*y].land_count*(tileLines*tileCols/(double)fieldtile[x+fieldNumVerticalTiles*y].area);
+			for(int j=1; j<=tileLines/2; j++)
 			{
 				for(int i=1; i<=tileCols; i++)
 				{
-					if(is_fully_water)
+					if(is_only_water)
 					{
-						wattron(field, COLOR_PAIR(1));	
+						wattron(field, COLOR_PAIR(1)); // turn on ocean colors
 					}
 					else if(draw_land > 0)
 					{
-						wattron(field, COLOR_PAIR(2));	
+						wattron(field, COLOR_PAIR(2));	// turn on land/hare colors
 					}
 					else
 					{
-						wattron(field, COLOR_PAIR(4));	
+						wattron(field, COLOR_PAIR(4));	// turn on wetland/hare colors
 					}
 					wattron(field, A_BOLD);
 					if(j==1 || i==1 || i==tileCols)
 					{
-						mvwprintw(field, tileLine*y+j, tileCols*x+i, " ");
+						mvwprintw(field, tileLines*y+j, tileCols*x+i, " ");
 					}
 					else if(hareSymbolWorth == 0)
 					{
-						mvwprintw(field, tileLine*y+j, tileCols*x+i, "#");
+						mvwprintw(field, tileLines*y+j, tileCols*x+i, "#");
 					}
-					else if(val >= 2*hareSymbolWorth)
+					else if(hares_unrepresented_in_tile>= 2*hareSymbolWorth)
 					{
-						mvwprintw(field, tileLine*y+j, tileCols*x+i, "H");
-						val -= 2*hareSymbolWorth;
+						mvwprintw(field, tileLines*y+j, tileCols*x+i, "H");
+						hares_unrepresented_in_tile-= 2*hareSymbolWorth;
 					}
-					else if(val >= hareSymbolWorth)
+					else if(hares_unrepresented_in_tile>= hareSymbolWorth)
 					{
-						mvwprintw(field, tileLine*y+j, tileCols*x+i, "~");
-						val -= hareSymbolWorth;
+						mvwprintw(field, tileLines*y+j, tileCols*x+i, "~");
+						hares_unrepresented_in_tile-= hareSymbolWorth;
 					}
 					else
 					{
-						mvwprintw(field, tileLine*y+j, tileCols*x+i, " ");
+						mvwprintw(field, tileLines*y+j, tileCols*x+i, " ");
 					}
 					--draw_land;
 				}
 			}
-			val = block[x+fieldNumVerticalTiles*y].puma;
-			for(int j=tileLine/2+1; j<=tileLine; j++)
+			for(int j=tileLines/2+1; j<=tileLines; j++)
 			{
 				for(int i=1; i<=tileCols; i++)
 				{
-					if(is_fully_water)
+					if(is_only_water)
 					{
-						wattron(field, COLOR_PAIR(1));	
+						wattron(field, COLOR_PAIR(1));	// turn on ocean colors
 					}
 					else if(draw_land > 0)
 					{
-						wattroff(field,COLOR_PAIR(2));
-						wattron(field, COLOR_PAIR(3));	
+						wattroff(field,COLOR_PAIR(2));	// turn off land/hare colors
+						wattron(field, COLOR_PAIR(3));	// turn on land/puma colors
 					}
 					else
 					{
-						wattroff(field, COLOR_PAIR(4));
-						wattron(field, COLOR_PAIR(5));	
+						wattroff(field, COLOR_PAIR(4)); // turn off wetlands/hare colors
+						wattron(field, COLOR_PAIR(5));	// turn on wetlands/puma colors
 					}
-					if(j==tileLine || i==1 || i==tileCols)
+					if(j==tileLines || i==1 || i==tileCols)
 					{
-						mvwprintw(field, tileLine*y+j, tileCols*x+i, " ");
+						mvwprintw(field, tileLines*y+j, tileCols*x+i, " ");
 					}
 					else if(pumaSymbolWorth == 0)
 					{
-						mvwprintw(field, tileLine*y+j, tileCols*x+i, "#");
+						mvwprintw(field, tileLines*y+j, tileCols*x+i, "#");
 					}
-					else if(val >= 2*pumaSymbolWorth)
+					else if(pumas_unrepresented_in_tile>= 2*pumaSymbolWorth)
 					{
-						mvwprintw(field, tileLine*y+j, tileCols*x+i, "P");
-						val -= 2*pumaSymbolWorth;
+						mvwprintw(field, tileLines*y+j, tileCols*x+i, "P");
+						pumas_unrepresented_in_tile-= 2*pumaSymbolWorth;
 					}
-					else if(val >= pumaSymbolWorth)
+					else if(pumas_unrepresented_in_tile>= pumaSymbolWorth)
 					{
-						mvwprintw(field, tileLine*y+j, tileCols*x+i, "~");
-						val -= pumaSymbolWorth;
+						mvwprintw(field, tileLines*y+j, tileCols*x+i, "~");
+						pumas_unrepresented_in_tile-= pumaSymbolWorth;
 					}
 					else
 					{
-						mvwprintw(field, tileLine*y+j, tileCols*x+i, " ");
+						mvwprintw(field, tileLines*y+j, tileCols*x+i, " ");
 					}
 				}
 			}
-			if(is_fully_water)
+			if(is_only_water)
 			{
-				wattroff(field, COLOR_PAIR(1));
+				wattroff(field, COLOR_PAIR(1)); // turn off ocean colors
 			}
 			else if(draw_land > 0)
 			{
-				wattroff(field,COLOR_PAIR(3));
+				wattroff(field,COLOR_PAIR(3));	// turn off land/puma colors
 			}
 			else
 			{
-				wattroff(field, COLOR_PAIR(5));
+				wattroff(field, COLOR_PAIR(5));	// turn off wetlands/hare colors
 			}
 			wattroff(field, A_BOLD);	
 		}
@@ -370,35 +410,38 @@ void NcursesField::update_field(double time)
 	set_title(field, "FIELD");
 }
 
+// draw the title (in bold) of a given window in the center top position
 void NcursesField::set_title(WINDOW* win, string title)
 {
 	int x,y;
-	getmaxyx(win, y, x);
+	getmaxyx(win, y, x);		// gets size of the window
 	box(win, 0, 0);
-	wattron(win, A_BOLD);
+	wattron(win, A_BOLD); 	// turn on writing in bold
 	mvwprintw(win, 0, (x-title.length())/2, title.c_str());
-	wattroff(win, A_BOLD);
+	wattroff(win, A_BOLD); 	// turn off writing in bold
 }
 
+// sets the number of vertical/horizontal tiles to the largest amount that will fit on the screen,
+// which, at the same time, isn't larger than the actual size of the board
 void NcursesField::set_field_window_size()
 {
-	fieldNumHorizontalTiles = (3*COLS/4-1)/tileCols;
-	fieldNumVerticalTiles = (LINES-2)/tileLine;
-
+	fieldNumHorizontalTiles = (3*COLS/4-1)/tileCols;	
+	fieldNumVerticalTiles = (LINES-2)/tileLines;			
 	size_t maxNumberOfTilesVisible = min(fieldNumVerticalTiles, fieldNumHorizontalTiles);
 
 	fieldNumHorizontalTiles = min(maxNumberOfTilesVisible, (board->get_width()-2));
 	fieldNumVerticalTiles = min(maxNumberOfTilesVisible, (board->get_height()-2));
 	
 	widthBuffer = (3*COLS/4-1-fieldNumHorizontalTiles*tileCols)/2;
-	heightBuffer = (LINES-2-fieldNumVerticalTiles*tileLine)/2;
+	heightBuffer = (LINES-2-fieldNumVerticalTiles*tileLines)/2;
 
-	set_field_block_sizes();
-	
+	set_field_tile_sizes();
 }
 
-void NcursesField::set_field_block_sizes()
+// tells each tile the range over which it spans
+void NcursesField::set_field_tile_sizes()
 {	
+	endwin();
 	size_t x=1, y=1;
 	size_t x_range = max((size_t) 1,board->get_width()/fieldNumHorizontalTiles);
 	size_t y_range = max((size_t) 1,board->get_height()/fieldNumVerticalTiles);
@@ -408,7 +451,7 @@ void NcursesField::set_field_block_sizes()
 		{	
 			int x_max =  min(board->get_width()-1, x+x_range);
 			int y_max =  min(board->get_height()-1, y+y_range);
-			block.push_back(FieldBlock(board, x, y, x_max, y_max));
+			fieldtile.push_back(FieldTile(board, x, y, x_max, y_max));
 			x += x_range;
 		}
 		y += y_range;
@@ -416,6 +459,8 @@ void NcursesField::set_field_block_sizes()
 	}
 }
 
+// opens a prompt to see if the use actually wants to quit
+// remains until users enter y/Y/n/N
 void NcursesField::quit_program()
 {
 	string quit_message = "Are you sure you want to quit? y/n";	
@@ -446,10 +491,32 @@ void NcursesField::quit_program()
 	}
 }
 
+// counts the number of animals in each tile 
+double NcursesField::count_animals_in_tiles()
+{
+	for(int k = 0; k<fieldtile.size(); k++)
+	{
+		double hare_count = 0;
+		double puma_count = 0;
+		for(int j=fieldtile[k].y_min; j<fieldtile[k].y_max; j++)
+		{
+			for(int i=fieldtile[k].x_min; i<fieldtile[k].x_max; i++)
+			{
+				hare_count += (*fieldtile[k].board)(i,j).hare;
+				puma_count += (*fieldtile[k].board)(i,j).puma;
+			}
+		}
+		fieldtile[k].hare = hare_count;
+		fieldtile[k].puma = puma_count;
+	}
+}
+// updates the entire board
+// if user presses q/Q opens quitting prompt
+// if user presses p/P, pauses program until they repress
 void NcursesField::update(double simulation_time)
 {
 	update_statistics(simulation_time);
-	count_animals_in_blocks();
+	count_animals_in_tiles();
 	update_field(simulation_time);
 	update_key();
 	update_input();
@@ -458,7 +525,7 @@ void NcursesField::update(double simulation_time)
 	wrefresh(key);
 	wrefresh(input);
 	refresh();
-	if(simulation_time < pow(10,-10)){return;}	
+	if(simulation_time < options->time_step){return;}	
 	int c = getch();
 
 	if(c == 113 || c == 81)
@@ -483,51 +550,4 @@ void NcursesField::update(double simulation_time)
 	old_time = clock();
 }
 
-FieldBlock::FieldBlock(Board<Tile>* board_in, size_t i, size_t j, size_t i_max, size_t j_max)
-{
-	is_fully_water = false;
-	board = board_in;
-	set_range(i,j,i_max,j_max);
-	find_land_state();
-	total = (i_max-i)*(j_max-j);
-}
 
-void FieldBlock::set_range(size_t i, size_t j, size_t i_max, size_t j_max)
-{
-	x_min = i;
-	y_min = j;
-	x_max = i_max;
-	y_max = j_max;
-}
-
-void FieldBlock::find_land_state()
-{
-	land_count = 0;
-	for(int j=y_min; j<y_max; j++)
-	{
-		for(int i=x_min; i<x_max; i++)
-		{
-			if((*board)(i,j).is_land()){land_count += 1.0;}
-		}
-	}
-	if(land_count == 0){is_fully_water = true;}
-}
-
-double NcursesField::count_animals_in_blocks()
-{
-	for(int k = 0; k<block.size(); k++)
-	{
-		double hare_count = 0;
-		double puma_count = 0;
-		for(int j=block[k].y_min; j<block[k].y_max; j++)
-		{
-			for(int i=block[k].x_min; i<block[k].x_max; i++)
-			{
-				hare_count += (*block[k].board)(i,j).hare;
-				puma_count += (*block[k].board)(i,j).puma;
-			}
-		}
-		block[k].hare = hare_count;
-		block[k].puma = puma_count;
-	}
-}

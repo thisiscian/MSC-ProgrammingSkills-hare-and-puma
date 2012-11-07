@@ -56,7 +56,7 @@ check_PROGRAMS = board_test$(EXEEXT) tile_test$(EXEEXT) \
 	update_test$(EXEEXT) board_setter_test$(EXEEXT) \
 	output_test$(EXEEXT) distribution_test$(EXEEXT) \
 	options_test$(EXEEXT) ncurses_test$(EXEEXT) \
-	update_performance_test$(EXEEXT)
+	update_performance_test$(EXEEXT) field_tile_test$(EXEEXT)
 TESTS = board_test$(EXEEXT) tile_test$(EXEEXT) update_test$(EXEEXT) \
 	board_setter_test$(EXEEXT) output_test$(EXEEXT) \
 	distribution_test$(EXEEXT) options_test$(EXEEXT) main_test.sh
@@ -85,6 +85,23 @@ board_test_LDADD = $(LDADD)
 am_distribution_test_OBJECTS = distribution_test.$(OBJEXT)
 distribution_test_OBJECTS = $(am_distribution_test_OBJECTS)
 distribution_test_LDADD = $(LDADD)
+am_field_tile_test_OBJECTS =  \
+	field_tile_test-field_tile_test.$(OBJEXT) \
+	field_tile_test-tile.$(OBJEXT) \
+	field_tile_test-statistics.$(OBJEXT) \
+	field_tile_test-field_tile.$(OBJEXT) \
+	field_tile_test-ncurses_lib.$(OBJEXT) \
+	field_tile_test-test_field.$(OBJEXT) \
+	field_tile_test-update_animals.$(OBJEXT) \
+	field_tile_test-board_setter.$(OBJEXT) \
+	field_tile_test-options.$(OBJEXT)
+field_tile_test_OBJECTS = $(am_field_tile_test_OBJECTS)
+am__DEPENDENCIES_1 =
+field_tile_test_DEPENDENCIES = $(am__DEPENDENCIES_1)
+field_tile_test_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) \
+	$(field_tile_test_CXXFLAGS) $(CXXFLAGS) \
+	$(field_tile_test_LDFLAGS) $(LDFLAGS) -o $@
 am_hare_and_puma_OBJECTS = hare_and_puma-board_setter.$(OBJEXT) \
 	hare_and_puma-tile.$(OBJEXT) hare_and_puma-options.$(OBJEXT) \
 	hare_and_puma-hare-and-puma_main.$(OBJEXT) \
@@ -93,7 +110,6 @@ am_hare_and_puma_OBJECTS = hare_and_puma-board_setter.$(OBJEXT) \
 	hare_and_puma-output.$(OBJEXT) \
 	hare_and_puma-statistics.$(OBJEXT)
 hare_and_puma_OBJECTS = $(am_hare_and_puma_OBJECTS)
-am__DEPENDENCIES_1 =
 hare_and_puma_DEPENDENCIES = $(am__DEPENDENCIES_1)
 hare_and_puma_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(hare_and_puma_CXXFLAGS) \
@@ -101,6 +117,7 @@ hare_and_puma_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 am_ncurses_test_OBJECTS = ncurses_test-tile.$(OBJEXT) \
 	ncurses_test-ncurses_test.$(OBJEXT) \
 	ncurses_test-statistics.$(OBJEXT) \
+	ncurses_test-field_tile.$(OBJEXT) \
 	ncurses_test-ncurses_lib.$(OBJEXT) \
 	ncurses_test-test_field.$(OBJEXT) \
 	ncurses_test-update_animals.$(OBJEXT) \
@@ -159,15 +176,17 @@ CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(board_setter_test_SOURCES) $(board_test_SOURCES) \
-	$(distribution_test_SOURCES) $(hare_and_puma_SOURCES) \
-	$(ncurses_test_SOURCES) $(options_test_SOURCES) \
-	$(output_test_SOURCES) $(tile_test_SOURCES) \
-	$(update_performance_test_SOURCES) $(update_test_SOURCES)
+	$(distribution_test_SOURCES) $(field_tile_test_SOURCES) \
+	$(hare_and_puma_SOURCES) $(ncurses_test_SOURCES) \
+	$(options_test_SOURCES) $(output_test_SOURCES) \
+	$(tile_test_SOURCES) $(update_performance_test_SOURCES) \
+	$(update_test_SOURCES)
 DIST_SOURCES = $(board_setter_test_SOURCES) $(board_test_SOURCES) \
-	$(distribution_test_SOURCES) $(hare_and_puma_SOURCES) \
-	$(ncurses_test_SOURCES) $(options_test_SOURCES) \
-	$(output_test_SOURCES) $(tile_test_SOURCES) \
-	$(update_performance_test_SOURCES) $(update_test_SOURCES)
+	$(distribution_test_SOURCES) $(field_tile_test_SOURCES) \
+	$(hare_and_puma_SOURCES) $(ncurses_test_SOURCES) \
+	$(options_test_SOURCES) $(output_test_SOURCES) \
+	$(tile_test_SOURCES) $(update_performance_test_SOURCES) \
+	$(update_test_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -319,8 +338,12 @@ options_test_SOURCES = options.cpp options_test.cpp
 options_test_CPPFLAGS = $(BOOST_CPPFLAGS)
 options_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 options_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
-GUI_TESTS = board_test tile_test ncurses_test
-ncurses_test_SOURCES = tile.cpp ncurses_test.cpp statistics.cpp ncurses_lib.cpp test_field.cpp update_animals.cpp board_setter.cpp options.cpp
+GUI_TESTS = field_tile_test ncurses_test 
+field_tile_test_SOURCES = field_tile_test.cpp tile.cpp statistics.cpp field_tile.cpp ncurses_lib.cpp test_field.cpp update_animals.cpp board_setter.cpp options.cpp 
+field_tile_test_CXXFLAGS = -lncurses $(BOOST_CPPFLAGS) -DGUI_TEST
+field_tile_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
+field_tile_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
+ncurses_test_SOURCES = tile.cpp ncurses_test.cpp statistics.cpp field_tile.cpp ncurses_lib.cpp test_field.cpp update_animals.cpp board_setter.cpp options.cpp 
 ncurses_test_CXXFLAGS = -lncurses $(BOOST_CPPFLAGS)
 ncurses_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 ncurses_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
@@ -425,6 +448,9 @@ board_test$(EXEEXT): $(board_test_OBJECTS) $(board_test_DEPENDENCIES) $(EXTRA_bo
 distribution_test$(EXEEXT): $(distribution_test_OBJECTS) $(distribution_test_DEPENDENCIES) $(EXTRA_distribution_test_DEPENDENCIES) 
 	@rm -f distribution_test$(EXEEXT)
 	$(CXXLINK) $(distribution_test_OBJECTS) $(distribution_test_LDADD) $(LIBS)
+field_tile_test$(EXEEXT): $(field_tile_test_OBJECTS) $(field_tile_test_DEPENDENCIES) $(EXTRA_field_tile_test_DEPENDENCIES) 
+	@rm -f field_tile_test$(EXEEXT)
+	$(field_tile_test_LINK) $(field_tile_test_OBJECTS) $(field_tile_test_LDADD) $(LIBS)
 hare-and-puma$(EXEEXT): $(hare_and_puma_OBJECTS) $(hare_and_puma_DEPENDENCIES) $(EXTRA_hare_and_puma_DEPENDENCIES) 
 	@rm -f hare-and-puma$(EXEEXT)
 	$(hare_and_puma_LINK) $(hare_and_puma_OBJECTS) $(hare_and_puma_LDADD) $(LIBS)
@@ -457,6 +483,15 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/board_setter_test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/board_test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/distribution_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-board_setter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-field_tile.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-field_tile_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-ncurses_lib.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-options.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-statistics.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-test_field.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-tile.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-update_animals.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hare_and_puma-board_setter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hare_and_puma-hare-and-puma_main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hare_and_puma-options.Po@am__quote@
@@ -466,6 +501,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hare_and_puma-tile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hare_and_puma-update_animals.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses_test-board_setter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses_test-field_tile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses_test-ncurses_lib.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses_test-ncurses_test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses_test-options.Po@am__quote@
@@ -508,6 +544,132 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
+
+field_tile_test-field_tile_test.o: field_tile_test.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-field_tile_test.o -MD -MP -MF $(DEPDIR)/field_tile_test-field_tile_test.Tpo -c -o field_tile_test-field_tile_test.o `test -f 'field_tile_test.cpp' || echo '$(srcdir)/'`field_tile_test.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-field_tile_test.Tpo $(DEPDIR)/field_tile_test-field_tile_test.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='field_tile_test.cpp' object='field_tile_test-field_tile_test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-field_tile_test.o `test -f 'field_tile_test.cpp' || echo '$(srcdir)/'`field_tile_test.cpp
+
+field_tile_test-field_tile_test.obj: field_tile_test.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-field_tile_test.obj -MD -MP -MF $(DEPDIR)/field_tile_test-field_tile_test.Tpo -c -o field_tile_test-field_tile_test.obj `if test -f 'field_tile_test.cpp'; then $(CYGPATH_W) 'field_tile_test.cpp'; else $(CYGPATH_W) '$(srcdir)/field_tile_test.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-field_tile_test.Tpo $(DEPDIR)/field_tile_test-field_tile_test.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='field_tile_test.cpp' object='field_tile_test-field_tile_test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-field_tile_test.obj `if test -f 'field_tile_test.cpp'; then $(CYGPATH_W) 'field_tile_test.cpp'; else $(CYGPATH_W) '$(srcdir)/field_tile_test.cpp'; fi`
+
+field_tile_test-tile.o: tile.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-tile.o -MD -MP -MF $(DEPDIR)/field_tile_test-tile.Tpo -c -o field_tile_test-tile.o `test -f 'tile.cpp' || echo '$(srcdir)/'`tile.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-tile.Tpo $(DEPDIR)/field_tile_test-tile.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='tile.cpp' object='field_tile_test-tile.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-tile.o `test -f 'tile.cpp' || echo '$(srcdir)/'`tile.cpp
+
+field_tile_test-tile.obj: tile.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-tile.obj -MD -MP -MF $(DEPDIR)/field_tile_test-tile.Tpo -c -o field_tile_test-tile.obj `if test -f 'tile.cpp'; then $(CYGPATH_W) 'tile.cpp'; else $(CYGPATH_W) '$(srcdir)/tile.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-tile.Tpo $(DEPDIR)/field_tile_test-tile.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='tile.cpp' object='field_tile_test-tile.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-tile.obj `if test -f 'tile.cpp'; then $(CYGPATH_W) 'tile.cpp'; else $(CYGPATH_W) '$(srcdir)/tile.cpp'; fi`
+
+field_tile_test-statistics.o: statistics.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-statistics.o -MD -MP -MF $(DEPDIR)/field_tile_test-statistics.Tpo -c -o field_tile_test-statistics.o `test -f 'statistics.cpp' || echo '$(srcdir)/'`statistics.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-statistics.Tpo $(DEPDIR)/field_tile_test-statistics.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='statistics.cpp' object='field_tile_test-statistics.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-statistics.o `test -f 'statistics.cpp' || echo '$(srcdir)/'`statistics.cpp
+
+field_tile_test-statistics.obj: statistics.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-statistics.obj -MD -MP -MF $(DEPDIR)/field_tile_test-statistics.Tpo -c -o field_tile_test-statistics.obj `if test -f 'statistics.cpp'; then $(CYGPATH_W) 'statistics.cpp'; else $(CYGPATH_W) '$(srcdir)/statistics.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-statistics.Tpo $(DEPDIR)/field_tile_test-statistics.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='statistics.cpp' object='field_tile_test-statistics.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-statistics.obj `if test -f 'statistics.cpp'; then $(CYGPATH_W) 'statistics.cpp'; else $(CYGPATH_W) '$(srcdir)/statistics.cpp'; fi`
+
+field_tile_test-field_tile.o: field_tile.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-field_tile.o -MD -MP -MF $(DEPDIR)/field_tile_test-field_tile.Tpo -c -o field_tile_test-field_tile.o `test -f 'field_tile.cpp' || echo '$(srcdir)/'`field_tile.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-field_tile.Tpo $(DEPDIR)/field_tile_test-field_tile.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='field_tile.cpp' object='field_tile_test-field_tile.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-field_tile.o `test -f 'field_tile.cpp' || echo '$(srcdir)/'`field_tile.cpp
+
+field_tile_test-field_tile.obj: field_tile.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-field_tile.obj -MD -MP -MF $(DEPDIR)/field_tile_test-field_tile.Tpo -c -o field_tile_test-field_tile.obj `if test -f 'field_tile.cpp'; then $(CYGPATH_W) 'field_tile.cpp'; else $(CYGPATH_W) '$(srcdir)/field_tile.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-field_tile.Tpo $(DEPDIR)/field_tile_test-field_tile.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='field_tile.cpp' object='field_tile_test-field_tile.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-field_tile.obj `if test -f 'field_tile.cpp'; then $(CYGPATH_W) 'field_tile.cpp'; else $(CYGPATH_W) '$(srcdir)/field_tile.cpp'; fi`
+
+field_tile_test-ncurses_lib.o: ncurses_lib.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-ncurses_lib.o -MD -MP -MF $(DEPDIR)/field_tile_test-ncurses_lib.Tpo -c -o field_tile_test-ncurses_lib.o `test -f 'ncurses_lib.cpp' || echo '$(srcdir)/'`ncurses_lib.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-ncurses_lib.Tpo $(DEPDIR)/field_tile_test-ncurses_lib.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ncurses_lib.cpp' object='field_tile_test-ncurses_lib.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-ncurses_lib.o `test -f 'ncurses_lib.cpp' || echo '$(srcdir)/'`ncurses_lib.cpp
+
+field_tile_test-ncurses_lib.obj: ncurses_lib.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-ncurses_lib.obj -MD -MP -MF $(DEPDIR)/field_tile_test-ncurses_lib.Tpo -c -o field_tile_test-ncurses_lib.obj `if test -f 'ncurses_lib.cpp'; then $(CYGPATH_W) 'ncurses_lib.cpp'; else $(CYGPATH_W) '$(srcdir)/ncurses_lib.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-ncurses_lib.Tpo $(DEPDIR)/field_tile_test-ncurses_lib.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ncurses_lib.cpp' object='field_tile_test-ncurses_lib.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-ncurses_lib.obj `if test -f 'ncurses_lib.cpp'; then $(CYGPATH_W) 'ncurses_lib.cpp'; else $(CYGPATH_W) '$(srcdir)/ncurses_lib.cpp'; fi`
+
+field_tile_test-test_field.o: test_field.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-test_field.o -MD -MP -MF $(DEPDIR)/field_tile_test-test_field.Tpo -c -o field_tile_test-test_field.o `test -f 'test_field.cpp' || echo '$(srcdir)/'`test_field.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-test_field.Tpo $(DEPDIR)/field_tile_test-test_field.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='test_field.cpp' object='field_tile_test-test_field.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-test_field.o `test -f 'test_field.cpp' || echo '$(srcdir)/'`test_field.cpp
+
+field_tile_test-test_field.obj: test_field.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-test_field.obj -MD -MP -MF $(DEPDIR)/field_tile_test-test_field.Tpo -c -o field_tile_test-test_field.obj `if test -f 'test_field.cpp'; then $(CYGPATH_W) 'test_field.cpp'; else $(CYGPATH_W) '$(srcdir)/test_field.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-test_field.Tpo $(DEPDIR)/field_tile_test-test_field.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='test_field.cpp' object='field_tile_test-test_field.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-test_field.obj `if test -f 'test_field.cpp'; then $(CYGPATH_W) 'test_field.cpp'; else $(CYGPATH_W) '$(srcdir)/test_field.cpp'; fi`
+
+field_tile_test-update_animals.o: update_animals.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-update_animals.o -MD -MP -MF $(DEPDIR)/field_tile_test-update_animals.Tpo -c -o field_tile_test-update_animals.o `test -f 'update_animals.cpp' || echo '$(srcdir)/'`update_animals.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-update_animals.Tpo $(DEPDIR)/field_tile_test-update_animals.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='update_animals.cpp' object='field_tile_test-update_animals.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-update_animals.o `test -f 'update_animals.cpp' || echo '$(srcdir)/'`update_animals.cpp
+
+field_tile_test-update_animals.obj: update_animals.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-update_animals.obj -MD -MP -MF $(DEPDIR)/field_tile_test-update_animals.Tpo -c -o field_tile_test-update_animals.obj `if test -f 'update_animals.cpp'; then $(CYGPATH_W) 'update_animals.cpp'; else $(CYGPATH_W) '$(srcdir)/update_animals.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-update_animals.Tpo $(DEPDIR)/field_tile_test-update_animals.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='update_animals.cpp' object='field_tile_test-update_animals.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-update_animals.obj `if test -f 'update_animals.cpp'; then $(CYGPATH_W) 'update_animals.cpp'; else $(CYGPATH_W) '$(srcdir)/update_animals.cpp'; fi`
+
+field_tile_test-board_setter.o: board_setter.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-board_setter.o -MD -MP -MF $(DEPDIR)/field_tile_test-board_setter.Tpo -c -o field_tile_test-board_setter.o `test -f 'board_setter.cpp' || echo '$(srcdir)/'`board_setter.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-board_setter.Tpo $(DEPDIR)/field_tile_test-board_setter.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='board_setter.cpp' object='field_tile_test-board_setter.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-board_setter.o `test -f 'board_setter.cpp' || echo '$(srcdir)/'`board_setter.cpp
+
+field_tile_test-board_setter.obj: board_setter.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-board_setter.obj -MD -MP -MF $(DEPDIR)/field_tile_test-board_setter.Tpo -c -o field_tile_test-board_setter.obj `if test -f 'board_setter.cpp'; then $(CYGPATH_W) 'board_setter.cpp'; else $(CYGPATH_W) '$(srcdir)/board_setter.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-board_setter.Tpo $(DEPDIR)/field_tile_test-board_setter.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='board_setter.cpp' object='field_tile_test-board_setter.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-board_setter.obj `if test -f 'board_setter.cpp'; then $(CYGPATH_W) 'board_setter.cpp'; else $(CYGPATH_W) '$(srcdir)/board_setter.cpp'; fi`
+
+field_tile_test-options.o: options.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-options.o -MD -MP -MF $(DEPDIR)/field_tile_test-options.Tpo -c -o field_tile_test-options.o `test -f 'options.cpp' || echo '$(srcdir)/'`options.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-options.Tpo $(DEPDIR)/field_tile_test-options.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='options.cpp' object='field_tile_test-options.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-options.o `test -f 'options.cpp' || echo '$(srcdir)/'`options.cpp
+
+field_tile_test-options.obj: options.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-options.obj -MD -MP -MF $(DEPDIR)/field_tile_test-options.Tpo -c -o field_tile_test-options.obj `if test -f 'options.cpp'; then $(CYGPATH_W) 'options.cpp'; else $(CYGPATH_W) '$(srcdir)/options.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-options.Tpo $(DEPDIR)/field_tile_test-options.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='options.cpp' object='field_tile_test-options.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-options.obj `if test -f 'options.cpp'; then $(CYGPATH_W) 'options.cpp'; else $(CYGPATH_W) '$(srcdir)/options.cpp'; fi`
 
 hare_and_puma-board_setter.o: board_setter.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(hare_and_puma_CPPFLAGS) $(CPPFLAGS) $(hare_and_puma_CXXFLAGS) $(CXXFLAGS) -MT hare_and_puma-board_setter.o -MD -MP -MF $(DEPDIR)/hare_and_puma-board_setter.Tpo -c -o hare_and_puma-board_setter.o `test -f 'board_setter.cpp' || echo '$(srcdir)/'`board_setter.cpp
@@ -662,6 +824,20 @@ ncurses_test-statistics.obj: statistics.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='statistics.cpp' object='ncurses_test-statistics.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ncurses_test_CXXFLAGS) $(CXXFLAGS) -c -o ncurses_test-statistics.obj `if test -f 'statistics.cpp'; then $(CYGPATH_W) 'statistics.cpp'; else $(CYGPATH_W) '$(srcdir)/statistics.cpp'; fi`
+
+ncurses_test-field_tile.o: field_tile.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ncurses_test_CXXFLAGS) $(CXXFLAGS) -MT ncurses_test-field_tile.o -MD -MP -MF $(DEPDIR)/ncurses_test-field_tile.Tpo -c -o ncurses_test-field_tile.o `test -f 'field_tile.cpp' || echo '$(srcdir)/'`field_tile.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ncurses_test-field_tile.Tpo $(DEPDIR)/ncurses_test-field_tile.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='field_tile.cpp' object='ncurses_test-field_tile.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ncurses_test_CXXFLAGS) $(CXXFLAGS) -c -o ncurses_test-field_tile.o `test -f 'field_tile.cpp' || echo '$(srcdir)/'`field_tile.cpp
+
+ncurses_test-field_tile.obj: field_tile.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ncurses_test_CXXFLAGS) $(CXXFLAGS) -MT ncurses_test-field_tile.obj -MD -MP -MF $(DEPDIR)/ncurses_test-field_tile.Tpo -c -o ncurses_test-field_tile.obj `if test -f 'field_tile.cpp'; then $(CYGPATH_W) 'field_tile.cpp'; else $(CYGPATH_W) '$(srcdir)/field_tile.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ncurses_test-field_tile.Tpo $(DEPDIR)/ncurses_test-field_tile.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='field_tile.cpp' object='ncurses_test-field_tile.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ncurses_test_CXXFLAGS) $(CXXFLAGS) -c -o ncurses_test-field_tile.obj `if test -f 'field_tile.cpp'; then $(CYGPATH_W) 'field_tile.cpp'; else $(CYGPATH_W) '$(srcdir)/field_tile.cpp'; fi`
 
 ncurses_test-ncurses_lib.o: ncurses_lib.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ncurses_test_CXXFLAGS) $(CXXFLAGS) -MT ncurses_test-ncurses_lib.o -MD -MP -MF $(DEPDIR)/ncurses_test-ncurses_lib.Tpo -c -o ncurses_test-ncurses_lib.o `test -f 'ncurses_lib.cpp' || echo '$(srcdir)/'`ncurses_lib.cpp
