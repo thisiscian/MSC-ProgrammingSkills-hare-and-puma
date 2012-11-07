@@ -20,7 +20,7 @@ int test_scaling(int argc, char* argv[])
   Options options;
   options.parse_input(argc, argv);
 
-	options.land_filename = "../test_data/test_land_input_all_land.dat";
+	options.land_filename = "../test_data/small.dat";
 	options.run_time = 100.0;
 	options.time_step = 1.0;
   BoardSetter::set_land_from_file(board, options.land_filename);
@@ -41,7 +41,7 @@ int test_scaling(int argc, char* argv[])
     BoardSetter::set_puma_from_distribution(board, RandomDistribution());
   }
 
-	NcursesField ncursesfield(board, 4, 6);
+	NcursesField ncursesfield(board, options.delay, 4, 6);
 	double simulation_time = 0.0;
 	double a = options.puma_predation;
 	double k = options.hare_diffusion;

@@ -2,7 +2,7 @@
 
 using namespace std;
 // Constructor for ncursesfield, sets sizes
-NcursesField::NcursesField(Board<Tile>& board_in, int x, int y)
+NcursesField::NcursesField(Board<Tile>& board_in, int delay_in, int x, int y)
 {
 	board = &board_in;
 	initialise_ncurses();
@@ -10,6 +10,7 @@ NcursesField::NcursesField(Board<Tile>& board_in, int x, int y)
 	tileCols = y;
 	set_field_window_size();
 	stats.init(*board);
+	delay = delay_in*1000;
 	old_time = clock();
 	update(0.0);
 }
@@ -22,8 +23,8 @@ void NcursesField::initialise_ncurses()
  	init_pair(1,COLOR_CYAN,COLOR_BLUE); 
  	init_pair(2,COLOR_BLACK,COLOR_GREEN); 
  	init_pair(3,COLOR_WHITE,COLOR_GREEN); 
- 	init_pair(4,COLOR_BLACK,COLOR_BLUE); 
- 	init_pair(5,COLOR_WHITE,COLOR_BLUE); 
+ 	init_pair(4,COLOR_BLACK,COLOR_CYAN); 
+ 	init_pair(5,COLOR_WHITE,COLOR_CYAN); 
 
 	// removes the cursor and any keypresses the user makes
 	noecho();
@@ -38,7 +39,7 @@ void NcursesField::update_input()
 {
 	int l = 1;
 	delwin(input);
-	input = newwin(LINES/2+1,COLS/4-1, LINES/2, 3*COLS/4-1);
+	input = newwin(4,COLS/4-1, LINES-5, 3*COLS/4-1);
 	set_title(input, "INPUT");
 	
 	mvwprintw(input, l, 1, " q/Q  ");
@@ -60,7 +61,7 @@ void NcursesField::update_statistics(double time)
 	stats.trawl_for_statistics(*board, time);
 
 	delwin(statistics);	
-	statistics = newwin(LINES/2-1,COLS/2-1, 1, COLS/2-1);
+	statistics = newwin(LINES/2-1,COLS/4-1, 1, 3*COLS/4-1);
 
 	text.str("");
 	text << "Simulation Time: " << time << endl;
@@ -155,7 +156,7 @@ void NcursesField::update_key()
 	stringstream text;
 	get_symbol_worth();
 	delwin(key);
-	key = newwin(LINES/2+1,COLS/4-1, LINES/2, COLS/2-1);
+	key = newwin(LINES/2-4,COLS/4-1, LINES/2, 3*COLS/4-1);
 	
 	wattron(key, COLOR_PAIR(2));
 	mvwprintw(key, l, 1, "   ");
@@ -163,10 +164,16 @@ void NcursesField::update_key()
 	mvwprintw(key, l, 5, " - Land");
 	++l;	
 
+	wattron(key, COLOR_PAIR(5));
+	mvwprintw(key, l, 1, "   ");
+	wattroff(key, COLOR_PAIR(5));
+	mvwprintw(key, l, 5, " - Wetlands");
+	++l;	
+
 	wattron(key, COLOR_PAIR(1));
-	mvwprintw(key, l, 1, " ~ ");
+	mvwprintw(key, l, 1, "   ");
 	wattroff(key, COLOR_PAIR(1));
-	mvwprintw(key, l, 5, " - Water");
+	mvwprintw(key, l, 5, " - Ocean");
 	++l;	
 	++l;	
 
@@ -199,6 +206,7 @@ void NcursesField::update_key()
 	wattroff(key, COLOR_PAIR(2));
 	wattroff(key, A_BOLD);
 	mvwprintw(key, l, 5, text.str().c_str());
+	++l;
 	++l;	
 
 	text.str("");
@@ -257,12 +265,17 @@ void NcursesField::update_field(double time)
 		for(x = 0; x < fieldNumHorizontalTiles; x++)
 		{
 			val = block[x+fieldNumVerticalTiles*y].hare;
+			bool is_fully_water = block[x+fieldNumVerticalTiles*y].is_fully_water;
 			draw_land = block[x+fieldNumVerticalTiles*y].land_count*(tileLine*tileCols/(double)block[x+fieldNumVerticalTiles*y].total);
 			for(int j=1; j<=tileLine/2; j++)
 			{
 				for(int i=1; i<=tileCols; i++)
 				{
-					if(draw_land > 0)
+					if(is_fully_water)
+					{
+						wattron(field, COLOR_PAIR(1));	
+					}
+					else if(draw_land > 0)
 					{
 						wattron(field, COLOR_PAIR(2));	
 					}
@@ -301,7 +314,11 @@ void NcursesField::update_field(double time)
 			{
 				for(int i=1; i<=tileCols; i++)
 				{
-					if(draw_land > 0)
+					if(is_fully_water)
+					{
+						wattron(field, COLOR_PAIR(1));	
+					}
+					else if(draw_land > 0)
 					{
 						wattroff(field,COLOR_PAIR(2));
 						wattron(field, COLOR_PAIR(3));	
@@ -335,7 +352,11 @@ void NcursesField::update_field(double time)
 					}
 				}
 			}
-			if(draw_land > 0)
+			if(is_fully_water)
+			{
+				wattroff(field, COLOR_PAIR(1));
+			}
+			else if(draw_land > 0)
 			{
 				wattroff(field,COLOR_PAIR(3));
 			}
@@ -361,7 +382,7 @@ void NcursesField::set_title(WINDOW* win, string title)
 
 void NcursesField::set_field_window_size()
 {
-	fieldNumHorizontalTiles = (COLS/2-1)/tileCols;
+	fieldNumHorizontalTiles = (3*COLS/4-1)/tileCols;
 	fieldNumVerticalTiles = (LINES-2)/tileLine;
 
 	size_t maxNumberOfTilesVisible = min(fieldNumVerticalTiles, fieldNumHorizontalTiles);
@@ -369,7 +390,7 @@ void NcursesField::set_field_window_size()
 	fieldNumHorizontalTiles = min(maxNumberOfTilesVisible, (board->get_width()-2));
 	fieldNumVerticalTiles = min(maxNumberOfTilesVisible, (board->get_height()-2));
 	
-	widthBuffer = (COLS/2-1-fieldNumHorizontalTiles*tileCols)/2;
+	widthBuffer = (3*COLS/4-1-fieldNumHorizontalTiles*tileCols)/2;
 	heightBuffer = (LINES-2-fieldNumVerticalTiles*tileLine)/2;
 
 	set_field_block_sizes();
@@ -407,7 +428,13 @@ void NcursesField::quit_program()
 	{
 		if(c == 110 || c == 78)
 		{
-			delwin(quit);
+			quit = newwin(3, quit_message.length()+4, (LINES-3)/2, (COLS-quit_message.length()-4)/2);
+			wrefresh(quit);
+			wrefresh(field);
+			wrefresh(statistics);
+			wrefresh(input);
+			wrefresh(key);
+			refresh();
 			break;
 		}
 		else if(c == 121 || c == 89)
@@ -458,6 +485,7 @@ void NcursesField::update(double simulation_time)
 
 FieldBlock::FieldBlock(Board<Tile>* board_in, size_t i, size_t j, size_t i_max, size_t j_max)
 {
+	is_fully_water = false;
 	board = board_in;
 	set_range(i,j,i_max,j_max);
 	find_land_state();
@@ -482,6 +510,7 @@ void FieldBlock::find_land_state()
 			if((*board)(i,j).is_land()){land_count += 1.0;}
 		}
 	}
+	if(land_count == 0){is_fully_water = true;}
 }
 
 double NcursesField::count_animals_in_blocks()
