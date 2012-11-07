@@ -18,6 +18,7 @@ class Options
     puma_birth(0.02),
     puma_death(0.02),
     puma_diffusion(0.06),
+		delay(1000),
     output_directory("output")
   {
   }
@@ -34,6 +35,7 @@ class Options
   // time values
   double run_time;       // t
   double time_step;      // dt
+	int delay;
 
   // hare equation values
   double hare_birth;     // r
