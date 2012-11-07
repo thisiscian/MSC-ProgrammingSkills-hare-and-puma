@@ -23,9 +23,9 @@ int Options::parse_input(int argc, char** argv)
      "name a configuration file"
     )
     // input files
-    ("land", po::value<std::string>(&land_filename), "set land input file")
-    ("hare", po::value<std::string>(&hare_filename), "set hare input file")
-    ("puma", po::value<std::string>(&puma_filename), "set puma input file")
+    ("landfile", po::value<std::string>(&land_filename), "set land input file")
+    ("harefile", po::value<std::string>(&hare_filename), "set hare input file")
+    ("pumafile", po::value<std::string>(&puma_filename), "set puma input file")
     (
       "output,o",
       po::value<std::string>(&output_directory),
@@ -111,7 +111,7 @@ int Options::parse_input(int argc, char** argv)
   }
 
 
-  if(!vm.count("land")){
+  if(!vm.count("landfile")){
     std::cerr << "You must specify a land input file"
               << std::endl
               << std::endl;

@@ -44,3 +44,11 @@ What Ruairi Did With His Time
 6/11/12 09:00
 -added -Wall to compilation flags
 -decided to simply add documentation to say that it can be run in parallel and it will show better performance for large grids but not for small ones of large number of processors are used
+
+6/11/12 17:00
+-changed parallel to introducing a parallel region and initiating parallel fors as this will allow the main program have a parallel region meaning that threads wont need to be initiated every time update_animals is called
+-moved hare and puma negative checking to inline with update operation
+-moved adjacent hare and puma computation to land chacking part to keep the memory access to adjacent tiles together
+
+7/11/12 10:00
+-changed loop index ordering and found x outer, y inner to be better
