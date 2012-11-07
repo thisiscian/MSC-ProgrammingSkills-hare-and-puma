@@ -49,13 +49,13 @@ int main(int argc, char* argv[])
   create_output_directory(options.output_directory);
   while(time <= finalTime)
   {
-          update_animals(board, timeStep, a, b, k, l, m, r);
-          if(i%1 == 0)
-          {
-                  cout << "writing ppm for time: " << time << endl;
-                  write_ppm(board, time);
-          }
-          time += timeStep;
-          i++;    
+	  update_animals(board, timeStep, a, b, k, l, m, r);
+    if(i%1 == 0)
+    {
+  	  cout << "writing ppm for time: " << time << endl;
+      write_ppm(board, time);
+    }
+    time += timeStep;
+    i++;    
   }
 }
