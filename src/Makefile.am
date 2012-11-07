@@ -25,13 +25,13 @@ options_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
 
 GUI_TESTS = field_tile_test ncurses_test 
 
-field_tile_test_SOURCES = field_tile_test.cpp tile.cpp statistics.cpp field_tile.cpp ncurses_lib.cpp test_field.cpp update_animals.cpp board_setter.cpp options.cpp 
+field_tile_test_SOURCES = field_tile_test.cpp tile.cpp statistics.cpp field_tile.cpp ncurses_lib.cpp update_animals.cpp board_setter.cpp options.cpp 
 field_tile_test_CXXFLAGS = -lncurses $(BOOST_CPPFLAGS) -DGUI_TEST
 field_tile_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 field_tile_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
 
 
-ncurses_test_SOURCES = tile.cpp ncurses_test.cpp statistics.cpp field_tile.cpp ncurses_lib.cpp test_field.cpp update_animals.cpp board_setter.cpp options.cpp 
+ncurses_test_SOURCES = tile.cpp ncurses_test.cpp statistics.cpp field_tile.cpp ncurses_lib.cpp update_animals.cpp board_setter.cpp options.cpp 
 ncurses_test_CXXFLAGS = -lncurses $(BOOST_CPPFLAGS)
 ncurses_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 ncurses_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
