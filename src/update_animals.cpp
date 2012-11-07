@@ -13,8 +13,8 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
 #pragma omp parallel default(none) shared(board, timeStep, a, b, k, l, m, r, NX, NY, new_board) private(landSum, hareSum, pumaSum)
 {
   #pragma omp for schedule(runtime)
-	for(int y=1; y<NY-1; ++y)
-	for(int x=1; x<NX-1; ++x)
+	for(int x=1; x<NY-1; ++x)
+	for(int y=1; y<NX-1; ++y)
 	{
 		if(board(x,y).is_land())
 		{
@@ -73,8 +73,8 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
 	}
 
 #pragma omp for schedule(runtime)
-	for(int y=1; y<NY-1; ++y)
-	for(int x=1; x<NX-1; ++x)
+	for(int x=1; x<NY-1; ++x)
+	for(int y=1; y<NX-1; ++y)
 	{
 		board(x,y).hare = new_board(x,y).hare;
 		board(x,y).puma = new_board(x,y).puma;
