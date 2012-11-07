@@ -185,6 +185,89 @@ int main()
 	}
 
 //
+// reinitialise to now test that the parameters have the correct effect
+//
+
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
+	{
+		board(i,j).hare = old_board(i,j).hare = 1.5;
+		board(i,j).puma = old_board(i,j).puma = 1.5;
+	}
+ 
+//
+//  will test that if all parameters are zero that the number of animals stay the same
+//   
+
+	a = b = k = l = m = r = 0.0;
+	newHareSum = oldHareSum = newPumaSum = oldPumaSum = 0;	
+  	
+	update_animals(board, timeStep, a, b, k, l, m, r);
+
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
+	{
+    newHareSum += board(i,j).hare;
+    oldHareSum += old_board(i,j).hare;
+    newPumaSum += board(i,j).puma;
+    oldPumaSum += old_board(i,j).puma;
+  }
+	
+	if(newHareSum != oldHareSum)
+	{
+		cout << "error: 0 parameter test: Hare numbers changing" << endl;
+		return 1;
+	}
+	else if(newPumaSum != oldPumaSum)
+	{
+		cout << "error: 0 parameter test: Puma numbers changing" << endl;
+		return 1;
+	}
+
+//
+// reinitialise to now test that the parameters have the correct effect
+//
+
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
+	{
+		board(i,j).hare = 1.5;
+		board(i,j).puma = 1.5;
+	}
+ 
+//
+//  test for agreement with analytical solution to a,b!=0 everything else 0
+//   
+
+	a = b = 1;
+  k = l = m = r = 0.0;
+	newHareSum = oldHareSum = newPumaSum = oldPumaSum = 0;	
+
+  for(int k=0; k<10; ++k)
+  {
+    for(size_t j=1; j<9; ++j)
+    for(size_t i=1; i<9; ++i)
+    {
+      old_board(i,j).hare = board(i,j).hare;
+      old_board(i,j).puma = board(i,j).puma;
+    }
+    update_animals(board, timeStep, a, b, k, l, m, r);
+
+    for(size_t j=1; j<9; ++j)
+    for(size_t i=1; i<9; ++i)
+    {
+      //upon solving the update equations with all parameters 0 except a and b, one finds that the following must hold true
+      //not checked against 0 due to floating point errors
+      if(board(i,j).hare - old_board(i,j).hare + (a/b)*(board(i,j).puma - board(i,j).puma) > 1e-09)
+      {
+        cout << "error: a,b parameter test: derived equation does not hold" << endl;
+        return 1;
+      }
+    }
+  }
+	
+
+//
 // test for animals appearing on water in the map
 //
 
