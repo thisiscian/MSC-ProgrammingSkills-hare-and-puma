@@ -70,12 +70,12 @@ void output_to_console(Board<Tile> field, double time)
 }
 
 /*A function that recieves the two populations and outputs a simple plain PPM file, named according to the current iteration to 'output/'*/
-void write_ppm(Board<Tile> field, double time)
+void write_ppm(Board<Tile> field, double time, string output_directory)
 {
-	write_adjustable_ppm(field, time, 1, 0, "population");
+	write_adjustable_ppm(field, time, 1, 0, "population", output_directory);
 }
 
-void write_adjustable_ppm(Board<Tile> field, double time, int tileSize, int borderWidth, string title)
+void write_adjustable_ppm(Board<Tile> field, double time, int tileSize, int borderWidth, string title, string output_directory)
 {
 	int verticalPosition, horizontalPosition;
 	int width = field.get_width();
@@ -90,7 +90,7 @@ void write_adjustable_ppm(Board<Tile> field, double time, int tileSize, int bord
 	
 	ofstream file;
 	stringstream fileName;
-	fileName << "output/" << title << "_" << setprecision(3) << setw(4) << setfill('0') << left << fixed << time << ".ppm";
+	fileName << output_directory << "/" << title << "_" << setprecision(3) << setw(4) << setfill('0') << left << fixed << time << ".ppm";
 	file.open(fileName.str().c_str());
 	
 	file << "P3 " << drawingWidth << " " <<  drawingHeight << " " <<  maxValue << "\n";
