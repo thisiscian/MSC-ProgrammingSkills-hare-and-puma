@@ -10,7 +10,7 @@ What Cian Did With His Time
 - added skeleton functions (i.e. empty) for writing ppms and getting averages
 - currently outputing two separate ppm files for pumas and hares, but could mix the two into one
 - changed from using double arrays to board arrays, which were created by paddy
-- removed calculating averages (was not  my job)
+- removed calculating averages (was not my job)
 - first compilation, had loads of bugs
 - compilation bugs may have waited on paddy
 

@@ -2,7 +2,7 @@
 #include <ctime>
 #include "tile.h"
 #include "board.h"
-#include "update_p.h"
+#include "update.h"
 
 using namespace std;
 
@@ -44,11 +44,13 @@ int main()
 
   start = time(NULL);
 
+
+{
   for(int i=0; i<50; ++i)
   {
-    update_animals_p(board, timeStep, a, b, k, l, m, r);
+    update_animals(board, timeStep, a, b, k, l, m, r);
   }
-  
+}  
   elapsedTime = time(NULL) - start;
 
   cout << "seconds for 50 updates of 1000x1000 board and current incarnation of update_animals: " << elapsedTime << "\n";

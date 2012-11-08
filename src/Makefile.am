@@ -37,7 +37,7 @@ ncurses_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 ncurses_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
  
 PERFORMANCE_TESTS = update_performance_test
-update_performance_test_SOURCES = update_performance_test.cpp update_animals.cpp update_animals_p.cpp tile.cpp
+update_performance_test_SOURCES = update_performance_test.cpp update_animals.cpp tile.cpp
 update_performance_test_CXXFLAGS = -fopenmp
 
 
