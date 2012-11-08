@@ -1,4 +1,4 @@
-#include "output.h"
+#include "write_ppm.h"
 #include "update.h"
 #include "options.h"
 #include "board_setter.h"
@@ -47,27 +47,14 @@ int main(int argc, char* argv[])
   double r = options.hare_birth;
 
   create_output_directory(options.output_directory);
-  while(time <= finalTime)
+
+  cout << "writing ppm for time: " << 0.0 << endl;
+
+  write_ppm(board, 0.0, options.output_directory);
+	while(time < finalTime)
   {
-    for(size_t j=0; j<board.get_height(); ++j)
-    {
-      for(size_t i=0; i<board.get_width(); ++i)
-      {
-        std::cout << board(i,j).hare << " ";
-      }
-      std::cout << std::endl;
-    }
-
+    time += timeStep;
     update_animals(board, timeStep, a, b, k, l, m, r);
-
-    for(size_t j=0; j<board.get_height(); ++j)
-    {
-      for(size_t i=0; i<board.get_width(); ++i)
-      {
-        std::cout << board(i,j).hare << " ";
-      }
-      std::cout << std::endl;
-    }
 
     if(i%1 == 0)
     {
@@ -75,7 +62,6 @@ int main(int argc, char* argv[])
 
       write_ppm(board, time, options.output_directory);
     }
-    time += timeStep;
     i++;    
   }
 }

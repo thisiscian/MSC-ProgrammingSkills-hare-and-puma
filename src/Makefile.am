@@ -1,6 +1,6 @@
 bin_PROGRAMS = hare-and-puma
 
-hare_and_puma_SOURCES = board_setter.cpp tile.cpp options.cpp hare-and-puma_main.cpp update_animals.cpp output.cpp statistics.cpp
+hare_and_puma_SOURCES = board_setter.cpp tile.cpp options.cpp hare-and-puma_main.cpp update_animals.cpp write_ppm.cpp statistics.cpp
 hare_and_puma_CPPFLAGS = $(BOOST_CPPFLAGS)
 hare_and_puma_CXXFLAGS = -fopenmp
 hare_and_puma_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
@@ -15,7 +15,7 @@ tile_test_SOURCES = tile.cpp tile_test.cpp
 board_setter_test_SOURCES = board_setter.cpp tile.cpp board_setter_test.cpp
 update_test_SOURCES = tile.cpp update_test.cpp update_animals.cpp
 update_test_CXXFLAGS = -fopenmp
-output_test_SOURCES = tile.cpp output.cpp output_test.cpp statistics.cpp
+output_test_SOURCES = tile.cpp write_ppm.cpp write_ppm_test.cpp statistics.cpp
 distribution_test_SOURCES = distribution_test.cpp
 
 options_test_SOURCES = options.cpp options_test.cpp
@@ -25,13 +25,13 @@ options_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
 
 GUI_TESTS = field_tile_test ncurses_test 
 
-field_tile_test_SOURCES = field_tile_test.cpp tile.cpp statistics.cpp field_tile.cpp ncurses_lib.cpp update_animals.cpp board_setter.cpp options.cpp 
+field_tile_test_SOURCES = field_tile_test.cpp tile.cpp statistics.cpp field_tile.cpp ncurses_field.cpp update_animals.cpp board_setter.cpp options.cpp 
 field_tile_test_CXXFLAGS = -lncurses $(BOOST_CPPFLAGS) -DGUI_TEST
 field_tile_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 field_tile_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
 
 
-ncurses_test_SOURCES = tile.cpp ncurses_test.cpp statistics.cpp field_tile.cpp ncurses_lib.cpp update_animals.cpp board_setter.cpp options.cpp 
+ncurses_test_SOURCES = tile.cpp ncurses_field_test.cpp statistics.cpp field_tile.cpp ncurses_field.cpp update_animals.cpp board_setter.cpp options.cpp 
 ncurses_test_CXXFLAGS = -lncurses $(BOOST_CPPFLAGS)
 ncurses_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 ncurses_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)

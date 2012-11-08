@@ -4,13 +4,15 @@
 // output.cpp 			                                                         //
 // ----------                                                                //
 //                                                                           //
+// this file contains the functions neccessary to create .ppm files          //
+//                                                                           //
+//                                                                           //
 // maintained by Cian Booth                                                  //
 // email issues to this.is.cian@gmail.com                                    //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-
-#include "output.h"
+#include "write_ppm.h"
 
 using namespace std;
 
@@ -20,66 +22,17 @@ void create_output_directory(string directory_name)
 	int err = mkdir(directory_name.c_str(), S_IRWXU);
 }
 
-/*A function that recieves the populations of the hares and pumas, and outputs their values to the console*/
-void output_to_console(Board<Tile> field, double time)
-{
-	int verticalPosition, horizontalPosition;
-	int width = field.get_width();
-	int height = field.get_height();
-
-	cout << setprecision(3);
-	cout << "Time: " << time << "\n";
-	for(horizontalPosition = 0; horizontalPosition < width; ++horizontalPosition)
-	{
-			cout << "----------";
-	}
-	cout << "-" << "\n";
-	for(verticalPosition = 0; verticalPosition < height; ++verticalPosition)
-	{
-		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
-		{
-			if(field(horizontalPosition, verticalPosition).is_land())
-			{
-				cout << "| H" << setw(6) << setfill(' ') <<  field(horizontalPosition, verticalPosition).hare << " ";
-			}
-			else
-			{
-				cout << "| ~~~~~~~ ";
-			}
-		}
-		cout << "|" << "\n";
-		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
-		{
-			if(field(horizontalPosition, verticalPosition).is_land())
-			{
-				cout << "| P" << setw(6) << setfill(' ') <<  field(horizontalPosition, verticalPosition).puma << " ";
-			}
-			else
-			{
-				cout << "| ~~~~~~~ ";
-			}
-		}
-		cout << "|" << "\n";
-		for(horizontalPosition = 0; horizontalPosition < width ; ++horizontalPosition)
-		{
-			cout << "----------";
-		}
-		cout << "-" << "\n";
-	}
-	cout << "\n";
-}
-
 /*A function that recieves the two populations and outputs a simple plain PPM file, named according to the current iteration to 'output/'*/
-void write_ppm(Board<Tile> field, double time, string output_directory)
+void write_ppm(Board<Tile>& board, double time, string output_directory)
 {
-	write_adjustable_ppm(field, time, 1, 0, "population", output_directory);
+	write_adjustable_ppm(board, time, 1, 0, "population", output_directory);
 }
 
-void write_adjustable_ppm(Board<Tile> field, double time, int tileSize, int borderWidth, string title, string output_directory)
+void write_adjustable_ppm(Board<Tile>& board, double time, int tileSize, int borderWidth, string title, string output_directory)
 {
 	int verticalPosition, horizontalPosition;
-	int width = field.get_width();
-	int height = field.get_height();
+	int width = board.get_width();
+	int height = board.get_height();
 	int maxValue = 255;
 
 	int drawingWidth = (width-2)*(borderWidth+tileSize)+borderWidth;
@@ -108,10 +61,10 @@ void write_adjustable_ppm(Board<Tile> field, double time, int tileSize, int bord
 		{
 			for(horizontalPosition = 1; horizontalPosition < width-1; ++horizontalPosition)
 			{
-				if(field(horizontalPosition, verticalPosition).is_land())	
+				if(board(horizontalPosition, verticalPosition).is_land())	
 				{
-					red = min(floor(field(horizontalPosition, verticalPosition).puma),255.0);
-					green = min(floor(field(horizontalPosition, verticalPosition).hare),255.0);
+					red = min(floor(board(horizontalPosition, verticalPosition).puma),255.0);
+					green = min(floor(board(horizontalPosition, verticalPosition).hare),255.0);
 					blue = 0;
 				}
 				else
@@ -148,9 +101,9 @@ void write_adjustable_ppm(Board<Tile> field, double time, int tileSize, int bord
 }
 
 /*A function that outputs the mean values of the populations of the hares and pumas*/
-void output_averages(Board<Tile> field, double time, double timeStep)
+void output_averages(Board<Tile>& board, double time, double timeStep)
 {
-	BoardStatistics stats(field);
+	BoardStatistics stats(board);
 	cout << "Total Number of Hares: " << stats.get_hare_total() << endl;
 	cout << "Total Number of Pumass: " << stats.get_puma_total() << endl;
 	cout << "Mean Number of Hares (at time " << time << "): " << stats.get_hare_average() << endl;

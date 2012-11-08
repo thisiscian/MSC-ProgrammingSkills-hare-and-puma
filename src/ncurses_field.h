@@ -15,8 +15,8 @@
 
 #include "tile.h"
 #include "board.h"
-#include "output.h"
 #include "options.h"
+#include "statistics.h"
 #include "update.h"
 #include "field_tile.h"
 
@@ -27,6 +27,9 @@ class NcursesField
 	void update(double time);
 	#ifdef GUI_TEST
 		std::vector<FieldTile> fieldtile;
+		double count_animals_in_tiles();
+		double get_hare_max();
+		double get_puma_max();
 	#endif
 	int delay;
 
@@ -42,6 +45,9 @@ class NcursesField
 	Options* options;
 	#ifndef GUI_TEST
 		std::vector<FieldTile> fieldtile;
+		double count_animals_in_tiles();
+		double get_hare_max();
+		double get_puma_max();
 	#endif
 	
 	clock_t old_time;	// for refreshing the gui
@@ -68,9 +74,6 @@ class NcursesField
 	void update_statistics(double time);
 	void update_key();
 	void set_field_tile_sizes();
-	double get_hare_max();
-	double get_puma_max();
-	double count_animals_in_tiles();
 	void quit_program();
 };
 

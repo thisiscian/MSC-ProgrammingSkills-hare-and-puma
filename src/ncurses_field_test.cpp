@@ -1,4 +1,4 @@
-#include "ncurses_lib.h"
+#include "ncurses_field.h"
 #include "options.h"
 #include "board_setter.h"
 using namespace std;

@@ -23,7 +23,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "ncurses_lib.h"
+#include "ncurses_field.h"
 using namespace std;
 
 // Constructor for ncursesfield, sets sizes
