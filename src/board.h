@@ -1,5 +1,6 @@
 #ifndef __BOARD_H__
 #define __BOARD_H__
+#include <iostream>
 
 /*
  * Board class for storing elements as a 2d array to emulate a game board.
@@ -19,7 +20,7 @@
 #include <vector>
 
 template<class T>
-class Board : private std::vector<T>
+class Board
 {
   public:
 
@@ -41,7 +42,7 @@ class Board : private std::vector<T>
   {
     // have rightmost index contiguous in memory
     //   as is standard in C
-    return std::vector<T>::operator[](x_pos*_height + y_pos);
+    return _board[x_pos*_height + y_pos];
   }
 
   // get the height of the board
@@ -64,7 +65,9 @@ class Board : private std::vector<T>
     _width  = width_in;
     _height = height_in;
 
-    std::vector<T>::resize(_width*_height);
+    size_t new_size = _width*_height;
+
+    _board.resize(new_size);
   }
 
 
@@ -72,6 +75,7 @@ class Board : private std::vector<T>
 
   size_t _height;
   size_t _width;
+  std::vector<T> _board;
 
 };
 
