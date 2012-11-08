@@ -142,7 +142,6 @@ tile_test_LDADD = $(LDADD)
 am_update_performance_test_OBJECTS =  \
 	update_performance_test-update_performance_test.$(OBJEXT) \
 	update_performance_test-update_animals.$(OBJEXT) \
-	update_performance_test-update_animals_p.$(OBJEXT) \
 	update_performance_test-tile.$(OBJEXT)
 update_performance_test_OBJECTS =  \
 	$(am_update_performance_test_OBJECTS)
@@ -345,7 +344,7 @@ ncurses_test_CXXFLAGS = -lncurses $(BOOST_CPPFLAGS)
 ncurses_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 ncurses_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
 PERFORMANCE_TESTS = update_performance_test
-update_performance_test_SOURCES = update_performance_test.cpp update_animals.cpp update_animals_p.cpp tile.cpp
+update_performance_test_SOURCES = update_performance_test.cpp update_animals.cpp tile.cpp
 update_performance_test_CXXFLAGS = -fopenmp
 all: all-am
 
@@ -512,7 +511,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile_test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/update_performance_test-tile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/update_performance_test-update_animals.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/update_performance_test-update_animals_p.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/update_performance_test-update_performance_test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/update_test-tile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/update_test-update_animals.Po@am__quote@
@@ -916,20 +914,6 @@ update_performance_test-update_animals.obj: update_animals.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='update_animals.cpp' object='update_performance_test-update_animals.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(update_performance_test_CXXFLAGS) $(CXXFLAGS) -c -o update_performance_test-update_animals.obj `if test -f 'update_animals.cpp'; then $(CYGPATH_W) 'update_animals.cpp'; else $(CYGPATH_W) '$(srcdir)/update_animals.cpp'; fi`
-
-update_performance_test-update_animals_p.o: update_animals_p.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(update_performance_test_CXXFLAGS) $(CXXFLAGS) -MT update_performance_test-update_animals_p.o -MD -MP -MF $(DEPDIR)/update_performance_test-update_animals_p.Tpo -c -o update_performance_test-update_animals_p.o `test -f 'update_animals_p.cpp' || echo '$(srcdir)/'`update_animals_p.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/update_performance_test-update_animals_p.Tpo $(DEPDIR)/update_performance_test-update_animals_p.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='update_animals_p.cpp' object='update_performance_test-update_animals_p.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(update_performance_test_CXXFLAGS) $(CXXFLAGS) -c -o update_performance_test-update_animals_p.o `test -f 'update_animals_p.cpp' || echo '$(srcdir)/'`update_animals_p.cpp
-
-update_performance_test-update_animals_p.obj: update_animals_p.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(update_performance_test_CXXFLAGS) $(CXXFLAGS) -MT update_performance_test-update_animals_p.obj -MD -MP -MF $(DEPDIR)/update_performance_test-update_animals_p.Tpo -c -o update_performance_test-update_animals_p.obj `if test -f 'update_animals_p.cpp'; then $(CYGPATH_W) 'update_animals_p.cpp'; else $(CYGPATH_W) '$(srcdir)/update_animals_p.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/update_performance_test-update_animals_p.Tpo $(DEPDIR)/update_performance_test-update_animals_p.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='update_animals_p.cpp' object='update_performance_test-update_animals_p.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(update_performance_test_CXXFLAGS) $(CXXFLAGS) -c -o update_performance_test-update_animals_p.obj `if test -f 'update_animals_p.cpp'; then $(CYGPATH_W) 'update_animals_p.cpp'; else $(CYGPATH_W) '$(srcdir)/update_animals_p.cpp'; fi`
 
 update_performance_test-tile.o: tile.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(update_performance_test_CXXFLAGS) $(CXXFLAGS) -MT update_performance_test-tile.o -MD -MP -MF $(DEPDIR)/update_performance_test-tile.Tpo -c -o update_performance_test-tile.o `test -f 'tile.cpp' || echo '$(srcdir)/'`tile.cpp
