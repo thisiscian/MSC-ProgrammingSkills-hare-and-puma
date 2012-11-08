@@ -1,31 +1,40 @@
 \section{Performance Tests and Analysis}
 In order to decide what parts of the code needed to be optimised it was necessary to run some performance tests.
 As a precursor to this the main code was profiled so that it was possible to decide what parts of the code needed work.
-The profiling program Valgrind was used.
+The profiling program \texttt{Valgrind} and the tool \texttt{Callgrind} associated with it was used.
 This showed that one of the large users of CPU time was the update\_animals function as would be expected as this is the main computational part of the code.
 Once it was known what that this part of the code needed testing a specific performance test was written to test this function.
 The test was then added to the build environment so that it could be easily executed.
 In order to keep track of the performance it was decided to include the performance of a specific revision in any commit message that had changed the update\_animals function.
-The specifics of the test were then decided upon taking into account the fact that boards up to size 2000x2000 could be taken as input but the execution time of the test needed to be relatively short so that it would be run often.
-As such it was decided to have the test run on a 1000x1000 grid for 50 iterations as this should aslo show up any overheads associated with calling the function.
-Since a comprehensive test suite had already been written the code could be changed quite aggresively in order to improve performance.
+The specifics of the test were then decided upon, taking into account the fact that boards up to size 2000x2000 could be taken as input but the execution time of the test needed to be relatively short so that it would be run often.
+As such it was decided to have the test run on a 1000x1000 grid for 50 iterations as this should also show up any overheads associated with calling the function.
+Since a comprehensive test suite had already been written the code could be changed quite aggresivly in order to improve performance.
 
 Compiler flags were investigated.
-G++ was the compiler used for this project so the compiler options -O1, -O2 and -O3 were tested in the hope that they might improve performance.
+\texttt{G++} was the compiler used for this project so the compiler options \texttt{-O1}, \texttt{-O2} and \texttt{-O3} were tested in the hope that they might improve performance.
 It was seen that as optimisation levels were increased there was increase in the performance of the code as could be expected.
-There was however a neglgible difference seen between the -O2 and -O3 options.
-Due to the fact that -O3 is more aggresive when it comes to changing the execution of code it was decided to use -O2 as the compiler optimisation option.
+There was however a negligable difference seen between the \texttt{-O2} and \texttt{-O3} options.
+Due to the fact that \texttt{-O3} is more aggressive when it comes to changing the execution of code it was decided to use -O2 as the compiler optimisation option.
 
-Next the memory acceses during the update were considered.
+Next the memory accesses during the update were considered.
 It was noted that it was necessary to compute the sums over the number of adjacent land tiles and numbers of hares and pumas in these tiles.
-These sums were brought together before the main update operation with the intention of reducing the number of cache misses and keep memory acceses close together.
+These sums were brought together before the main update operation with the intention of reducing the number of cache misses and keep memory accesses close together.
 There was a performance improvement seen by doing this.
 
-It was though that for large board sizes that paralleising the update would be beneficial.
+Since the update could not be done in place a new board was declared in the \texttt{update\_animals} function.
+This cause an overhead to be associated with calling the function.
+In order to reduce this overhead the board was declared as static so the declaration was only needed once.
+As a result of this the execution time was almost halved.
+
+It was though that for large board sizes that parallelizing the update would be beneficial.
 OpenMP directives were added in order to make this possible.
+Due to the way that the update is applied there were no race conditions on any variables and this made the implementation relatively easy.
 These allowed for the program to be easily switched in and out of parallel if the library was not available on some machine for example, and it allowed for a parallel and serial version of the code to be maintained together.
 This parallelism was then tested on a number of different threads.
-For small boards it was found that the parallel implementation could be slower due to the overheads associated with creating threds but for larger grids there was a significant improvement in performance.
+For small boards it was found that the parallel implementation could be slower due to the overheads associated with creating threads but for larger grids there was a significant improvement in performance.
 Since it is up to the user to specify the number of threads and the board size it was decided that this was acceptable.
 For small grids the execution was fast anyway so the user would not notice any impact if they did not choose the best options.
 
+These simple optimisation techniques were seen to be easily implemented but also very effective.
+The result was when the \texttt{Valgrind callgrind} tool was used again to profile the code the I/O part was the main user of CPU time.
+It was decided at this point that the program ran at a sufficiently fast speed and that the time spent trying to improve the I/O part of the code could be better spent on other improvements to the program.
