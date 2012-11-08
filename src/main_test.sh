@@ -6,12 +6,6 @@
 #   dP/dt = b*H*P - m*P + l*(d2P/dx2 + d2H/dy2)
 #
 
-#
-# This may need a bit of work. Currently, testing
-#   exponential growths and decays doesn't seem to work,
-#   so it's been left out.
-#
-
 
 #
 # Generate board files
@@ -184,37 +178,54 @@ done
 #   Hares should follow H_0*e^{rt}
 #   Pumas should follow P_0*e^{-mt}
 #
-#clean_output_directory
-#
-#./hare-and-puma \
-#  --landfile "$uniform_file" \
-#  --harefile "$direct_file" \
-#  --pumafile "$direct_file" \
-#  --output "$output_directory" \
-#  --run_time 1 \
-#  --time_step 0.1 \
-#  -r 0 \
-#  -a 1 \
-#  -k 0 \
-#  -b 0 \
-#  -m 1 \
-#  -l 0  >/dev/null
-#
-#puma_0=( $(echo "$direct") )
-#hare_0=( $(echo "$direct") )
-#
-#data_1=$(cat $output_directory/population_0.000.ppm | tail -n +2)
-#puma_1=( $( extract_puma "$data_1" ) )
-#hare_1=( $( extract_hare "$data_1" ) )
-#
-#data_2=$( cat $output_directory/population_0.100.ppm | tail -n +2)
-#puma_2=( $( extract_puma "$data_2" ) )
-#hare_2=( $( extract_hare "$data_2" ) )
-#
-#for i in {0..24}; do
-#  chk=$( echo "${puma_0[$i]} * e(1 * 0.1)" | bc -l )
-#  echo "$chk" "${puma_0[$i]}" "${puma_1[$i]}" "${puma_2[$i]}"
-#done
+dt=0.1
+clean_output_directory
+
+./hare-and-puma \
+  --landfile "$uniform_file" \
+  --harefile "$direct_file" \
+  --pumafile "$direct_file" \
+  --output "$output_directory" \
+  --run_time 1 \
+  --time_step "$dt" \
+  -r 1 \
+  -a 0 \
+  -k 0 \
+  -b 0 \
+  -m 1 \
+  -l 0  >/dev/null
+
+puma_0=( $(echo "$direct") )
+hare_0=( $(echo "$direct") )
+
+data_1=$(cat $output_directory/population_0.000.ppm | tail -n +2)
+puma_1=( $( extract_puma "$data_1" ) )
+hare_1=( $( extract_hare "$data_1" ) )
+
+data_2=$( cat $output_directory/population_0.100.ppm | tail -n +2)
+puma_2=( $( extract_puma "$data_2" ) )
+hare_2=( $( extract_hare "$data_2" ) )
+
+maxdiff=1
+for i in {0..24}; do
+  puma_chk=$( echo "${puma_0[$i]} * e(- $dt)" | bc -l )
+  puma_chk=$( echo "$puma_chk" | sed 's/\..*//' )
+  puma_diff=$( echo "$puma_chk" - "${puma_1[$i]}" | bc | sed 's/-//' )
+
+  if test "$puma_diff" -gt "$maxdiff"; then
+    echo "Puma death not following exponential decay"
+    exit 1;
+  fi
+
+  hare_chk=$( echo "${hare_0[$i]} * e($dt)" | bc -l )
+  hare_chk=$( echo "$hare_chk" | sed 's/\..*//' )
+  hare_diff=$( echo "$hare_chk" - "${hare_1[$i]}" | bc | sed 's/-//' )
+
+  if test "$hare_diff" -gt "$maxdiff"; then
+    echo "Hare birth not following exponential growth"
+    exit 1;
+  fi
+done
 
 
 #
