@@ -101,11 +101,11 @@ clean_output_directory
   -m 0 \
   -l 0   >/dev/null
 
-data_0=$(cat $output_directory/population_0.000.ppm | tail -n +2)
+data_0=$(cat $output_directory/population_0.100.ppm | tail -n +2)
 puma_0=( $( extract_puma "$data_0" ) )
 hare_0=( $( extract_hare "$data_0" ) )
 
-data_1=$( cat $output_directory/population_0.100.ppm | tail -n +2)
+data_1=$( cat $output_directory/population_0.200.ppm | tail -n +2)
 puma_1=( $( extract_puma "$data_1" ) )
 hare_1=( $( extract_hare "$data_1" ) )
 
@@ -198,11 +198,11 @@ clean_output_directory
 puma_0=( $(echo "$direct") )
 hare_0=( $(echo "$direct") )
 
-data_1=$(cat $output_directory/population_0.000.ppm | tail -n +2)
+data_1=$(cat $output_directory/population_0.100.ppm | tail -n +2)
 puma_1=( $( extract_puma "$data_1" ) )
 hare_1=( $( extract_hare "$data_1" ) )
 
-data_2=$( cat $output_directory/population_0.100.ppm | tail -n +2)
+data_2=$( cat $output_directory/population_0.200.ppm | tail -n +2)
 puma_2=( $( extract_puma "$data_2" ) )
 hare_2=( $( extract_hare "$data_2" ) )
 
