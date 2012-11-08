@@ -11,13 +11,13 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
 	int NX = board.get_width();
 	int landSum;
   double hareSum, pumaSum;
-	Board<Tile> new_board(NX,NY);
+	static Board<Tile> work_board(NX,NY);
 
-#pragma omp parallel default(none) shared(board, timeStep, a, b, k, l, m, r, NX, NY, new_board) private(landSum, hareSum, pumaSum)
+#pragma omp parallel default(none) shared(board, timeStep, a, b, k, l, m, r, NX, NY, work_board) private(landSum, hareSum, pumaSum)
   {
     #pragma omp for
-    for(int x=1; x<NY-1; ++x)
-    for(int y=1; y<NX-1; ++y)
+    for(int x=1; x<NX-1; ++x)
+    for(int y=1; y<NY-1; ++y)
     {
       if(board(x,y).is_land())
       {
@@ -51,27 +51,27 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
           landSum++;
         }
 
-        new_board(x,y).hare = board(x,y).hare + timeStep* \
+        work_board(x,y).hare = board(x,y).hare + timeStep* \
         (r*board(x,y).hare - a*board(x,y).hare * board(x,y).puma + k* \
         (hareSum - landSum*board(x,y).hare));
 
-        if(new_board(x,y).hare < 0)
+        if(work_board(x,y).hare < 0)
         {
-          new_board(x,y).hare = 0;
+          work_board(x,y).hare = 0;
         }	
 
-        new_board(x,y).puma = board(x,y).puma + timeStep* \
+        work_board(x,y).puma = board(x,y).puma + timeStep* \
         (b*board(x,y).hare*board(x,y).puma - m*board(x,y).puma + l* \
         (pumaSum - landSum*board(x,y).puma));
 
-        if(new_board(x,y).puma < 0) 
+        if(work_board(x,y).puma < 0) 
         { 
-          new_board(x,y).puma = 0; 
+          work_board(x,y).puma = 0; 
         }  
       }
       else
       {
-        new_board(x,y).hare = new_board(x,y).puma = 0;
+        work_board(x,y).hare = work_board(x,y).puma = 0;
       }
     }
 
@@ -79,8 +79,8 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
     for(int x=1; x<NY-1; ++x)
     for(int y=1; y<NX-1; ++y)
     {
-      board(x,y).hare = new_board(x,y).hare;
-      board(x,y).puma = new_board(x,y).puma;
+      board(x,y).hare = work_board(x,y).hare;
+      board(x,y).puma = work_board(x,y).puma;
     }
 
   }
