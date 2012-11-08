@@ -2,15 +2,18 @@
 
 /*function that takes in the arrays of hares and pumas and updates them using the update equations*/
 
+using namespace std;
+
 void update_animals(Board<Tile> &board, double timeStep, double a, double b, double k, double l, double m, double r)
 {
 
 	int NY = board.get_height();
 	int NX = board.get_width();
-	int landSum, hareSum, pumaSum;
+	int landSum;
+  double hareSum, pumaSum;
 	Board<Tile> new_board(NX,NY);
 
-#pragma omp parallel default(none) shared(board, timeStep, a, b, k, l, m, r, NX, NY, new_board) private(landSum, hareSum, pumaSum)
+#pragma omp parallel default(none) shared(cout, board, timeStep, a, b, k, l, m, r, NX, NY, new_board) private(landSum, hareSum, pumaSum)
   {
     #pragma omp for schedule(runtime)
     for(int x=1; x<NY-1; ++x)
@@ -18,7 +21,7 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
     {
       if(board(x,y).is_land())
       {
-      landSum = hareSum = pumaSum = 0;
+        landSum = hareSum = pumaSum = 0;
 
         hareSum += board(x-1,y).hare;
         pumaSum += board(x-1,y).puma;

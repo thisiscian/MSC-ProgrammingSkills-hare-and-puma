@@ -31,7 +31,7 @@ int main()
 		else
 		{
 			board(i,j).make_land();
-			board(i,j).hare = old_board(i,j).hare = 1.0;
+			board(i,j).hare = old_board(i,j).hare = 1.6;
 			board(i,j).puma = old_board(i,j).puma = 0.0;
 		}
 	}
@@ -84,7 +84,7 @@ int main()
 	for(size_t i=1; i<9; ++i)
 	{
 		board(i,j).hare = old_board(i,j).hare = 0.0;
-		board(i,j).puma = old_board(i,j).puma = 1.0;
+		board(i,j).puma = old_board(i,j).puma = 1.6;
 	}
 
 	for(int i=0;i<10;++i)
@@ -142,8 +142,8 @@ int main()
 		board(i,j).puma = old_board(i,j).puma = 0.0;
 	}
 
-	board(5,5).hare = 10.0;
-	board(5,5).puma = 10.0;
+	board(5,5).hare = 10.8;
+	board(5,5).puma = 10.8;
 	
 	update_animals(board, timeStep, a, b, k, l, m, r);
 
@@ -185,7 +185,7 @@ int main()
 	}
 
 //
-// reinitialise to now test that the parameters have the correct effect
+// reinitialise to now test that the parameters (all=0) have the correct effect
 //
 
 	for(size_t j=1; j<9; ++j)
@@ -225,7 +225,7 @@ int main()
 	}
 
 //
-// reinitialise to now test that the parameters have the correct effect
+// reinitialise to now test that the parameters (a,b!=0) have the correct effect
 //
 
 	for(size_t j=1; j<9; ++j)
@@ -258,7 +258,7 @@ int main()
     {
       //upon solving the update equations with all parameters 0 except a and b, one finds that the following must hold true
       //not checked against 0 due to floating point errors
-      if(board(i,j).hare - old_board(i,j).hare + (a/b)*(board(i,j).puma - board(i,j).puma) > 1e-09)
+      if(board(i,j).hare - old_board(i,j).hare + (a/b)*(board(i,j).puma - board(i,j).puma) > 0.0000001)
       {
         cout << "error: a,b parameter test: derived equation does not hold" << endl;
         return 1;
@@ -266,6 +266,177 @@ int main()
     }
   }
 	
+//
+// reinitialise to now test that the parameters(k,l=0) have the correct effect
+//
+
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
+	{
+    if(0 == (i+j)%2)
+    {
+      board(i,j).hare = old_board(i,j).hare = 1.0;
+      board(i,j).puma = old_board(i,j).puma = 1.0;
+    }
+    else
+    {
+      board(i,j).hare = old_board(i,j).hare = 0.0;
+      board(i,j).puma = old_board(i,j).puma = 0.0;
+    }
+	}
+ 
+//
+//  will test that if k,l=0 that there is no diffusion occuring
+//  
+
+	k = l = 0.0;
+  a = b = m = r = 1.0;
+	newHareSum = oldHareSum = newPumaSum = oldPumaSum = 0;	
+  	
+	update_animals(board, timeStep, a, b, k, l, m, r);
+
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
+	{
+    if(1 == (i+j)%2)
+    {
+      if(board(i,j).hare != 0.0)
+      {
+        cout << "error: k,l parameter test: hares diffusing" << endl;
+        return 1;
+      }
+      if(board(i,j).puma != 0.0)
+      {
+        cout << "error: k,l parameter test: pumas diffusing" << endl;
+        return 1;
+      }
+    }
+  }
+	
+	if(newHareSum != oldHareSum)
+	{
+		cout << "error: 0 parameter test: Hare numbers changing" << endl;
+		return 1;
+	}
+	else if(newPumaSum != oldPumaSum)
+	{
+		cout << "error: 0 parameter test: Puma numbers changing" << endl;
+		return 1;
+	}
+
+
+//
+// reinitialise to now test that the parameters(k,l=0) have the correct effect
+//
+
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
+	{
+    if(0 == (i+j)%2)
+    {
+      board(i,j).hare = old_board(i,j).hare = 1.0;
+      board(i,j).puma = old_board(i,j).puma = 1.0;
+    }
+    else
+    {
+      board(i,j).hare = old_board(i,j).hare = 0.0;
+      board(i,j).puma = old_board(i,j).puma = 0.0;
+    }
+	}
+ 
+//
+//  will test that if k,l=0 that the hares an pumas increase in populated squares according to H_1=H_0e^(rt) and similarly
+//  for pumas
+//  
+
+	a = b = k = l = 0.0;
+  m = r = 1.0;
+	newHareSum = oldHareSum = newPumaSum = oldPumaSum = 0;	
+  	
+	update_animals(board, timeStep, a, b, k, l, m, r);
+
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
+	{
+    if(0 == (i+j)%2)
+    {
+      if(board(i,j).hare - old_board(i,j).hare*exp(r*timeStep) > 0.0000001)
+      {
+        cout << "error: k,l=0 parameter test: hares not evolving properly" << endl;
+        return 1;
+      }
+      if(board(i,j).puma - old_board(i,j).puma*exp(-m*timeStep) > 0.0000001)
+      {
+        cout << "error: k,l=0 parameter test: pumas not evolving properly" << endl;
+        return 1;
+      }
+    }
+    else
+    {
+      if(board(i,j).hare != 0.0)
+      {
+        cout << "error: k,l=0 parameter test: hares diffusing" << endl;
+        return 1;
+      }
+      if(board(i,j).puma != 0.0)
+      {
+        cout << "error: k,l=0 parameter test: pumas diffusing" << endl;
+        return 1;
+      }
+    }
+  }
+
+//
+// reinitialise to now test that the parameters (all=0) have the correct effect
+//
+
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
+	{
+		board(i,j).hare = old_board(i,j).hare = 1.5;
+		board(i,j).puma = old_board(i,j).puma = 1.5;
+	}
+ 
+//
+//  will test that if all parameters are zero that the number of animals stay the same
+//   
+
+	a = b = m = r = 0.0;
+  k = l = 1.0;
+	newHareSum = oldHareSum = newPumaSum = oldPumaSum = 0;	
+  	
+	update_animals(board, timeStep, a, b, k, l, m, r);
+
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
+	{
+    if(old_board(i,j).hare != board(i,j).hare)
+    {
+      cout << old_board(i-1,j).hare << board(i+1,j).hare << board(i,j+1).hare << board(i,j-1).hare << "i " << i << "j " << j << " error: k,l=1 parameter test: hare numbers changed" << endl;
+      return 1;
+    }
+    if(old_board(i,j).puma != board(i,j).puma)
+    {
+      cout << "error: k,l=1 parameter test: puma numbers changed" << endl;
+      return 1;
+    }
+    newHareSum += board(i,j).hare;
+    oldHareSum += old_board(i,j).hare;
+    newPumaSum += board(i,j).puma;
+    oldPumaSum += old_board(i,j).puma;
+  }
+	
+	if(newHareSum != oldHareSum)
+	{
+		cout << "error: k,l=1 parameter test: Hare numbers changing" << endl;
+		return 1;
+	}
+	else if(newPumaSum != oldPumaSum)
+	{
+		cout << "error: k,l=1 parameter test: Puma numbers changing" << endl;
+		return 1;
+	}
+
 
 //
 // test for animals appearing on water in the map

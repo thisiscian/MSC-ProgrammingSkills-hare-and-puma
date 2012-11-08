@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <stdlib.h>
+#include <math.h>
 #include <omp.h>
 #include "board.h"
 #include "tile.h"
