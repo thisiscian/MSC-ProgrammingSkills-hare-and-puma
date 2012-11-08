@@ -11,18 +11,20 @@ using namespace std;
 int main()
 {
 	double timeStep, a, b, k, l, m, r, newHareSum, oldHareSum, newPumaSum, oldPumaSum;
-	Board<Tile> board(10, 10), old_board(10,10);
+	Board<Tile> board(12, 10), old_board(12, 10);
 
-	a = b = k = l = m = r = timeStep = 1.0; // chosen so there are values
+	a = b = k = l = m = r = 1.0; // chosen so there are values
+  timeStep = 0.1; //to maintain stability in the equation timeStep*k and timeStep*l must be < 0.25
+
 
 //
 // initialise without pumas to test hare growth also make boundaries 0
 //
 
-	for(size_t j=0; j<10; ++j)
-	for(size_t i=0; i<10; ++i)
+	for(size_t j=0; j<board.get_height(); ++j)
+	for(size_t i=0; i<board.get_width(); ++i)
 	{
-		if(j == 0 || i == 0 || j == 9 || i == 9)
+		if(j == 0 || i == 0 || j == board.get_height()-1 || i == board.get_width()-1)
 		{
 			board(i,j).make_water();
 			board(i,j).hare = old_board(i,j).hare = 0.0;
@@ -45,8 +47,8 @@ int main()
 // and test for negative pumas or hares
 //
 
-	for(size_t j=0; j<10; ++j)
-	for(size_t i=0; i<10; ++i)
+	for(size_t j=0; j<board.get_height(); ++j)
+	for(size_t i=0; i<board.get_width(); ++i)
 	{
 		if(board(i,j).hare < 0)
 		{
@@ -80,14 +82,14 @@ int main()
 // this requires a short loop over updates
 //
 	
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
 		board(i,j).hare = old_board(i,j).hare = 0.0;
 		board(i,j).puma = old_board(i,j).puma = 1.6;
 	}
 
-	for(int i=0;i<10;++i)
+	for(int i=0;i<1000;++i)
 	{
 		update_animals(board, timeStep, a, b, k, l, m, r);
 	}
@@ -100,8 +102,9 @@ int main()
 
 	newHareSum = oldHareSum = newPumaSum = oldPumaSum = 0;	
 
-	for(size_t i=0; i<10; ++i)
-	for(size_t j=0; j<10; ++j)
+	for(size_t i=0; i<board.get_width(); ++i)
+{
+	for(size_t j=0; j<board.get_height(); ++j)
 	{
 		if(board(i,j).hare < 0)
 		{
@@ -118,6 +121,7 @@ int main()
 		newPumaSum += board(i,j).puma;
 		oldPumaSum += old_board(i,j).puma;
 	}
+}
 	
 	if(newHareSum != 0)
 	{
@@ -135,8 +139,8 @@ int main()
 // initialise one square with pumas and hares to test migration
 //
 
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
 		board(i,j).hare = old_board(i,j).hare = 0.0;
 		board(i,j).puma = old_board(i,j).puma = 0.0;
@@ -169,8 +173,8 @@ int main()
 //	test for negative hares and pumas
 //
 
-	for(size_t j=0; j<10; ++j)
-	for(size_t i=0; i<10; ++i)
+	for(size_t j=0; j<board.get_height(); ++j)
+	for(size_t i=0; i<board.get_width(); ++i)
 	{
 		if(board(i,j).hare < 0)
 		{
@@ -188,8 +192,8 @@ int main()
 // reinitialise to now test that the parameters (all=0) have the correct effect
 //
 
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
 		board(i,j).hare = old_board(i,j).hare = 1.5;
 		board(i,j).puma = old_board(i,j).puma = 1.5;
@@ -204,8 +208,8 @@ int main()
   	
 	update_animals(board, timeStep, a, b, k, l, m, r);
 
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
     newHareSum += board(i,j).hare;
     oldHareSum += old_board(i,j).hare;
@@ -228,8 +232,8 @@ int main()
 // reinitialise to now test that the parameters (a,b!=0) have the correct effect
 //
 
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
 		board(i,j).hare = 1.5;
 		board(i,j).puma = 1.5;
@@ -245,16 +249,16 @@ int main()
 
   for(int k=0; k<10; ++k)
   {
-    for(size_t j=1; j<9; ++j)
-    for(size_t i=1; i<9; ++i)
+    for(size_t j=1; j<board.get_height()-1; ++j)
+    for(size_t i=1; i<board.get_width()-1; ++i)
     {
       old_board(i,j).hare = board(i,j).hare;
       old_board(i,j).puma = board(i,j).puma;
     }
     update_animals(board, timeStep, a, b, k, l, m, r);
 
-    for(size_t j=1; j<9; ++j)
-    for(size_t i=1; i<9; ++i)
+    for(size_t j=1; j<board.get_height()-1; ++j)
+    for(size_t i=1; i<board.get_width()-1; ++i)
     {
       //upon solving the update equations with all parameters 0 except a and b, one finds that the following must hold true
       //not checked against 0 due to floating point errors
@@ -270,8 +274,8 @@ int main()
 // reinitialise to now test that the parameters(k,l=0) have the correct effect
 //
 
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
     if(0 == (i+j)%2)
     {
@@ -295,8 +299,8 @@ int main()
   	
 	update_animals(board, timeStep, a, b, k, l, m, r);
 
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
     if(1 == (i+j)%2)
     {
@@ -318,8 +322,8 @@ int main()
 // reinitialise to now test that the parameters(k,l=0) have the correct effect
 //
 
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
     if(0 == (i+j)%2)
     {
@@ -344,8 +348,8 @@ int main()
   	
 	update_animals(board, timeStep, a, b, k, l, m, r);
 
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
     if(0 == (i+j)%2)
     {
@@ -379,8 +383,8 @@ int main()
 // reinitialise to now test that the parameters (k,l=1, allelse=0) have the correct effect
 //
 
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
 		board(i,j).hare = old_board(i,j).hare = 1.5;
 		board(i,j).puma = old_board(i,j).puma = 1.5;
@@ -396,8 +400,8 @@ int main()
   	
 	update_animals(board, timeStep, a, b, k, l, m, r);
 
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
     if(old_board(i,j).hare != board(i,j).hare)
     {
@@ -430,8 +434,8 @@ int main()
 // reinitialise to now test that the parameters(k,l=1) and everything else 0 has the correct effect
 //
 
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
     if(0 == (i+j)%2)
     {
@@ -455,8 +459,8 @@ int main()
   	
 	update_animals(board, timeStep, a, b, k, l, m, r);
 
-	for(size_t j=1; j<9; ++j)
-	for(size_t i=1; i<9; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
 	{
     if(1 == (i+j)%2)
     {
@@ -478,8 +482,8 @@ int main()
 //
 
 
-	for(size_t i=1; i<9; ++i)
-	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<board.get_width()-1; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
 	{
 		board(i,j).hare = 0.9; //I know these values persist for a while
 		board(i,j).puma = 1.1;
@@ -498,6 +502,10 @@ int main()
 			return 1;
 		} 
 	}
+
+//
+//  test handling of rectangular arrays to ensure get_length() and get_height() and board indices are used correctly
+//
 
 	return 0;
 }
