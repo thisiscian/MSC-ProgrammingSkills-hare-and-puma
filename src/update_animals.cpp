@@ -76,8 +76,8 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
     }
 
     #pragma omp for
-    for(int x=1; x<NY-1; ++x)
-    for(int y=1; y<NX-1; ++y)
+    for(int x=1; x<NX-1; ++x)
+    for(int y=1; y<NY-1; ++y)
     {
       board(x,y).hare = work_board(x,y).hare;
       board(x,y).puma = work_board(x,y).puma;
