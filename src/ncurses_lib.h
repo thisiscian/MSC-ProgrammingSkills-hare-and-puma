@@ -12,39 +12,22 @@
 #include <cstdio>
 #include <vector>
 #include <string>
+
 #include "tile.h"
 #include "board.h"
 #include "output.h"
-#include "test_field.h"
 #include "options.h"
 #include "update.h"
-
-class FieldBlock
-{
-	public:
-	FieldBlock(Board<Tile>* board_in, size_t x, size_t y, size_t x_max, size_t y_max);
-	void find_land_state();
-	double hare_count();
-	double puma_count();
-	int land_count;
-	size_t x_min;
-	size_t y_min;
-	size_t x_max;
-	size_t y_max;
-	double hare;
-	double puma;
-	Board<Tile>* board;
-	void set_range(size_t x, size_t y, size_t x_max, size_t y_max);
-	int total;
-	bool is_fully_water;
-	private:
-};
+#include "field_tile.h"
 
 class NcursesField
 {
 	public:
-	NcursesField(Board<Tile>& board, int delay, int tileLine, int tileCols);
+	NcursesField(Board<Tile>& board, Options& options, int tileLines, int tileCols);
 	void update(double time);
+	#ifdef GUI_TEST
+		std::vector<FieldTile> fieldtile;
+	#endif
 	int delay;
 
 	private:
@@ -56,12 +39,19 @@ class NcursesField
 
 	BoardStatistics stats;
 	Board<Tile>* board;
-	std::vector<FieldBlock> block;
-	clock_t old_time;
-	double hareSymbolWorth;
-	double pumaSymbolWorth;
-	int tileLine;
-	int tileCols;
+	Options* options;
+	#ifndef GUI_TEST
+		std::vector<FieldTile> fieldtile;
+	#endif
+	
+	clock_t old_time;	// for refreshing the gui
+
+	double hareSymbolWorth;	// how much each symbol representing
+	double pumaSymbolWorth;	// each species is worth
+
+	int tileLines;	// height and width
+	int tileCols;		// of tile respectively
+
 	int fieldNumHorizontalTiles;
 	int fieldNumVerticalTiles;
 	int displayableWidth;
@@ -77,10 +67,11 @@ class NcursesField
 	void update_input();
 	void update_statistics(double time);
 	void update_key();
-	void set_field_block_sizes();
+	void set_field_tile_sizes();
 	double get_hare_max();
 	double get_puma_max();
-	double count_animals_in_blocks();
+	double count_animals_in_tiles();
 	void quit_program();
 };
+
 #endif

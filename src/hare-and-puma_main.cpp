@@ -49,11 +49,31 @@ int main(int argc, char* argv[])
   create_output_directory(options.output_directory);
   while(time <= finalTime)
   {
-	  update_animals(board, timeStep, a, b, k, l, m, r);
+    for(size_t j=0; j<board.get_height(); ++j)
+    {
+      for(size_t i=0; i<board.get_width(); ++i)
+      {
+        std::cout << board(i,j).hare << " ";
+      }
+      std::cout << std::endl;
+    }
+
+    update_animals(board, timeStep, a, b, k, l, m, r);
+
+    for(size_t j=0; j<board.get_height(); ++j)
+    {
+      for(size_t i=0; i<board.get_width(); ++i)
+      {
+        std::cout << board(i,j).hare << " ";
+      }
+      std::cout << std::endl;
+    }
+
     if(i%1 == 0)
     {
-  	  cout << "writing ppm for time: " << time << endl;
-      write_ppm(board, time);
+      cout << "writing ppm for time: " << time << endl;
+
+      write_ppm(board, time, options.output_directory);
     }
     time += timeStep;
     i++;    
