@@ -29,7 +29,7 @@ void BoardSetter::set_land_from_file(
   {
     // add halo of water on boundaries
     if(column == 0 || column == temp_board.get_width()+1
-        || row == 0 || row == temp_board.get_width()+1)
+        || row == 0 || row == temp_board.get_height()+1)
     {
       board(column, row).make_water();
     }
@@ -73,7 +73,7 @@ void BoardSetter::set_hare_from_file(
   {
     // set boundary to zero
     if(column == 0 || column == temp_board.get_width()+1
-        || row == 0 || row == temp_board.get_width()+1)
+        || row == 0 || row == temp_board.get_height()+1)
     {
       board(column, row).hare = 0;
     }
@@ -115,7 +115,7 @@ void BoardSetter::set_puma_from_file(
   {
     // set boundary to zero
     if(column == 0 || column == temp_board.get_width()+1
-        || row == 0 || row == temp_board.get_width()+1)
+        || row == 0 || row == temp_board.get_height()+1)
     {
       board(column, row).puma = 0;
     }
