@@ -1,6 +1,6 @@
 bin_PROGRAMS = hare-and-puma
 
-hare_and_puma_SOURCES = board_setter.cpp tile.cpp options.cpp hare-and-puma_main.cpp test_field.cpp update_animals.cpp output.cpp statistics.cpp
+hare_and_puma_SOURCES = board_setter.cpp tile.cpp options.cpp hare-and-puma_main.cpp update_animals.cpp output.cpp statistics.cpp
 hare_and_puma_CPPFLAGS = $(BOOST_CPPFLAGS)
 hare_and_puma_CXXFLAGS = -fopenmp
 hare_and_puma_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)

@@ -275,8 +275,8 @@ int main()
 	{
     if(0 == (i+j)%2)
     {
-      board(i,j).hare = old_board(i,j).hare = 1.0;
-      board(i,j).puma = old_board(i,j).puma = 1.0;
+      board(i,j).hare = old_board(i,j).hare = 1.5;
+      board(i,j).puma = old_board(i,j).puma = 1.5;
     }
     else
     {
@@ -312,17 +312,6 @@ int main()
       }
     }
   }
-	
-	if(newHareSum != oldHareSum)
-	{
-		cout << "error: 0 parameter test: Hare numbers changing" << endl;
-		return 1;
-	}
-	else if(newPumaSum != oldPumaSum)
-	{
-		cout << "error: 0 parameter test: Puma numbers changing" << endl;
-		return 1;
-	}
 
 
 //
@@ -334,8 +323,8 @@ int main()
 	{
     if(0 == (i+j)%2)
     {
-      board(i,j).hare = old_board(i,j).hare = 1.0;
-      board(i,j).puma = old_board(i,j).puma = 1.0;
+      board(i,j).hare = old_board(i,j).hare = 1.5;
+      board(i,j).puma = old_board(i,j).puma = 1.5;
     }
     else
     {
@@ -387,7 +376,7 @@ int main()
   }
 
 //
-// reinitialise to now test that the parameters (all=0) have the correct effect
+// reinitialise to now test that the parameters (k,l=1, allelse=0) have the correct effect
 //
 
 	for(size_t j=1; j<9; ++j)
@@ -398,7 +387,7 @@ int main()
 	}
  
 //
-//  will test that if all parameters are zero that the number of animals stay the same
+//  will test that if the board is uniform it stays uniform with only diffusion
 //   
 
 	a = b = m = r = 0.0;
@@ -437,6 +426,52 @@ int main()
 		return 1;
 	}
 
+//
+// reinitialise to now test that the parameters(k,l=1) and everything else 0 has the correct effect
+//
+
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
+	{
+    if(0 == (i+j)%2)
+    {
+      board(i,j).hare = old_board(i,j).hare = 1.5;
+      board(i,j).puma = old_board(i,j).puma = 1.5;
+    }
+    else
+    {
+      board(i,j).hare = old_board(i,j).hare = 0.0;
+      board(i,j).puma = old_board(i,j).puma = 0.0;
+    }
+	}
+ 
+//
+//  will test that if k,l=1 on a checkerboard 0 squares become populated
+//  
+
+	k = l = 1.0;
+  a = b = m = r = 0.0;
+	newHareSum = oldHareSum = newPumaSum = oldPumaSum = 0;	
+  	
+	update_animals(board, timeStep, a, b, k, l, m, r);
+
+	for(size_t j=1; j<9; ++j)
+	for(size_t i=1; i<9; ++i)
+	{
+    if(1 == (i+j)%2)
+    {
+      if(board(i,j).hare == 0.0)
+      {
+        cout << "error: k,l parameter test: hares not diffusing" << endl;
+        return 1;
+      }
+      if(board(i,j).puma == 0.0)
+      {
+        cout << "error: k,l parameter test: pumas not diffusing" << endl;
+        return 1;
+      }
+    }
+  }
 
 //
 // test for animals appearing on water in the map
