@@ -42,3 +42,4 @@ src/distribution_test
 src/options_test
 src/ncurses_test
 src/update_performance_test
+src/field_tile_test

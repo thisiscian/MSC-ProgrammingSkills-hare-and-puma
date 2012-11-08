@@ -91,7 +91,6 @@ am_field_tile_test_OBJECTS =  \
 	field_tile_test-statistics.$(OBJEXT) \
 	field_tile_test-field_tile.$(OBJEXT) \
 	field_tile_test-ncurses_lib.$(OBJEXT) \
-	field_tile_test-test_field.$(OBJEXT) \
 	field_tile_test-update_animals.$(OBJEXT) \
 	field_tile_test-board_setter.$(OBJEXT) \
 	field_tile_test-options.$(OBJEXT)
@@ -105,7 +104,6 @@ field_tile_test_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 am_hare_and_puma_OBJECTS = hare_and_puma-board_setter.$(OBJEXT) \
 	hare_and_puma-tile.$(OBJEXT) hare_and_puma-options.$(OBJEXT) \
 	hare_and_puma-hare-and-puma_main.$(OBJEXT) \
-	hare_and_puma-test_field.$(OBJEXT) \
 	hare_and_puma-update_animals.$(OBJEXT) \
 	hare_and_puma-output.$(OBJEXT) \
 	hare_and_puma-statistics.$(OBJEXT)
@@ -119,7 +117,6 @@ am_ncurses_test_OBJECTS = ncurses_test-tile.$(OBJEXT) \
 	ncurses_test-statistics.$(OBJEXT) \
 	ncurses_test-field_tile.$(OBJEXT) \
 	ncurses_test-ncurses_lib.$(OBJEXT) \
-	ncurses_test-test_field.$(OBJEXT) \
 	ncurses_test-update_animals.$(OBJEXT) \
 	ncurses_test-board_setter.$(OBJEXT) \
 	ncurses_test-options.$(OBJEXT)
@@ -322,7 +319,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-hare_and_puma_SOURCES = board_setter.cpp tile.cpp options.cpp hare-and-puma_main.cpp test_field.cpp update_animals.cpp output.cpp statistics.cpp
+hare_and_puma_SOURCES = board_setter.cpp tile.cpp options.cpp hare-and-puma_main.cpp update_animals.cpp output.cpp statistics.cpp
 hare_and_puma_CPPFLAGS = $(BOOST_CPPFLAGS)
 hare_and_puma_CXXFLAGS = -fopenmp
 hare_and_puma_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
@@ -339,11 +336,11 @@ options_test_CPPFLAGS = $(BOOST_CPPFLAGS)
 options_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 options_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
 GUI_TESTS = field_tile_test ncurses_test 
-field_tile_test_SOURCES = field_tile_test.cpp tile.cpp statistics.cpp field_tile.cpp ncurses_lib.cpp test_field.cpp update_animals.cpp board_setter.cpp options.cpp 
+field_tile_test_SOURCES = field_tile_test.cpp tile.cpp statistics.cpp field_tile.cpp ncurses_lib.cpp update_animals.cpp board_setter.cpp options.cpp 
 field_tile_test_CXXFLAGS = -lncurses $(BOOST_CPPFLAGS) -DGUI_TEST
 field_tile_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 field_tile_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
-ncurses_test_SOURCES = tile.cpp ncurses_test.cpp statistics.cpp field_tile.cpp ncurses_lib.cpp test_field.cpp update_animals.cpp board_setter.cpp options.cpp 
+ncurses_test_SOURCES = tile.cpp ncurses_test.cpp statistics.cpp field_tile.cpp ncurses_lib.cpp update_animals.cpp board_setter.cpp options.cpp 
 ncurses_test_CXXFLAGS = -lncurses $(BOOST_CPPFLAGS)
 ncurses_test_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
 ncurses_test_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS)
@@ -489,7 +486,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-ncurses_lib.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-options.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-statistics.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-test_field.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-tile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field_tile_test-update_animals.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hare_and_puma-board_setter.Po@am__quote@
@@ -497,7 +493,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hare_and_puma-options.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hare_and_puma-output.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hare_and_puma-statistics.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hare_and_puma-test_field.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hare_and_puma-tile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hare_and_puma-update_animals.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses_test-board_setter.Po@am__quote@
@@ -506,7 +501,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses_test-ncurses_test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses_test-options.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses_test-statistics.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses_test-test_field.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses_test-tile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses_test-update_animals.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/options_test-options.Po@am__quote@
@@ -615,20 +609,6 @@ field_tile_test-ncurses_lib.obj: ncurses_lib.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-ncurses_lib.obj `if test -f 'ncurses_lib.cpp'; then $(CYGPATH_W) 'ncurses_lib.cpp'; else $(CYGPATH_W) '$(srcdir)/ncurses_lib.cpp'; fi`
 
-field_tile_test-test_field.o: test_field.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-test_field.o -MD -MP -MF $(DEPDIR)/field_tile_test-test_field.Tpo -c -o field_tile_test-test_field.o `test -f 'test_field.cpp' || echo '$(srcdir)/'`test_field.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-test_field.Tpo $(DEPDIR)/field_tile_test-test_field.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='test_field.cpp' object='field_tile_test-test_field.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-test_field.o `test -f 'test_field.cpp' || echo '$(srcdir)/'`test_field.cpp
-
-field_tile_test-test_field.obj: test_field.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-test_field.obj -MD -MP -MF $(DEPDIR)/field_tile_test-test_field.Tpo -c -o field_tile_test-test_field.obj `if test -f 'test_field.cpp'; then $(CYGPATH_W) 'test_field.cpp'; else $(CYGPATH_W) '$(srcdir)/test_field.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-test_field.Tpo $(DEPDIR)/field_tile_test-test_field.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='test_field.cpp' object='field_tile_test-test_field.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -c -o field_tile_test-test_field.obj `if test -f 'test_field.cpp'; then $(CYGPATH_W) 'test_field.cpp'; else $(CYGPATH_W) '$(srcdir)/test_field.cpp'; fi`
-
 field_tile_test-update_animals.o: update_animals.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(field_tile_test_CXXFLAGS) $(CXXFLAGS) -MT field_tile_test-update_animals.o -MD -MP -MF $(DEPDIR)/field_tile_test-update_animals.Tpo -c -o field_tile_test-update_animals.o `test -f 'update_animals.cpp' || echo '$(srcdir)/'`update_animals.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/field_tile_test-update_animals.Tpo $(DEPDIR)/field_tile_test-update_animals.Po
@@ -726,20 +706,6 @@ hare_and_puma-hare-and-puma_main.obj: hare-and-puma_main.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='hare-and-puma_main.cpp' object='hare_and_puma-hare-and-puma_main.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(hare_and_puma_CPPFLAGS) $(CPPFLAGS) $(hare_and_puma_CXXFLAGS) $(CXXFLAGS) -c -o hare_and_puma-hare-and-puma_main.obj `if test -f 'hare-and-puma_main.cpp'; then $(CYGPATH_W) 'hare-and-puma_main.cpp'; else $(CYGPATH_W) '$(srcdir)/hare-and-puma_main.cpp'; fi`
-
-hare_and_puma-test_field.o: test_field.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(hare_and_puma_CPPFLAGS) $(CPPFLAGS) $(hare_and_puma_CXXFLAGS) $(CXXFLAGS) -MT hare_and_puma-test_field.o -MD -MP -MF $(DEPDIR)/hare_and_puma-test_field.Tpo -c -o hare_and_puma-test_field.o `test -f 'test_field.cpp' || echo '$(srcdir)/'`test_field.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/hare_and_puma-test_field.Tpo $(DEPDIR)/hare_and_puma-test_field.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='test_field.cpp' object='hare_and_puma-test_field.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(hare_and_puma_CPPFLAGS) $(CPPFLAGS) $(hare_and_puma_CXXFLAGS) $(CXXFLAGS) -c -o hare_and_puma-test_field.o `test -f 'test_field.cpp' || echo '$(srcdir)/'`test_field.cpp
-
-hare_and_puma-test_field.obj: test_field.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(hare_and_puma_CPPFLAGS) $(CPPFLAGS) $(hare_and_puma_CXXFLAGS) $(CXXFLAGS) -MT hare_and_puma-test_field.obj -MD -MP -MF $(DEPDIR)/hare_and_puma-test_field.Tpo -c -o hare_and_puma-test_field.obj `if test -f 'test_field.cpp'; then $(CYGPATH_W) 'test_field.cpp'; else $(CYGPATH_W) '$(srcdir)/test_field.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/hare_and_puma-test_field.Tpo $(DEPDIR)/hare_and_puma-test_field.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='test_field.cpp' object='hare_and_puma-test_field.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(hare_and_puma_CPPFLAGS) $(CPPFLAGS) $(hare_and_puma_CXXFLAGS) $(CXXFLAGS) -c -o hare_and_puma-test_field.obj `if test -f 'test_field.cpp'; then $(CYGPATH_W) 'test_field.cpp'; else $(CYGPATH_W) '$(srcdir)/test_field.cpp'; fi`
 
 hare_and_puma-update_animals.o: update_animals.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(hare_and_puma_CPPFLAGS) $(CPPFLAGS) $(hare_and_puma_CXXFLAGS) $(CXXFLAGS) -MT hare_and_puma-update_animals.o -MD -MP -MF $(DEPDIR)/hare_and_puma-update_animals.Tpo -c -o hare_and_puma-update_animals.o `test -f 'update_animals.cpp' || echo '$(srcdir)/'`update_animals.cpp
@@ -852,20 +818,6 @@ ncurses_test-ncurses_lib.obj: ncurses_lib.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ncurses_lib.cpp' object='ncurses_test-ncurses_lib.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ncurses_test_CXXFLAGS) $(CXXFLAGS) -c -o ncurses_test-ncurses_lib.obj `if test -f 'ncurses_lib.cpp'; then $(CYGPATH_W) 'ncurses_lib.cpp'; else $(CYGPATH_W) '$(srcdir)/ncurses_lib.cpp'; fi`
-
-ncurses_test-test_field.o: test_field.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ncurses_test_CXXFLAGS) $(CXXFLAGS) -MT ncurses_test-test_field.o -MD -MP -MF $(DEPDIR)/ncurses_test-test_field.Tpo -c -o ncurses_test-test_field.o `test -f 'test_field.cpp' || echo '$(srcdir)/'`test_field.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ncurses_test-test_field.Tpo $(DEPDIR)/ncurses_test-test_field.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='test_field.cpp' object='ncurses_test-test_field.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ncurses_test_CXXFLAGS) $(CXXFLAGS) -c -o ncurses_test-test_field.o `test -f 'test_field.cpp' || echo '$(srcdir)/'`test_field.cpp
-
-ncurses_test-test_field.obj: test_field.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ncurses_test_CXXFLAGS) $(CXXFLAGS) -MT ncurses_test-test_field.obj -MD -MP -MF $(DEPDIR)/ncurses_test-test_field.Tpo -c -o ncurses_test-test_field.obj `if test -f 'test_field.cpp'; then $(CYGPATH_W) 'test_field.cpp'; else $(CYGPATH_W) '$(srcdir)/test_field.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ncurses_test-test_field.Tpo $(DEPDIR)/ncurses_test-test_field.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='test_field.cpp' object='ncurses_test-test_field.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ncurses_test_CXXFLAGS) $(CXXFLAGS) -c -o ncurses_test-test_field.obj `if test -f 'test_field.cpp'; then $(CYGPATH_W) 'test_field.cpp'; else $(CYGPATH_W) '$(srcdir)/test_field.cpp'; fi`
 
 ncurses_test-update_animals.o: update_animals.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ncurses_test_CXXFLAGS) $(CXXFLAGS) -MT ncurses_test-update_animals.o -MD -MP -MF $(DEPDIR)/ncurses_test-update_animals.Tpo -c -o ncurses_test-update_animals.o `test -f 'update_animals.cpp' || echo '$(srcdir)/'`update_animals.cpp
