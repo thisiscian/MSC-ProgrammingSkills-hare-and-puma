@@ -2,7 +2,6 @@
 
 /*function that takes in the arrays of hares and pumas and updates them using the update equations*/
 
-using namespace std;
 
 void update_animals(Board<Tile> &board, double timeStep, double a, double b, double k, double l, double m, double r)
 {
