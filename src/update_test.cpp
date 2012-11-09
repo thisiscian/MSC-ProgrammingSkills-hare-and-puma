@@ -8,10 +8,12 @@ using namespace std;
 
 void reset_board(Board<Tile> &board, Board<Tile> &old_board);
 void initialise_board(Board<Tile> &board, Board<Tile> &old_board, double hares, double pumas, int mod);
+int test_negative(Board<Tile> &board, int testNumber);
 /*a piece of code to test the update routines*/
 
 int main()
 {
+  int test;
 	double timeStep, a, b, k, l, m, r, newHareSum, oldHareSum, newPumaSum, oldPumaSum;
 	Board<Tile> board(12, 10), old_board(12, 10);
 
@@ -34,10 +36,16 @@ int main()
 // and test for negative pumas or hares
 //
 
-	for(size_t j=0; j<board.get_height(); ++j)
+  test = test_negative(board, 1);
+  if(1 == test)
+  {
+    return 1;
+  }
+
 	for(size_t i=0; i<board.get_width(); ++i)
+	for(size_t j=0; j<board.get_height(); ++j)
 	{
-		if(board(i,j).hare < 0)
+	/*	if(board(i,j).hare < 0)
 		{
 			cout << "error: test 1: negative hares appearing" << endl;
 			return 1;
@@ -46,7 +54,7 @@ int main()
 		{
 			cout << "error: test 1: negative pumas appearing" << endl;
 			return 1;
-		}
+		}*/
 		newHareSum += board(i,j).hare;
 		oldHareSum += old_board(i,j).hare;
 		newPumaSum += board(i,j).puma;
@@ -84,11 +92,15 @@ int main()
 
 	newHareSum = oldHareSum = newPumaSum = oldPumaSum = 0;	
 
+  test = test_negative(board, 2);
+  if(1 == test)
+  {
+    return 1;
+  }
 	for(size_t i=0; i<board.get_width(); ++i)
-{
 	for(size_t j=0; j<board.get_height(); ++j)
 	{
-		if(board(i,j).hare < 0)
+	/*	if(board(i,j).hare < 0)
 		{
 			cout << "error: test 2:negative hares appearing" << endl;
 			return 1;
@@ -97,13 +109,12 @@ int main()
 		{
 			cout << "error: test 2: negative pumas appearing" << endl;
 			return 1;
-		}
+		}*/
 		newHareSum += board(i,j).hare;
 		oldHareSum += old_board(i,j).hare;
 		newPumaSum += board(i,j).puma;
 		oldPumaSum += old_board(i,j).puma;
 	}
-}
 	
 	if(newHareSum != 0)
 	{
@@ -157,20 +168,11 @@ int main()
 //	test for negative hares and pumas
 //
 
-	for(size_t j=0; j<board.get_height(); ++j)
-	for(size_t i=0; i<board.get_width(); ++i)
-	{
-		if(board(i,j).hare < 0)
-		{
-			cout << "error: test 3: negative hares appearing" << endl;
-			return 1;
-		}
-		if(board(i,j).puma < 0)
-		{
-			cout << "error: test 3: negative pumas appearing" << endl;
-			return 1;
-		}
-	}
+  test = test_negative(board, 3);
+  if(1 == test)
+  {
+    return 1;
+  }
 
 //
 // reinitialise to now test that the parameters (all=0) have the correct effect
@@ -474,5 +476,26 @@ void reset_board(Board<Tile> &board, Board<Tile> &old_board)
     board(i,j).make_land();
     old_board(i,j).make_land();
     }
+	}
+}
+
+//
+//function to test for negative animals appearing. Takes testNumber so location can be found
+//
+int test_negative(Board<Tile> &board, int testNumber)
+{
+	for(size_t i=0; i<board.get_width(); ++i)
+	for(size_t j=0; j<board.get_height(); ++j)
+	{
+		if(board(i,j).hare < 0)
+		{
+			cout << "error: test " << testNumber << ": negative hares appearing" << endl;
+			return 1;
+		}
+		if(board(i,j).puma < 0)
+		{
+			cout << "error: test " << testNumber << ": negative pumas appearing" << endl;
+			return 1;
+		}
 	}
 }
