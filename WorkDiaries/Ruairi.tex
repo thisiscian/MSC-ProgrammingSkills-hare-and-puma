@@ -57,20 +57,21 @@ Hares and Pumas were the animals to be modelled using the equations
 \[\pf{H}{t}=rH-aHP+k\left(\frac{\partial^2H}{\partial x^2}+\frac{\partial^2H}{\partial y^2}\right)\]
 \[\pf{P}{t}=bHP-mP+l\left(\frac{\partial^2P}{\partial x^2}+\frac{\partial^2P}{\partial y^2}\right)\]
 \\
-We were given certain specifications that it was necessary for the code to adhere to, such as the user being able to specify the parameters of the equaqtion.
+We were given certain specifications that it was necessary for the code to adhere to, such as the user being able to specify the parameters of the equation.
 I was part of a group of 3 with Cian Booth and P\'{a}draig \'{O}'Conbhu\'{i} and we decided to program using C++.
 We decided as a group how tasks should be split between the members and what each had to do.
 We also spent some time coming to an agreement on the coding practices that we would use, such as variable names to increase readability of the code overall.
 It was decided that everyone should be in charge of their own unit testing but a framework would be made for it so that all tests could be run easily by all group members at any time.
-Version control was then set up using git and an online repository in github.
+Version control was then set up using git and an online repository in \texttt{github}.
 This allowed the group to work from wherever they wanted with easy access to changes made by any other member.
 At this stage we were then able to begin working on our own parts of the program.
 
 
 \section{Tasks}
-I was in charge of the computational kernal of the program.
+I was in charge of the computational kernel of the program.
 It was my job to ensure that the actual equations for updating the hares and pumas on the board were implemented correctly and efficiently.
-First the update equations were coded up in a seperate function, simply in a way that it would work.
+First the update equations were coded up in a separate function, simply in a way that it would work.
+It was noted that an in-place update operation would not work correctly due to the fact that the system is a set of coupled equations.
 Following this unit tests were written in order to ensure that the operation was working correctly.
 In order to come up with some tests it was necessary to analytically solve the equations in certain cases and together with \pa I worked on these solutions in order to have a comprehensive test suite.
 This included testing different inputs and ensuring that they behaved as expected.
@@ -80,10 +81,10 @@ It was also ensured that updates didn't occur on water sites in order to reduce 
 The next set of tests considered different cases, such as when different variables were 0 and used the analytical solutions to test for correctness.
 The original code did not meet some of these requirements due to mistakes and omissions so it was necessary to update it and ensure all the tests were passed.
 Of particular note was that with only the diffusion terms non-zero it was necessary that the equations satisfy stability criteria.
-Using a sufficiently small timestep satisfied this.
+Using a sufficiently small time step satisfied this.
 
 The next thing I needed to worry about was the performance of the code.
-The program Valgrind was used in order to profile the code.
+The program \texttt{Valgrind} was used in order to profile the code.
 It was first seen that the update\_animals function was taking up a significant portion of the execution time.
 To this end it was decided to attempt to optimise the code.
 In order to perform tests on the function a performance test was written.
@@ -94,23 +95,23 @@ Once this performance test was written, it was added to the build file for ease 
 Optimisation could be done by using a number of techniques.
 First the loop index ordering was checked.
 Since Padraig had written a board class it was necessary to ensure that the index ordering was the same as in the C standard.
-Due to the fact that it was and the loops had been written to account for this there was no optimisatino to be done.
-Next the computation for which sites around the site to be updated was moved from inline with the computation of the update to computing it before hand.
+Due to the fact that it was and the loops had been written to account for this there was no optimisation to be done.
+Next the computation for which sites around the site to be updated was moved from in-line with the computation of the update to computing it before hand.
 Following this the computations of the numbers of hares and puma in adjacent squares were moved to be with the land computation in order to improve memory coherency.
-This had a large impact on the performance since it meant that memory acceses were kept closer together decreasing the execution time.
+This had a large impact on the performance since it meant that memory accesses were kept closer together decreasing the execution time.
 In order to compute the update a new board was declared and the updates computed onto this board and then copied back to the main one for the main program to see.
-It was noted that originally this new board was being declared everytime the function was called so the addition of a static clause meant that the board needed only be declared once.
+It was noted that originally this new board was being declared every time the function was called so the addition of a static clause meant that the board needed only be declared once.
 This addition almost halved the execution time.
 
 Different compiler options were also tested.
 Since the test suite had been written to a high standard there was a high level of confidence that different compiler flags that could implement features such as out of order execution would not cause the code to break.
-It was found that using -O2 and -O3 showed equivalent performance results when using g++.
+It was found that using \texttt{-O2} and \texttt{-O3} showed equivalent performance results when using \texttt{G++}.
 It was also attempted to compile the code on different machines and compilers.
-A number of machines were succesfully compiled on but I was not successful with compiling the code on alternate compilers.
+A number of machines were successfully compiled on but I was not successful with compiling the code on alternate compilers.
 This was due to the fact that the code uses the Boost programs library and linking this did not seem to be possible on the machines that I have access that have alternative compilers.
 As future work, changing the code so that it does not uses this library is something that should be implemented.
 
-The serial code was at this point seen to be running efficiently and some experimentation was done with parallelising the code.
+The serial code was at this point seen to be running efficiently and some experimentation was done with parallelizing the code.
 This was done using OpenMP as this allowed for the program to be switched easily from serial execution to parallel.
 Due to the fact that the update operation was not done in place there were also no concerns in terms of the order in which the update was applied.
 It was found that for small board sizes the overhead associated with creating threads meant that there was in fact a small performance decrease.
@@ -120,12 +121,12 @@ However for larger systems(bigger than 10x10) performance increases could be see
 Throughout the course of this project I learned about a number of new things.
 At the start of the project I felt that my programming skills may not have been as good as some of the others in my group but I feel that I have narrowed this gap as a result of this exercise.
 Before this project I had never used version control.
-As this was a necessary part of working together as a group I learned a lot about the use of git and the online repository github.
+As this was a necessary part of working together as a group I learned a lot about the use of git and the online repository \texttt{github}.
 This knowledge will be very useful to me in the future as a programmer.
 
-I also learned about the use of automake.
+I also learned about the use of \texttt{automake}.
 As part of the project it was necessary to have a build tool.
-The group decided to used automake as this allowed for easy compilation of the code and meant that tests could be executed easily and thus were done more often, ensuring the program was always working.
+The group decided to used \texttt{automake} as this allowed for easy compilation of the code and meant that tests could be executed easily and thus were done more often, ensuring the program was always working.
 
 Another aspect of this project that was new to me was the use of unit tests.
 These showed themselves to be an integral part of designing and implementing an program.
@@ -133,7 +134,7 @@ Using unit testing I found a number of bugs that I would not have found otherwis
 I learned about implementing them and ensuring that a working code was always maintained so that all group members could work on their part without being hindered by what others had done.
 During work on the testing of the program I found that it is very hard to test all parts of the code and it is highly important to ensure that everything has been tested to a proper degree.
 
-I learned about using the program Valgrind in order to profile code and saw why it is important to profile code in order to see where it is most useful to put work into optimisation.
+I learned about using the program \texttt{Valgrind} in order to profile code and saw why it is important to profile code in order to see where it is most useful to put work into optimisation.
 
 Finally I learned about working in a group on a coding project as this was something new to me.
 I found that it was necessary to keep the written code to a high standard to ensure readability by all parties involved.
@@ -144,7 +145,7 @@ This made me think more about what I was doing in general and resulted in an imp
 \section{Group Dynamic}
 Overall the group worked very well together. 
 It was easy to come to an agreement on standards at the beginning and everyone was prompt with getting the work they had to do complete.
-Also all members were always available to explain any bits of their code any others didn't understand immidiately and this meant that the group could work all the faster.
+Also all members were always available to explain any bits of their code any others didn't understand immediately and this meant that the group could work all the faster.
 My rating of the group members performances are outlined below.
 
 \begin{tabular}{|c|c|c|c|c|c|}
@@ -170,9 +171,9 @@ I feel that I performed above average as I not only completed my tasks but also 
 \section{Conclusion}
 There is more work to be done on this project, as there is in any programming project.
 For example improving the portability between compilers and architectures is a task that could be done.
-This was not tested rigourosly during development up to this stage.
+This was not tested rigorously during development up to this stage.
 It is likely that there are further performance improvements to be found and for large systems investigation different OpenMP schedules could be investigated.
-It is also suggested that experimenting with where the threads for OpenMP are initiated as in the current program they are started everytime they are called and moving this initiation to the main program could reduce overheads.
+It is also suggested that experimenting with where the threads for OpenMP are initiated as in the current program they are started every time they are called and moving this initiation to the main program could reduce overheads.
 A suggested way of improving performance in the update operation is instead of copying the updated board back to the original that the pointer could be changed and save on operations.
 This could take time to implement correctly however
 
@@ -180,12 +181,3 @@ Working together as a group we were able to produce a program that work correctl
 We were then able to improve this code in terms of both performance and functionality and create a program that we were proud to say we produced.
 
 \end{document}
-
-	\begin{figure}[ht]
-		\centering
-		\input{../loop1-comp}
-		\caption{Performance of different scheduling against chunksize for loop 1}
-		\label{Figure 1:}
-\end{figure}
-
-P\'{a}draig \'{O}'Conbhu\'{i}
