@@ -1,6 +1,17 @@
 \section{Further Work}
 \vspace{-2em}\rule{\textwidth}{1pt}\vspace{-1em}
 \subsection{Input}
+  The program fails to build with the current framework when pgcpp is used
+  as the \texttt{C++} compiler.
+  The problem appears, on the surface at least, to be with the boost library.
+  Future work might entail the removal of the boost program\_options library
+  in favour of wither a custom option, involving parsing a rigid input file,
+  or perhaps more simply, requiring variables to be set on compile.
+  This may, in fact, not be the problem, as the compilation attempt with
+  pgcpp was only done on the Morar machine.
+  It may be possible to bundle the program\_options library with the
+  source of this project, getting a user to compile it with pgcpp along
+  with the rest of the code.
 \subsection{Update}
   In the update section there is more work to be done in optimising the code to run faster.
   However one can almost always say this about a piece of code!

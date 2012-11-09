@@ -53,7 +53,7 @@ namespace BoardSetter
    *  If the dimensions of a board have not yet been set, this function will
    *  set them to the dimensions of the input data.
    *
-   *  Example Useage:
+   *  Example Usage:
    *    #File.dat
    *    5 4
    *    1 0 0 1 1
@@ -94,7 +94,7 @@ namespace BoardSetter
    *  If the dimensions of a board have not yet been set, this function will
    *  set them to the dimensions of the input data.
    *
-   *  Example Useage:
+   *  Example Usage:
    *    #File.dat
    *    5 4
    *    1.21 0 0 2.5 2
@@ -130,7 +130,7 @@ namespace BoardSetter
    *
    * Halo data will be set to zero (or land) regardless of distribution.
    *
-   * Example Useage:
+   * Example Usage:
    *  Board<Tile> board(5,4);
    *  set_land_from_distribution(board, MyLandDistribution(a,d,c,d));
    *

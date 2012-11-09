@@ -42,16 +42,16 @@ int Options::parse_input(int argc, char** argv)
      po::value<double>(&time_step),
      "set time step"
     )
-		(
-		 "delay,D",
-			po::value<int>(&delay),
-			"set delay between frames in milliseconds"
-		)
- 		(
-		 "output_frequency,T",
-			po::value<int>(&output_frequency),
-			"set how often the .ppm files are written"
-		)
+    (
+     "delay,D",
+      po::value<int>(&delay),
+      "set delay between frames in milliseconds"
+    )
+     (
+     "output_frequency,T",
+      po::value<int>(&output_frequency),
+      "set how often the .ppm files are written"
+    )
     // hare equation values
     (
      "hare_birth,r",
@@ -84,58 +84,70 @@ int Options::parse_input(int argc, char** argv)
      po::value<double>(&puma_diffusion),
      "set puma diffusion rate"
     )
-		// gui options
-		(
-			"gui,g",
-			po::value<bool>(&gui)->implicit_value(true),
-			"sets program to gui mode"
-		)
-		;
+    // gui options
+    (
+      "gui,g",
+      "sets program to gui mode"
+    )
+    ;
 
 
-  po::variables_map vm;
-  po::store(po::parse_command_line(argc, argv, desc), vm);
-  po::notify(vm);
-
-
-  /*
-   * Process arguments
-   */
-  // if help flag passed or no arguments passed
-  if(vm.count("help") || argc == 0){
-    std::cerr << desc<< std::endl;
-    return 1;
-  }
-
-  if(!config_filename.empty())
+  try
   {
-    std::ifstream ifs(config_filename.c_str());
-    if (!ifs)
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::notify(vm);
+
+
+    /*
+     * Process arguments
+     */
+    // if help flag passed or no arguments passed
+    if(vm.count("help") || argc == 0){
+      std::cerr << desc<< std::endl;
+      return 1;
+    }
+
+    if(!config_filename.empty())
     {
-        std::cerr << "can not open config file: " << config_filename << "\n";
-        return 1;
+      std::ifstream ifs(config_filename.c_str());
+      if (!ifs)
+      {
+          std::cerr << "can not open config file: " << config_filename << "\n";
+          return 1;
+      }
+      else
+      {
+          store(parse_config_file(ifs, desc), vm);
+          notify(vm);
+      }
+    }
+
+
+    if(!vm.count("landfile"))
+    {
+      std::cerr << "You must specify a land input file"
+                << std::endl
+                << std::endl;
+      std::cerr << desc<< std::endl;
+      return 1;
+    }
+    
+    if(vm.count("gui"))
+    {
+      gui = true;
     }
     else
     {
-        store(parse_config_file(ifs, desc), vm);
-        notify(vm);
+      gui = false;
     }
   }
-
-
-  if(!vm.count("landfile"))
-	{
-    std::cerr << "You must specify a land input file"
-              << std::endl
-              << std::endl;
-    std::cerr << desc<< std::endl;
+  catch(po::error& e)
+  {
+    std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
+    std::cerr << desc << std::endl;
     return 1;
   }
-	
-	if(!vm.count("gui"))
-	{
-		gui = false;
-	}
 
 
   return 0;
