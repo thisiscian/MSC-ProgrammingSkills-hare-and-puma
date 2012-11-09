@@ -63,6 +63,17 @@ correct output in some special cases.
 
 
 \subsection{Performance Tests}
+The main set of performance tests ran was on the update\_animals function.
+This was due to the fact that profiling indicated that at first it was the major user of CPU time.
+In order to see more easily how small changes were impacting the performance of the function a performance testing piece of code was written.
+It had the objective of running on a big enough board that the results were appropriate for real simulations and over enough iterations so that any overheads associated with calling the function would show up.
+To this end the test was written for a 1000x1000 board and 50 iterations.
+
+As output this test produced the time taken and the theoretical flops for the operation.
+The flops were computed by considering only the operations that one reads as being necessary in order to compute the actual update equations.
+Any other operations are implementation dependent and thus not included.
+It was then possible to keep track of the improvements easily by adding the timing and flops in the commit messages when committing to the online \texttt{Git} repository.
+
 \subsection{Output Tests}
 	Output testing for writing \texttt{.ppm}s was done in a comprehensive fashion.
 	It is simple to test output files, but inputting a known file, and immediately outputting that file.

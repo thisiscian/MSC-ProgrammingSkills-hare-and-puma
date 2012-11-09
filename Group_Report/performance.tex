@@ -5,14 +5,10 @@ In order to decide what parts of the code needed to be optimised it was necessar
 As a precursor to this the main code was profiled so that it was possible to decide what parts of the code needed work.
 The profiling program \texttt{Valgrind} and the tool \texttt{Callgrind} associated with it was used.
 This showed that one of the large users of CPU time was the update\_animals function as would be expected as this is the main computational part of the code.
-Once it was known what that this part of the code needed testing a specific performance test was written to test this function.
-The test was then added to the build environment so that it could be easily executed.
-In order to keep track of the performance it was decided to include the performance of a specific revision in any commit message that had changed the update\_animals function.
-The specifics of the test were then decided upon, taking into account the fact that boards up to size 2000x2000 could be taken as input but the execution time of the test needed to be relatively short so that it would be run often.
-As such it was decided to have the test run on a 1000x1000 grid for 50 iterations as this should also show up any overheads associated with calling the function.
+Once it was known what that this part of the code needed testing a specific performance test was written to test this function as outlined in the tests part of this report.
 Since a comprehensive test suite had already been written the code could be changed quite aggresivly in order to improve performance.
 
-Compiler flags were investigated.
+The first idea was to investigate compiler flags.
 \texttt{G++} was the compiler used for this project so the compiler options \texttt{-O1}, \texttt{-O2} and \texttt{-O3} were tested in the hope that they might improve performance.
 It was seen that as optimisation levels were increased there was increase in the performance of the code as could be expected.
 There was however a negligable difference seen between the \texttt{-O2} and \texttt{-O3} options.
