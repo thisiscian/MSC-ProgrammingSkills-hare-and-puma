@@ -2,7 +2,6 @@
 
 /*function that takes in the arrays of hares and pumas and updates them using the update equations*/
 
-
 void update_animals(Board<Tile> &board, double timeStep, double a, double b, double k, double l, double m, double r)
 {
 
@@ -12,7 +11,8 @@ void update_animals(Board<Tile> &board, double timeStep, double a, double b, dou
   double hareSum, pumaSum;
 	static Board<Tile> work_board(NX,NY);
 
-#pragma omp parallel default(none) shared(board, timeStep, a, b, k, l, m, r, NX, NY, work_board) private(landSum, hareSum, pumaSum)
+#pragma omp parallel default(none) shared(board, timeStep, a, b, k, l, m, r, NX, NY, work_board) \
+private(landSum, hareSum, pumaSum)
   {
     #pragma omp for
     for(int x=1; x<NX-1; ++x)
