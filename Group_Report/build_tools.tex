@@ -14,14 +14,14 @@ Two others that came up were \texttt{cmake}, when another group mentioned it
 was their build tool of choice, and \texttt{qmake}, when \texttt{Qt} was
 considered for use in building a GUI.
 However, much time and effort had already been invested in setting up
-an \texttt{Automake} build environment, and the other build systems offered
+an \texttt{Autotools} build environment, and the other build systems offered
 no particular advantages worth switching environments for.
 
 \subsection{Features}
 The \texttt{Autotools} suite is a widely used set of tools for generating
 portable makefiles and configuration scripts.
 Since the tools are widely used, many users are already familiar with
-the procedure for compiling a project using these tools.
+the procedure for compiling a project built with them.
 This is the familiar ``\texttt{./configure \&\& make \&\& make install}''
 combination.
 The configuration script can be used to find or explicitly specify the
@@ -41,7 +41,7 @@ The tool makes it simple to specify these things on a global level, or a
 per program level.
 It also defines some standard \texttt{Makefile} targets, such as
 \texttt{clean}, \texttt{distclean}, \texttt{check} and \texttt{dist}
-which have some standard functions.
+which have some standard functionalities.
 These are supplied with no extra configuration, whereas with a plain
 \texttt{Makefile}, these would have to be hand-coded.
 \texttt{Automake} also reduces the need for ``clever'' \texttt{Makefiles},
@@ -57,15 +57,15 @@ wasn't quite enough, but since \texttt{Automake} provides
 the means for including pure \texttt{make} targets, it was trivial
 to add new targets for compiling and running specific sets of tests.
 This meant the main tests could be run by simply running
-``make check'', the performance tests coule be run by running
-``make performancetest'' and the gui tests could be run by running
+``make check'', the performance tests could be run by running
+``make performancetest'' and the GUI tests could be run by running
 ``make guitest''.
 This makes testing slightly less painful for the programmer.
 
-The main problem with the \texttt{Autotools} suite is that is can have
-quite a steep learning curve to learn all the gory details involved
-in it.
-However, in most cases, these can simply be ignored.
+The main problem with the \texttt{Autotools} suite is that there can be
+quite a steep learning curve involved in grasping all the gory details.
+However, in most cases, these can simply be ignored, and standard
+templates can be found on the internet.
 This is because of one of the main strengths of the suite: its widespread
 use.
 That is, there are plenty of tutorials for using the tools and plenty

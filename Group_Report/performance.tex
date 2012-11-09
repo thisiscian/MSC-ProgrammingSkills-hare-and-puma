@@ -20,11 +20,11 @@ These sums were brought together before the main update operation with the inten
 There was a performance improvement seen by doing this.
 
 Since the update could not be done in place a new board was declared in the \texttt{update\_animals} function.
-This cause an overhead to be associated with calling the function.
-In order to reduce this overhead the board was declared as static so the declaration was only needed once.
+This cause an overhead to be associated with repeated allocation and deallocation of memory.
+In order to reduce this overhead the board was declared as static so the allocation was only done once.
 As a result of this the execution time was almost halved.
 
-It was though that for large board sizes that parallelizing the update would be beneficial.
+It was thought for large board sizes that parallelizing the update would be beneficial.
 OpenMP directives were added in order to make this possible.
 Due to the way that the update is applied there were no race conditions on any variables and this made the implementation relatively easy.
 These allowed for the program to be easily switched in and out of parallel if the library was not available on some machine for example, and it allowed for a parallel and serial version of the code to be maintained together.
