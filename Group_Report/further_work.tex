@@ -4,14 +4,14 @@
 \subsection{Update}
   In the update section there is more work to be done in optimising the code to run faster.
   However one can almost always say this about a piece of code!
-  A number of possibilities were considered but due to time contraints were not implemented.
+  A number of possibilities were considered but due to time constraints were not implemented.
 
   For example to reduce further the overhead of copying the board back from the working board back to the board visible from the main program one could simply move the pointer.
   This could be quite difficult to implement in reality as it is not known exactly how this might behave with the board class but it could reduce the number of operations and this increase performance.
   Alternatively having the working board initialised in the main program could potentially speed up execution.
 
-  There is also more work to do from the point of view of parallelising the loop.
-  Different loop shceduling options for OpenMP could be experimented with in order to find an optimum.
+  There is also more work to do from the point of view of parallelizing the loop.
+  Different loop scheduling options for OpenMP could be experimented with in order to find an optimum.
   The use of a message passing protocol such as MPI could also be tested as the communications pattern is quite regular and could possibly see good performance.
 
   It is possible that there is more to be done with improving cache accesses and overheads associated with loops by techniques such as loop unrolling as well but it was decided to not implement any of these in order to keep the code readable.
