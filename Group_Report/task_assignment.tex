@@ -1,1 +1,35 @@
 \section{Assignment of Tasks}
+Once a plan had been made it was necessary for the tasks associated with the program to be divided up among the group.
+First it was necessary to decide on a build tool to use.
+\texttt{Automake} was settled upon and P\'{a}draig took charge of implementing this as he had previous experience with its use.
+The main program naturally divided itself into three parts.
+Each team member was then polled and was assigned to the task they would most like to do.
+The split was thus as follows
+\begin{itemize}
+\item Input - \pa
+\item Update Operation - Ruairi Short
+\item Output - Cian Booth
+\end{itemize}
+
+The input part of the program needed to be responsible for taking a land mask and distributions of hares and pumas on this land mask and making this usable by the code.
+It was also necessary to take optional command line inputs from the user in order to set the parameters of the update equation.
+It was decided to include in this section the implementation of the class that would hold the information about the board as this seemed the appropriate time to do so.
+
+For the update operation it was necessary to implement the equations.
+It was also necessary to have tests that would ensure that the update was working correctly.
+In order to this the equations needed to be solved analytically for certain situations and tests created to reproduce these situations.
+
+In terms of output the program needed to create a PPM file every T timesteps showing the hare and puma population distributions.
+Also necessary was the output of the average number of hares and pumas per grid square every few timesteps and the total time the simulation was run for.
+
+Each group member was also responsible for testing their own part of the code.
+This was since they would have the best understanding of the module they had written and could test it most effectively.
+It also meant that it was possible to maintain a working version of the code throughout the entire project.
+
+Once the code program was running to a sufficient standard the group met again to look at what further tasks could be done.
+The conclusion was that the remaining tasks were attempting to improve the performance of the program overall, implementing a graphical user interface(gui) and implementing tests to check overall functionality of the main program.
+It was decided that some time should be spent trying to improve performance.
+It was speculated that the most likely user of CPU time would be the update function so Ruairi took charge of performance analysis and optimisation.
+This involved profiling the code to find out if the speculation had been correct and acting on the data from the profiling.
+Cian did the work on creating a gui using \texttt{ncurses} so that the output from the program could be better understood by the user as the PPM output was not immediately available while the program was running.
+
