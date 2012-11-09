@@ -1,1 +1,75 @@
 \section{Build Tools}
+For this project, the \texttt{Autotools} suite was chosen.
+This is a free set of tools for generating portable programs for many
+Unix-like systems.
+
+\subsection{Other Tools}
+The other main competitor for use in this project was plain \texttt{make}.
+While a plain \texttt{Makefile} would be easier for a small, simple project,
+we felt that \texttt{Automake} was a more robust build system, better suited
+to a project such as this one.
+Two others that came up were \texttt{cmake}, when another group mentioned it
+was their build tool of choice, and \texttt{qmake}, when \texttt{Qt} was
+considered for use in building a GUI.
+However, much time and effort had already been invested in setting up
+an \texttt{Automake} build environment, and the other build systems offered
+no particular advantages worth switching environments for.
+
+\subsection{Features}
+The \texttt{Autotools} suite is a widely used set of tools for generating
+portable makefiles and configuration scripts.
+Since the tools are widely used, many users are already familiar with
+the procedure for compiling a project using these tools.
+This is the familiar ``\texttt{./configure \&\& make \&\& make install}''
+combination.
+The configuration script can be used to find or explicitly specify the
+locations of certain libraries on a system, along with specifying install
+paths for the compiled program.
+It as also used to ensure the appropriate build tools, libraries, and
+library headers exist on a system, and give some descriptive error
+messages when these can't be found.
+The alternative is for a user to attempt to decrypt some mysterious
+error messages when a program either outputs errors at compile time, or does
+compile and outputs an error at run time.
+
+The \texttt{Automake} tool specifies a simple way of defining programs to be
+compiled, the dependencies of these programs, and the flags to be passed
+to them.
+The tool makes it simple to specify these things on a global level, or a
+per program level.
+It also define some standard \texttt{Makefile} targets, such as
+\texttt{clean}, \texttt{distclean}, \texttt{check} and \texttt{dist}
+which have some standard functions.
+These are supplied with no extra configuration, whereas with a plain
+\texttt{Makefile}, these would have to be hand-coded.
+\texttt{Automake} also reduces the need for ``clever'' \texttt{Makefiles},
+which are almost always a nightmare for anyone other than the original
+author to maintain (assuming that they themselves understand it).
+
+Also provided is a rudimentary test environment.
+Programs that might be compiled for a test run are added to a list,
+separate from the ones that are compiled for installation,
+and the programs to be run during a test run are added to another list.
+For this project, it turned out that just one test environment
+wasn't quite enough, but since \texttt{Automake} provides
+the means for including pure \texttt{make} targets, it was trivial
+to add new targets for compiling and running specific sets of tests.
+This meant the main tests could be run by simply running
+``make check'', the performance tests coule be run by running
+``make performancetest'' and the gui tests could be run by running
+``make guitest''.
+This makes testing slightly less painful for the programmer.
+
+The main problem with the \texttt{Autotools} suite is that is can have
+quite a steep learning curve to learn all the gory details involved
+in it.
+However, in most cases, these can simply be ignored.
+This is because of one of the main strengths of the suite: its widespread
+use.
+That is, there are plenty of tutorials for using the tools and plenty
+of questions and answers available on the internet.
+Another problem is that the configuration script can take a while to
+run, and needs to be run again if any changes are made to any of the
+files used to generate the \texttt{configure} script or any of the
+\texttt{Makefiles}.
+This can be quite tedious.
