@@ -43,6 +43,8 @@ correct output in some special cases.
         set to zero, when the diffusion terms are set to zero, these
         densities should remain at zero.
 
+        This ensures that hares and pumas are not created unnecessarily.
+
   \item When only the hare birth term, $r$, and puma death term, $m$, are
         nonzero, the hare and puma populations should follow the equations
         \begin{align*}
@@ -50,15 +52,26 @@ correct output in some special cases.
           P(t) &= P_0 e^{-mt}
         \end{align*}
 
+        This ensures the natural life and death cycles of hares and pumas
+        are proceeding as expected.
+
   \item When only diffusion terms are nonzero, both hare densities and puma
         densities should reach an equilibrium distribution.
 
+        This ensures the diffusion term is working as expected.
+
   \item When an equilibrium distribution is given as input to the program,
         given the same input values as the previous test, the program should
-        output the exact same board (or reasonably close to it, as.
+        output the exact same board (or reasonably close to it, as output
+        from the program is rounded to the nearest integer).
+
+        This further tests the correctness of input and output.
 
   \item When a checkerboard distribution is given and only diffusion terms
         are nonzero, zero density tiles should not stay at zero.
+
+        This ensures that hares and pumas are definitely spreading around
+        the board.
 \end{itemize}
 
 
