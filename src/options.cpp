@@ -47,6 +47,11 @@ int Options::parse_input(int argc, char** argv)
 			po::value<int>(&delay),
 			"set delay between frames in milliseconds"
 		)
+ 		(
+		 "output_frequency,T",
+			po::value<int>(&output_frequency),
+			"set how often the .ppm files are written"
+		)
     // hare equation values
     (
      "hare_birth,r",

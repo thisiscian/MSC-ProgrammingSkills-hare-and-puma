@@ -6,7 +6,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
- Board<Tile> board;
+	Board<Tile> board;
   Options options;
   if(options.parse_input(argc, argv) != 0)
   {
@@ -36,32 +36,37 @@ int main(int argc, char* argv[])
 
 
   int i=0;        
-  int finalTime = options.run_time;
-  double timeStep = options.time_step;
-  double time = 0.0;
+  int run_time = options.run_time;
+  double time_step = options.time_step;
+  double simulation_time = 0.0;
   double a = options.puma_predation;
   double k = options.hare_diffusion;
   double b = options.puma_birth;
   double l = options.puma_diffusion;
   double m = options.puma_death;
   double r = options.hare_birth;
+	int T = options.output_frequency;
 
+	time_t start_time = time(NULL);
   create_output_directory(options.output_directory);
 
   cout << "writing ppm for time: " << 0.0 << endl;
-
   write_ppm(board, 0.0, options.output_directory);
-	while(time < finalTime)
+
+	while(simulation_time < run_time)
   {
-    time += timeStep;
-    update_animals(board, timeStep, a, b, k, l, m, r);
+    simulation_time += time_step;
+    update_animals(board, time_step, a, b, k, l, m, r);
 
-    if(i%1 == 0)
+    if(i%T == 0)
     {
-      cout << "writing ppm for time: " << time << endl;
-
-      write_ppm(board, time, options.output_directory);
+			output_averages(board, simulation_time);
+      
+			cout << "writing ppm for time: " << simulation_time << endl;
+      write_ppm(board, simulation_time, options.output_directory);
     }
     i++;    
   }
+	time_t stop_time = time(NULL);
+	cout << "\nRan for " << stop_time - start_time << " seconds" << endl;
 }

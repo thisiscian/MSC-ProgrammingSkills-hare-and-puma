@@ -149,6 +149,10 @@ int main()
   test_option("--time_step", "1", options.time_step == 1);
   test_option("-d", "1", options.time_step == 1);
 
+  // check output frequency
+  test_option("--output_frequency", "5", options.output_frequency == 5);
+  test_option("-T", "2", options.output_frequency == 2);
+
   // check hare birth rate
   test_option("--hare_birth", "10", options.hare_birth == 10);
   test_option("-r", "0.1", options.hare_birth == 0.1);

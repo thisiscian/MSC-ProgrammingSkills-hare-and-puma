@@ -12,6 +12,7 @@ class Options
   Options():
     run_time(500),
     time_step(0.4),
+		output_frequency(1),
     hare_birth(0.08),
     puma_predation(0.04),
     hare_diffusion(0.02),
@@ -36,6 +37,7 @@ class Options
   double run_time;       // t
   double time_step;      // dt
 	int delay;						 // delay between frames in ms
+	int output_frequency;	 // how often the .ppm files are written
 
   // hare equation values
   double hare_birth;     // r

@@ -26,6 +26,8 @@ class BoardStatistics
 	double get_puma_total();
 	double get_puma_max();
 	double get_hare_max();
+	double get_hare_mean();
+	double get_puma_mean();
 	
 	private:
 	double currentHareTotal;
@@ -37,6 +39,8 @@ class BoardStatistics
 	double previousPumaTotal;
 	double maxHare;
 	double maxPuma;
+	double hareMean;
+	double pumaMean;
 };
 
 #endif
