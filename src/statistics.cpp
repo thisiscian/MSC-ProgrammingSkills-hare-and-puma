@@ -39,6 +39,8 @@ void BoardStatistics::set_totals(Board<Tile>& field)
 	previousPumaTotal = currentPumaTotal;
 	currentHareTotal = hareTotal;
 	currentPumaTotal = pumaTotal;
+	hareMean = hareTotal/(height*width);
+	pumaMean = pumaTotal/(height*width);
 }
 
 void BoardStatistics::set_time_averages(Board<Tile>& field, double time)
@@ -83,6 +85,8 @@ void BoardStatistics::set_maxima(Board<Tile>& field)
 
 double BoardStatistics::get_hare_total(){ return currentHareTotal; }
 double BoardStatistics::get_puma_total(){ return currentPumaTotal; }
+double BoardStatistics::get_hare_mean(){ return hareMean; }
+double BoardStatistics::get_puma_mean(){ return pumaMean; }
 double BoardStatistics::get_puma_average(){ return pumaAverage;}
 double BoardStatistics::get_hare_average(){ return hareAverage; }
 double BoardStatistics::get_hare_max(){ return maxHare; }

@@ -13,6 +13,7 @@
 #include "statistics.h"
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <ctime>
 
 void create_output_directory(std::string directory_name);
 void write_ppm(Board<Tile>& field, double time, std::string output_directory);

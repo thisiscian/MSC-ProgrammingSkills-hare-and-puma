@@ -101,13 +101,15 @@ void write_adjustable_ppm(Board<Tile>& board, double time, int tileSize, int bor
 }
 
 /*A function that outputs the mean values of the populations of the hares and pumas*/
-void output_averages(Board<Tile>& board, double time, double timeStep)
+void output_averages(Board<Tile>& board, double time)
 {
 	BoardStatistics stats(board);
 	cout << "Total Number of Hares: " << stats.get_hare_total() << endl;
-	cout << "Total Number of Pumass: " << stats.get_puma_total() << endl;
-	cout << "Mean Number of Hares (at time " << time << "): " << stats.get_hare_average() << endl;
-	cout << "Mean Number of Pumas (at time " << time << "): " << stats.get_puma_average() << endl;
+	cout << "Total Number of Pumas: " << stats.get_puma_total() << endl;
+	cout << "Mean Number of Hares: " << stats.get_hare_mean() << endl;
+	cout << "Mean Number of Pumas: " << stats.get_puma_mean() << endl;
+	cout << "Time Average Number of Hares" << stats.get_hare_average() << endl;
+	cout << "Time Average Number of Pumas" << stats.get_puma_average() << endl;
 	cout << endl;
 }
 
