@@ -1,5 +1,7 @@
 \section{Planning}
-	Firstly, the group listed the requirements given in the specficiation.
+\vspace{-2em}\rule{\textwidth}{1pt}\vspace{1em}
+
+	Firstly, the group listed the requirements given in the specification.
 	They are as follows;
 	\begin{itemize}
 		\item Program should be able to take in an input file, the form of which is given in an example file.
@@ -7,7 +9,7 @@
 		\item User should be able to input the parameters that affect the evolution of the system, $r$, $a$, $b$,... etc.
 		\item Program should be able to output a plain PPM file that represents the current state of the system.
 		\item User should be able to input the output frequency $T$, which governs how often a plain PPM is written.
-		\item The mean values of hares and pumas over the grid should be outputed at regular intervals.
+		\item The mean values of hares and pumas over the grid should be outputted at regular intervals.
 		\item Programming Skills techniques should be used.
 	\end{itemize}
 	As the group consisted of three members, it seemed obvious to attempt to initially split the problem up into three sections.
@@ -21,15 +23,15 @@
 		However, this naturally implies the creation of a system to store the contents of the input file.
 		Thus, the input section also contains the storage and access of the 'board' as it is read and written to.
 		
-		Naturally, the input section also holds domain over the user input options, which would take the form of commandline options.
-		Again, this implies the creation of error messages on incorrect useage of the program.
+		Naturally, the input section also holds domain over the user input options, which would take the form of command line options.
+		Again, this implies the creation of error messages on incorrect usage of the program.
 		
 		Extra time would be given to increasing the efficiency of the storage and reading of the 'board'.
 	\subsection{Update}
 		The update section consisted mainly of implementing the problem's algorithm.
 		It was important that this section either returns a board, or edits the board in place.
 		
-		Optimisation and speedups would be especially important in this section.
+		Optimisation and speed-ups would be especially important in this section.
 		Thus, this section also commands the use of parallelism and other efficiency based techniques, especially those that apply to the algorithm.
 		
 		Extra time would be devoted to adding extra tests, of which there can never be too many for such a problem.

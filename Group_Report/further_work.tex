@@ -1,1 +1,17 @@
 \section{Further Work}
+\vspace{-2em}\rule{\textwidth}{1pt}\vspace{-1em}
+\subsection{Input}
+\subsection{Update}
+\subsection{Output}
+	There is a lot of work that could be done with the output section.
+	The most pressing thing that needs to be done is testing the GUI.
+	Although this is difficult, due to changing terminal size, it could be possible to fix this, as far as the program is concerned, using
+	pre-processing conditionals in the code, forcing the ncurses set values of COLS and ROWS to standard values.
+	
+	Full user interactivity with the \texttt{write\_adjustable\_ppm} function could also be added, which could be useful for smaller input files.
+
+	The ncurses section of the program was also not implemented very efficiently.
+	It spends extended periods of time waiting, time which could be spent calculating upcoming iterations.
+	Extraneous iterations could be saved in a file, and whilst this is potentially a way to use up large amounts of memory, it is worth looking into.
+	
+	Finally, if a more universally accessible, and less cumbersome windows based GUI could be found, the quality and usability of the program could be greatly enhanced, as the majority of people are very used to using windows based programs.

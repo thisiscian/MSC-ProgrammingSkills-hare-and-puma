@@ -1,4 +1,6 @@
 \section{Revision Control}
+\vspace{-2em}\rule{\textwidth}{1pt}\vspace{1em}
+
 The group decided to use \texttt{Git} as the revision control system for this project.
 This was selected since it was possible for each group member to maintain a local repository and a master one was maintained online at \texttt{github.com}.
 This meant that as long as internet access was available everyone could see the latest updates and additions to the project but if there was not they could still work on their own code.
@@ -10,17 +12,17 @@ It has the disadvantage that the user must be online with respect to the master 
 Since all the group members already had \texttt{Git} installed on their computers and membership of the online repository \texttt{github} it was much simpler to use this as the revision control system.
 
 \subsection{Features}
-\texttt{Git} allowed each member to maintain their own local repository seperate from the master.
+\texttt{Git} allowed each member to maintain their own local repository separate from the master.
 This meant that testing, updates and bug fixes could be done by each member without affecting the other group members' work.
-By creating a seperate branch on ones machine it was easy to keep track of the changes you were making without having to merge conflicts with other users.
-Another feature is that \texttt{Git} is quite good at resolving conflicts and merging branches.
+By creating a separate branch on ones machine it was easy to keep track of the changes you were making without having to merge conflicts with other users.
+Another feature of \texttt{Git} is that it is quite good at resolving conflicts and merging branches.
 As there were times when two or more people might try and edit the same file this aspect was used quite often.
-With this revision control system it was easy to keep track of the development of the program and everyone could see immediately when new files had been created and the commit messages were useful in understanding what changes had occured.
+With this revision control system it was easy to keep track of the development of the program and everyone could see immediately when new files had been created and the commit messages were useful in understanding what changes had occurred and for keeping track of information such as performance data.
 Also of use as a feature in \texttt{Git} was the fact that one could go back a version in the code if drastic mistakes were made!
-It was found that it is important to keep the .gitignore file up-to-date as compiled and created files often change when code is being changed or refactored.
+It was found that it is important to keep the .gitignore file up-to-date as compiled and created files often change when code is being changed or updated.
 \texttt{Git} cannot find the differences between binaries and since \texttt{Automake} was being used it was very easy to generate these files.
 There were some disadvantages with using \texttt{Git} in combination with \texttt{Automake} however as if another group member reran the \texttt{autoreconf} command then all other users would have to run it and this took some time, which could be frustrating.
-A precommit script was written in an attempt to reduce the effects of this that took the names of any executables created by the makefile and added them to the .gitignore file.
+A pre-commit script was written in an attempt to reduce the effects of this that took the names of any executables created by the makefile and added them to the .gitignore file.
 
 Overall \texttt{Git} was found to be a very useful tool when it came to revision control.
 It was well suited to this type of project and would be used again.

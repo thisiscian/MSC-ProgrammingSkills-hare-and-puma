@@ -1,4 +1,6 @@
 \section{Testing}
+\vspace{-2em}\rule{\textwidth}{1pt}\vspace{1em}
+
 Three sets of tests were set up for this project:
 \begin{itemize}
   \item Correctness tests
@@ -48,7 +50,7 @@ correct output in some special cases.
           P(t) &= P_0 e^{-mt}
         \end{align*}
 
-  \item When only diffusion terms are nonzero, both hare densities and pume
+  \item When only diffusion terms are nonzero, both hare densities and puma
         densities should reach an equilibrium distribution.
 
   \item When an equilibrium distribution is given as input to the program,
@@ -61,6 +63,17 @@ correct output in some special cases.
 
 
 \subsection{Performance Tests}
+The main set of performance tests that were run was on the update\_animals function.
+This was due to the fact that profiling indicated that at first it was the major user of CPU time.
+In order to see more easily how small changes were impacting the performance of the function a performance testing piece of code was written.
+It had the objective of running on a big enough board that the results were appropriate for real simulations and over enough iterations so that any overheads associated with calling the function would show up.
+To this end the test was written for a 1000x1000 board and 50 iterations.
+
+As output this test produced the time taken and the theoretical flops for the operation.
+The flops were computed by considering only the operations that one reads as being necessary in order to compute the actual update equations.
+Any other operations are implementation dependent and thus not included.
+It was then possible to keep track of the improvements easily by adding the timing and flops in the commit messages when committing to the online \texttt{Git} repository.
+
 \subsection{Output Tests}
 	Output testing for writing \texttt{.ppm}s was done in a comprehensive fashion.
 	It is simple to test output files, but inputting a known file, and immediately outputting that file.
@@ -113,14 +126,14 @@ correct output in some special cases.
 			Now there is a constant number of hares, 1, and a constant number of pumas, 2, in each element.
 			This leads to a pixel count of "2 1 0".
 			
-			This test makes sure that the hares and pumas are not somehow interferring with each other's output.
+			This test makes sure that the hares and pumas are not somehow interfering with each other's output.
 		\item[Linear Hares, No Pumas, Only Land]
-			Now each element has a number of hares equal to the sum of it's colum and row minus 1, if they are numbered from 1 to 5.
+			Now each element has a number of hares equal to the sum of it's column and row minus 1, if they are numbered from 1 to 5.
 			Thus, the first element in the first row is expected to have a pixel value of "1 0 0", the second "2 0 0" etc., all the way to the last element on the last row having a pixel value of "9 0 0".
 
 			This test ensures that the number of being outputted is independent of other values of hare.
 		\item[No Hares, Linear Pumas, Only Land]
-			As above, but with pumas, and the rows and colums are numbered from 5 to 1.
+			As above, but with pumas, and the rows and columns are numbered from 5 to 1.
 		\item[Non-Integer Hares, No Pumas, Only Land]
 			This test is as the Linear Hares, No Pumas, Only Land test, except that each element is now multiplied by 1.1.
 			This means that a full range of decimal places is tested.
