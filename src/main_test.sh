@@ -91,7 +91,7 @@ clean_output_directory
   --landfile "$uniform_file" \
   --harefile "$direct_file" \
   --pumafile "$direct_file" \
-  --output "$output_directory" \
+  --output_directory "$output_directory" \
   --run_time 1 \
   --time_step 0.1 \
   -r 0 \
@@ -138,7 +138,7 @@ clean_output_directory
   --landfile "$uniform_file" \
   --harefile "$checkerboard_file" \
   --pumafile "$checkerboard_file" \
-  --output "$output_directory" \
+  --output_directory "$output_directory" \
   --run_time 1 \
   --time_step 0.1 \
   -r 0 \
@@ -185,7 +185,7 @@ clean_output_directory
   --landfile "$uniform_file" \
   --harefile "$direct_file" \
   --pumafile "$direct_file" \
-  --output "$output_directory" \
+  --output_directory "$output_directory" \
   --run_time 1 \
   --time_step "$dt" \
   -r 1 \
@@ -239,7 +239,7 @@ clean_output_directory
   --landfile "$uniform_file" \
   --harefile "$direct_file" \
   --pumafile "$direct_file" \
-  --output "$output_directory" \
+  --output_directory "$output_directory" \
   --run_time 50 \
   --time_step 0.1 \
   -r 0 \
@@ -290,7 +290,7 @@ echo "$puma_steady" >> $steady_puma_file
   --landfile "$uniform_file" \
   --harefile "$steady_hare_file" \
   --pumafile "$steady_puma_file" \
-  --output "$output_directory" \
+  --output_directory "$output_directory" \
   --run_time 10 \
   --time_step 0.1 \
   -r 0 \
