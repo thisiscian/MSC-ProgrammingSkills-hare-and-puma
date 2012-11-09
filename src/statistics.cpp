@@ -55,8 +55,6 @@ void BoardStatistics::set_time_averages(Board<Tile>& field, double time)
 		hareAverage = ( hareAverage*previousTime + currentHareTotal )/time;
 		pumaAverage = ( pumaAverage*previousTime + currentPumaTotal )/time;
 	}
-//	hareAverage = (previousHareTotal*previousTime+currentHareTotal*(time-previousTime))/time;
-//	pumaAverage = (previousPumaTotal*previousTime+currentPumaTotal*(time-previousTime))/time;
 	previousTime = time;
 }
 

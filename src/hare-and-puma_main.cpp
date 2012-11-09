@@ -2,6 +2,7 @@
 #include "update.h"
 #include "options.h"
 #include "board_setter.h"
+#include "ncurses_field.h"
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -48,25 +49,41 @@ int main(int argc, char* argv[])
 	int T = options.output_frequency;
 
 	time_t start_time = time(NULL);
-  create_output_directory(options.output_directory);
 
-  cout << "writing ppm for time: " << 0.0 << endl;
+	NcursesField ncursesfield(board, options, 4, 6);
+
+  create_output_directory(options.output_directory);
+	if(!options.gui)
+	{
+	  cout << "Writing ppm for time: " << 0.0 << endl;
+	}
+	else
+	{
+			ncursesfield.update(0.0);
+	}
   write_ppm(board, 0.0, options.output_directory);
 
 	while(simulation_time < run_time)
   {
     simulation_time += time_step;
     update_animals(board, time_step, a, b, k, l, m, r);
-
-    if(i%T == 0)
+		if(i%T == 0)
     {
-			output_averages(board, simulation_time);
-      
-			cout << "writing ppm for time: " << simulation_time << endl;
+     	if(options.gui)
+			{
+				ncursesfield.update(simulation_time);
+			}
+
+    	if(!options.gui)
+			{ 
+				output_averages(board, simulation_time);
+				cout << "Writing ppm for time: " << simulation_time << endl;
+			}
       write_ppm(board, simulation_time, options.output_directory);
     }
     i++;    
   }
 	time_t stop_time = time(NULL);
+	endwin();
 	cout << "\nRan for " << stop_time - start_time << " seconds" << endl;
 }
