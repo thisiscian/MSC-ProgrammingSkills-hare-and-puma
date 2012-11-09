@@ -182,7 +182,7 @@ int main()
 	test_option("-D", "10", options.delay == 10);
 	
 	//check output directory
-  test_option("--output", "some_output_directory",
+  test_option("--output_directory", "some_output_directory",
       options.output_directory == "some_output_directory");
   test_option("-o", "some_output_directory",
       options.output_directory == "some_output_directory");

@@ -27,7 +27,7 @@ int Options::parse_input(int argc, char** argv)
     ("harefile", po::value<std::string>(&hare_filename), "set hare input file")
     ("pumafile", po::value<std::string>(&puma_filename), "set puma input file")
     (
-      "output,o",
+      "output_directory,o",
       po::value<std::string>(&output_directory),
       "set output directory"
     )
