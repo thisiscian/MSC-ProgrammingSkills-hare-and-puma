@@ -101,6 +101,17 @@ void NcursesField::update_statistics(double time)
 	l++;
 
 	text.str("");
+	text << "Mean Number of Hares: " << stats.get_hare_mean() << endl;
+	mvwprintw(statistics, l, 1, text.str().c_str());
+	l++;
+	
+	text.str("");
+	text << "Mean Number of Pumas: " << stats.get_puma_mean() << endl;
+	mvwprintw(statistics, l, 1, text.str().c_str());
+	l++;
+
+
+	text.str("");
 	text << "Largest Density of Hares: " << stats.get_hare_max() << endl;
 	mvwprintw(statistics, l, 1, text.str().c_str());
 	l++;
@@ -442,20 +453,21 @@ void NcursesField::set_field_window_size()
 void NcursesField::set_field_tile_sizes()
 {	
 	endwin();
-	size_t x=1, y=1;
-	size_t x_range = max((size_t) 1,board->get_width()/fieldNumHorizontalTiles);
-	size_t y_range = max((size_t) 1,board->get_height()/fieldNumVerticalTiles);
+	double x =1.0;
+	double y =1.0;
+	double x_range = max(1.0,(double)board->get_width()/fieldNumHorizontalTiles);
+	double y_range = max(1.0,(double)board->get_height()/fieldNumVerticalTiles);
 	for(int j=0; j<fieldNumVerticalTiles;j++)
 	{
 		for(int i=0; i<fieldNumHorizontalTiles;i++)
 		{	
-			int x_max =  min(board->get_width()-1, x+x_range);
-			int y_max =  min(board->get_height()-1, y+y_range);
-			fieldtile.push_back(FieldTile(board, x, y, x_max, y_max));
+			double x_max =  min(board->get_width()-1, (size_t)(x+x_range));
+			double y_max =  min(board->get_height()-1, (size_t)(y+y_range));
+			fieldtile.push_back(FieldTile(board, (size_t)x, (size_t)y, (size_t)x_max, (size_t)y_max));
 			x += x_range;
 		}
 		y += y_range;
-		x = 1;
+		x = 1.0;
 	}
 }
 

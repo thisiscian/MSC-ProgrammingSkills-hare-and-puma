@@ -180,11 +180,53 @@ int main()
 	// check delay
 	test_option("--delay", "1000", options.delay == 1000);
 	test_option("-D", "10", options.delay == 10);
-
+	
+	//check output directory
   test_option("--output", "some_output_directory",
       options.output_directory == "some_output_directory");
   test_option("-o", "some_output_directory",
       options.output_directory == "some_output_directory");
+
+	// check gui
+	test_option("l", "0.1", options.gui == false);
+	test_option("--gui", "true", options.gui == true);
+	test_option("-g", "false", options.gui == false);
+
+  // check empty gui options
+  // should be minimum required data
+  {
+    Options options;
+    int argc = 4;
+    char *argv[] = {
+      (char*) EXECUTABLE,
+      (char*) "--landfile", (char*) "../test_data/test_land_input.dat",
+			(char*) "--gui",
+      (char*) NULL
+    };
+
+    int ret = options.parse_input(argc, argv);
+
+    // parse_input should not return error
+    if(ret != 0)
+    {
+      std::cerr.rdbuf(oldCerrStreamBuf);
+      std::cout.rdbuf(oldCoutStreamBuf);
+
+      std::cerr << "Empty gui option test returned error" << std::endl;
+      return 1;
+    }
+
+    // config filename should be set
+    if(options.gui != true)
+    {
+      std::cerr.rdbuf(oldCerrStreamBuf);
+      std::cout.rdbuf(oldCoutStreamBuf);
+
+      std::cerr << "There was an error processing the empty gui option"
+                << std::endl;
+      return 1;
+    }
+  }
 
 
   // check input config file

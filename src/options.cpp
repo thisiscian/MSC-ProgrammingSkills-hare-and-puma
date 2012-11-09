@@ -83,7 +83,14 @@ int Options::parse_input(int argc, char** argv)
      "puma_diffusion,l",
      po::value<double>(&puma_diffusion),
      "set puma diffusion rate"
-    );
+    )
+		// gui options
+		(
+			"gui,g",
+			po::value<bool>(&gui)->implicit_value(true),
+			"sets program to gui mode"
+		)
+		;
 
 
   po::variables_map vm;
@@ -116,13 +123,20 @@ int Options::parse_input(int argc, char** argv)
   }
 
 
-  if(!vm.count("landfile")){
+  if(!vm.count("landfile"))
+	{
     std::cerr << "You must specify a land input file"
               << std::endl
               << std::endl;
     std::cerr << desc<< std::endl;
     return 1;
   }
+	
+	if(!vm.count("gui"))
+	{
+		gui = false;
+	}
+
 
   return 0;
 

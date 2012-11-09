@@ -20,7 +20,8 @@ class Options
     puma_death(0.02),
     puma_diffusion(0.06),
 		delay(1000),
-    output_directory("output")
+    output_directory("output"),
+		gui(false)
   {
   }
 
@@ -48,6 +49,8 @@ class Options
   double puma_birth;     // b
   double puma_death;     // m
   double puma_diffusion; // l
+
+	bool gui;
 
   int parse_input(int argc, char** argv);
 };
