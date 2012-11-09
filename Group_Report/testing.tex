@@ -63,7 +63,7 @@ correct output in some special cases.
   \item When an equilibrium distribution is given as input to the program,
         given the same input values as the previous test, the program should
         output the exact same board (or reasonably close to it, as output
-        from the program is rounded to the nearest integer).
+        from the program is rounded down to an integer value).
 
         This further tests the correctness of input and output.
 
@@ -73,6 +73,8 @@ correct output in some special cases.
         This ensures that hares and pumas are definitely spreading around
         the board.
 \end{itemize}
+
+These test were also implemented as part of the unit testing of the update function.
 
 
 \subsection{Performance Tests}
@@ -89,7 +91,7 @@ It was then possible to keep track of the improvements easily by adding the timi
 
 \subsection{Output Tests}
 	Output testing for writing \texttt{.ppm}s was done in a comprehensive fashion.
-	It is simple to test output files, but inputting a known file, and immediately outputting that file.
+	It is simple to test output files, by inputting a known file, and immediately outputting that file.
 	If the values in the output file correspond to the input, then the system works.
 
 	Several cases were developed to test the output;
@@ -113,7 +115,7 @@ It was then possible to keep track of the improvements easily by adding the timi
 			This can be used to count the number of pixels drawn in each line, which is the number of elements in the output grid.
 			In combination with the above test, this implies that the output file is indeed laid out correctly.
 		\item[No Hares, No Pumas, Only Land]
-			In this test, the system is set into a state where there are no rabbits, hares, and there is only land.
+			In this test, the system is set into a state where there are no  hares or pumas, and there is only land.
 			In this case, all the pixel values in the output file should be "0 0 0".
 		\item[No Hares, No Pumas, Only Water]
 			In this test, the system is set as above, except with the entire region being made of water.
