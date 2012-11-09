@@ -1,1 +1,64 @@
 \section{Testing}
+Three sets of tests were set up for this project:
+\begin{itemize}
+  \item Correctness tests
+  \item Performance tests
+  \item GUI tests
+\end{itemize}
+
+\subsection{Correctness Tests}
+The approach taken for correctness testing was to write one program to
+do each unit test.
+Upon the first error in the test, the program would exit early and return
+a value of 1.
+The idea behind this is that it would eliminate the overhead of learning
+a whole unit testing framework that might return the number of tests passed
+and the number failed.
+We felt this would be unnecessary, since if only one test fails, it's not
+really necessary to see how many others passed and how many failed, as the
+program is broken, regardless of the outcome of other tests.
+If more details are required, a programmer can simply comment out the offending
+test to see which others pass and fail.
+
+Finally, an integration test was built in the form of a bash script that
+passes several input files into the program and ensures it returns the
+correct output in some special cases.
+
+\begin{itemize}
+  \item Given the equations
+    \begin{align*}
+      \frac{\partial{H}}{\partial{t}} &= -aHP \\
+      \frac{\partial{P}}{\partial{t}} &=  bHP
+    \end{align*}
+    The following equality holds
+    \begin{equation*}
+      \frac{\partial{H}}{\partial{t}}
+        = -\frac{a}{b}\ \frac{\partial{P}}{\partial{t}}
+    \end{equation*}
+    This should test that the two PDEs are properly coupled.
+
+  \item Given an input with the hare or puma densities in some squares
+        set to zero, when the diffusion terms are set to zero, these
+        densities should remain at zero.
+
+  \item When only the hare birth term, $r$, and puma death term, $m$, are
+        nonzero, the hare and puma populations should follow the equations
+        \begin{align*}
+          H(t) &= H_0 e^{rt} \\
+          P(t) &= P_0 e^{-mt}
+        \end{align*}
+
+  \item When only diffusion terms are nonzero, both hare densities and pume
+        densities should reach an equilibrium distribution.
+
+  \item When an equilibrium distribution is given as input to the program,
+        given the same input values as the previous test, the program should
+        output the exact same board (or reasonably close to it, as.
+
+  \item When a checkerboard distribution is given and only diffusion terms
+        are nonzero, zero density tiles should not stay at zero.
+\end{itemize}
+
+
+\subsection{Performance Tests}
+\subsection{GUI Tests}
