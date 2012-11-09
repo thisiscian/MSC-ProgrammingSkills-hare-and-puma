@@ -1,1 +1,52 @@
 \section{Introduction}
+A pair of coupled PDEs can be used to model a predator prey model, like
+that of hares and pumas on an island.
+An example set of PDEs is
+\begin{align*}
+  \frac{\partial{H}}{\partial{t}} &= rH - aHP + k\,{\nabla^2}H \\
+  \frac{\partial{P}}{\partial{t}} &= bHP - mP + l\,{\nabla^2}P
+\end{align*}
+Where $H$ and $P$ are 2D fields representing the densities of hares and pumas
+at a given point in space,
+$t$ is time,
+$r$ is the rate of birth of hares,
+$a$ is the rate of predation of hares by pumas,
+$k$ is the diffusion coefficient of the hares,
+$b$ is the rate of birth of pumas (dependant on the number of hares to
+    feed their young),
+$m$ is the rate of death of pumas (by old age) and
+$l$ is the diffusion coefficient of the pumas.
+
+This set of PDEs can be discretized to be solved numerically.
+This can be done by defining a grid of points where the fields are
+defined and the values of the fields at a time $t + \Delta{t}$ can
+be found using the following update routines
+
+\begin{align*}
+  H^{t+\Delta{t}}_{i,j} &= H^{t}_{i,j}
+       + \Delta{t}(
+           rH^{t}_{i,j} - a H^{t}_{i,j} P^{t}_{i,j}
+           + k (
+             (H^{t}_{i-1,j} + H^{t}_{i+1,j} + H^{t}_{i,j-1} + H^{t}_{i,j+1})
+             -N_{i,j} H^{t}_{i,j}
+           )
+         ) \\
+%
+  P^{t+\Delta{t}}_{i,j} &= P^{t}_{i,j}
+       + \Delta{t}(
+           b H^{t}_{i,j} P^{t}_{i,j} - mP^{t}_{i,j}
+           + l (
+             (P^{t}_{i-1,j} + P^{t}_{i+1,j} + P^{t}_{i,j-1} + P^{t}_{i,j+1})
+             -N_{i,j} P^{t}_{i,j}
+           )
+         )
+\end{align*}
+
+A program was designed and written to do just this, where a user could
+specify the value of each variable, and the program would output some
+data on the fields at particular intervals.
+
+A team of three was formed to undertake this task.
+Given the relative simplicity of the problem, and the group members'
+math and programming backgrounds, it was felt that any more than three
+members would spread the work too thinly.

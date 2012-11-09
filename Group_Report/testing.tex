@@ -3,7 +3,7 @@ Three sets of tests were set up for this project:
 \begin{itemize}
   \item Correctness tests
   \item Performance tests
-  \item GUI tests
+  \item Output tests
 \end{itemize}
 
 \subsection{Correctness Tests}
@@ -61,4 +61,84 @@ correct output in some special cases.
 
 
 \subsection{Performance Tests}
-\subsection{GUI Tests}
+\subsection{Output Tests}
+	Output testing for writing \texttt{.ppm}s was done in a comprehensive fashion.
+	It is simple to test output files, but inputting a known file, and immediately outputting that file.
+	If the values in the output file correspond to the input, then the system works.
+
+	Several cases were developed to test the output;
+	\begin{description}
+		\item[First Line Validity]
+			A plain PPM file will be invalid if the first line does not contain the correct information.
+			It requires the text "P3", to indicate that it is a plain PPM.
+			It then needs the width and height of the data to be drawn.
+			Finally, it needs to know the maximum value of the data within (which is normally 255).
+			This test ensures that a sample input file of size $5\times5$ creates an output file with the first line reading "P3 5 5 255"
+		\item[Number of Lines]
+			Plain PPM files also require that the number of lines in the file is correct. 
+			The number of lines in the document should correspond to the second digit indicated on the first line plus 1 (to include the first line).
+			Again, an input of size $5\times5$ was used to check this.
+
+			Note that the output of this program actually introduces extra spaces between lines, to increase ASCII readability of the file.
+		\item[Number of Elements]
+			A final check of the validity of the plain PPM output file, that the number of pixels represented is the same as the number of input elements.
+			The program outputs the data as three integers, with spaces separating them.
+			Between each data point, is a tab space.
+			This can be used to count the number of pixels drawn in each line, which is the number of elements in the output grid.
+			In combination with the above test, this implies that the output file is indeed laid out correctly.
+		\item[No Hares, No Pumas, Only Land]
+			In this test, the system is set into a state where there are no rabbits, hares, and there is only land.
+			In this case, all the pixel values in the output file should be "0 0 0".
+		\item[No Hares, No Pumas, Only Water]
+			In this test, the system is set as above, except with the entire region being made of water.
+			If this is the case, the pixel values should all be "0 0 255", indicating no animals and only water.
+		\item[Constant Hares, Constant Pumas]
+			In this test, as the above test, except there are now non-zero numbers of hares and pumas.
+			Again, the expected result is that the pixel values are "0 0 255", ignoring the data of the hare and puma.
+
+			This test should have no particular use, as water tiles cannot, in the program, be populated by any animals.
+			However, it does ensure that the water system is printing correctly.
+		\item[Constant Hares, No Pumas, Only Land]
+			Here, the number of hares is the same in all grid points, 1.
+			The region is entirely made of land.
+			Therefore the pixel count of each element should be "0 1 0".
+			
+			This test ensures that hares are being added to the output properly.
+		\item[No Hares, Constant Pumas, Only Land]
+			As above, but with no hares and every puma set to a value of 2.
+			The pixel count is expected to be "2 0 0" for each element.
+
+			This test ensures that pumas are being added to the output properly.
+		\item[Constant Hares, Constant Pumas, Only Land]
+			Now there is a constant number of hares, 1, and a constant number of pumas, 2, in each element.
+			This leads to a pixel count of "2 1 0".
+			
+			This test makes sure that the hares and pumas are not somehow interferring with each other's output.
+		\item[Linear Hares, No Pumas, Only Land]
+			Now each element has a number of hares equal to the sum of it's colum and row minus 1, if they are numbered from 1 to 5.
+			Thus, the first element in the first row is expected to have a pixel value of "1 0 0", the second "2 0 0" etc., all the way to the last element on the last row having a pixel value of "9 0 0".
+
+			This test ensures that the number of being outputted is independent of other values of hare.
+		\item[No Hares, Linear Pumas, Only Land]
+			As above, but with pumas, and the rows and colums are numbered from 5 to 1.
+		\item[Non-Integer Hares, No Pumas, Only Land]
+			This test is as the Linear Hares, No Pumas, Only Land test, except that each element is now multiplied by 1.1.
+			This means that a full range of decimal places is tested.
+			It is expected the output will round the value down, giving the same results as the aforementioned test.
+
+			This test ensures that the plain PPM does not contain any non-integer values.
+		\item[No Hares, Non-Integer Pumas, Only Land]
+			As above but for pumas.
+		\item[Sample Input]
+			The sample input is a much larger file type, $24\times24$ elements.
+			It  contains regions with water, regions with no hares or pumas,with just hares, with just pumas, and regions with both species.
+			This stress tests the system to make sure that the previous tests pass in unison.
+		\item[Sample Input Xstretch]
+			This is the same as the above system, except that now the board is rectangular, having been stretched by one in the x direction to $25\times24$.
+
+			This ensures that the output is not reliant on symmetric systems.
+		\item[Sample Input Ystretch]
+			As above, except that it has been stretched in the y direction, to become $24\times25$.
+			
+			This test ensures that there is not some special dependence on either symmetry of the board or the x direction being stretched.
+	\end{description}
