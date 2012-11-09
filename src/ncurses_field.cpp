@@ -65,9 +65,9 @@ void NcursesField::update_input()
 	input = newwin(4,COLS/4-1, LINES-5, 3*COLS/4-1);
 	set_title(input, "INPUT");
 	
-	mvwprintw(input, l, 1, " q/Q - quits the program");
+	mvwprintw(input, l, 1, " q/Q - quit");
 	++l;	
-	mvwprintw(input, l, 1, " p/P  - pause and unpause");
+	mvwprintw(input, l, 1, " p/P  - pause");
 	++l;	
 
 	wrefresh(input);
@@ -83,41 +83,41 @@ void NcursesField::update_statistics(double time)
 	stats.trawl_for_statistics(*board, time);
 
 	delwin(statistics);	
-	statistics = newwin(LINES/2-1,COLS/4-1, 1, 3*COLS/4-1);
+	statistics = newwin(9,COLS/4-1, 1, 3*COLS/4-1);
 
 	text.str("");
-	text << "Simulation Time: " << time << endl;
+	text << "Time: " << setprecision(3) << fixed << time << endl;
 	mvwprintw(statistics, l, 1, text.str().c_str());
 	l++;
 
 	text.str("");
-	text << "Total Density of Hares: " << stats.get_hare_total() << endl;
-	mvwprintw(statistics, l, 1, text.str().c_str());
-	l++;
-	
-	text.str("");
-	text << "Total Density of Pumas: " << stats.get_puma_total() << endl;
-	mvwprintw(statistics, l, 1, text.str().c_str());
-	l++;
-
-	text.str("");
-	text << "Mean Number of Hares: " << stats.get_hare_mean() << endl;
+	text << "Total H: " << setprecision(3) << fixed << stats.get_hare_total() << endl;
 	mvwprintw(statistics, l, 1, text.str().c_str());
 	l++;
 	
 	text.str("");
-	text << "Mean Number of Pumas: " << stats.get_puma_mean() << endl;
+	text << "Total P: " << setprecision(3) << fixed << stats.get_puma_total() << endl;
+	mvwprintw(statistics, l, 1, text.str().c_str());
+	l++;
+
+	text.str("");
+	text << "Mean H: " << setprecision(3) << fixed << stats.get_hare_mean() << endl;
+	mvwprintw(statistics, l, 1, text.str().c_str());
+	l++;
+	
+	text.str("");
+	text << "Mean P: " << setprecision(3) << fixed << stats.get_puma_mean() << endl;
 	mvwprintw(statistics, l, 1, text.str().c_str());
 	l++;
 
 
 	text.str("");
-	text << "Largest Density of Hares: " << stats.get_hare_max() << endl;
+	text << "Max H: " << setprecision(3) << fixed << stats.get_hare_max() << endl;
 	mvwprintw(statistics, l, 1, text.str().c_str());
 	l++;
 
 	text.str("");
-	text << "Largest Density of Pumas: " << stats.get_puma_max() << endl;
+	text << "Max P: " << setprecision(3) << fixed << stats.get_puma_max() << endl;
 	mvwprintw(statistics, l, 1, text.str().c_str());
 	l++;
 
@@ -126,12 +126,12 @@ void NcursesField::update_statistics(double time)
 	if(time >= options->time_step)
 	{
 		text.str("");
-		text << "Average Hare Density: " << stats.get_hare_average() << endl;
+		text << "Avg. H: " << setprecision(3) << fixed << stats.get_hare_average() << endl;
 		mvwprintw(statistics, l, 1, text.str().c_str());
 		
 		l++;
 		text.str("");
-		text << "Average Puma Density: " << stats.get_puma_average() << endl;
+		text << "Avg. P: " << setprecision(3) << stats.get_puma_average() << endl;
 		mvwprintw(statistics, l, 1, text.str().c_str());
 	}
 
@@ -177,7 +177,7 @@ void NcursesField::update_key()
 	stringstream text;
 	get_symbol_worth();
 	delwin(key);
-	key = newwin(LINES/2-4,COLS/4-1, LINES/2, 3*COLS/4-1);
+	key = newwin(14,COLS/4-1, 10, 3*COLS/4-1);
 	
 	wattron(key, COLOR_PAIR(2));
 	mvwprintw(key, l, 1, "   ");
@@ -199,7 +199,7 @@ void NcursesField::update_key()
 	++l;	
 
 	text.str("");
-	text << " - 0-" << hareSymbolWorth << " Hares";
+	text << " - 0+ H";
 	wattron(key, A_BOLD);
 	wattron(key, COLOR_PAIR(2));
 	mvwprintw(key, l, 1, "   ");
@@ -210,7 +210,7 @@ void NcursesField::update_key()
 
 	wattron(key, COLOR_PAIR(1));
 	text.str("");
-	text << " - " << hareSymbolWorth << "-"<< 2*hareSymbolWorth << " Hares";
+	text << " - " << setprecision(2) << fixed << hareSymbolWorth << "+ H";
 	wattron(key, A_BOLD);
 	wattron(key, COLOR_PAIR(2));
 	mvwprintw(key, l, 1, " ~ ");
@@ -220,7 +220,7 @@ void NcursesField::update_key()
 	++l;	
 
 	text.str("");
-	text << " - " << 2*hareSymbolWorth << " Hares";
+	text << " - " << setprecision(2) << fixed<< 2*hareSymbolWorth << "+ H";
 	wattron(key, A_BOLD);
 	wattron(key, COLOR_PAIR(2));
 	mvwprintw(key, l, 1, " H ");
@@ -231,7 +231,7 @@ void NcursesField::update_key()
 	++l;	
 
 	text.str("");
-	text << " - 0-" << pumaSymbolWorth << " Pumas";
+	text << " - 0+ P";
 	wattron(key, A_BOLD);
 	wattron(key, COLOR_PAIR(3));
 	mvwprintw(key, l, 1, "   ");
@@ -241,7 +241,7 @@ void NcursesField::update_key()
 	++l;	
 
 	text.str("");
-	text << " - " << pumaSymbolWorth << "-"<< 2*pumaSymbolWorth << " Pumas";
+	text << " - " << setprecision(2) << fixed << pumaSymbolWorth << "+ P";
 	wattron(key, A_BOLD);
 	wattron(key, COLOR_PAIR(3));
 	mvwprintw(key, l, 1, " ~ ");
@@ -251,7 +251,7 @@ void NcursesField::update_key()
 	++l;	
 
 	text.str("");
-	text << " - " << 2*pumaSymbolWorth << " Pumas";
+	text << " - " << setprecision(2) << fixed << 2*pumaSymbolWorth << "+ P";
 	wattron(key, A_BOLD);
 	wattron(key, COLOR_PAIR(3));
 	mvwprintw(key, l, 1, " P ");
@@ -259,17 +259,7 @@ void NcursesField::update_key()
 	wattroff(key, A_BOLD);
 	mvwprintw(key, l, 5, text.str().c_str());
 	++l;
-	++l;
 
-	text.str("");
-	text << "Tile Width: " << tileCols << " Columns";	
-	mvwprintw(key, l, 1, text.str().c_str());
-	++l;	
-	
-	text.str("");
-	text << "Tile Height: " << tileLines << " Lines";	
-	mvwprintw(key, l, 1, text.str().c_str());
-	++l;
 	set_title(key, "KEY");
 }
 
