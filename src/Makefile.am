@@ -1,6 +1,6 @@
 bin_PROGRAMS = hare-and-puma
 
-hare_and_puma_SOURCES = board_setter.cpp tile.cpp options.cpp hare-and-puma_main.cpp update_animals.cpp write_ppm.cpp statistics.cpp ncurses_field.cpp field_tile.cpp
+hare_and_puma_SOURCES = board_setter.cpp tile.cpp options.cpp main.cpp update_animals.cpp write_ppm.cpp statistics.cpp ncurses_field.cpp field_tile.cpp
 hare_and_puma_CPPFLAGS = $(BOOST_CPPFLAGS)
 hare_and_puma_CXXFLAGS = -fopenmp
 hare_and_puma_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
@@ -50,7 +50,7 @@ update_performance_test_CXXFLAGS = -fopenmp
 #
 #   guitest
 #
-#   Useage:
+#   Usage:
 #     // in Makefile.am:
 #     GUI_TESTS = test_1 test_2 test_3 ...
 #     // on command line:
