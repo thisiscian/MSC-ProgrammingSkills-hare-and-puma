@@ -305,12 +305,12 @@ int main()
     {
       if(board(i,j).hare - old_board(i,j).hare*exp(r*timeStep) > 0.0000001)
       {
-        cout << "error: k,l=0 parameter test: hares not evolving properly" << endl;
+        cout << "error: k,l=0 parameter test: hares not evolving in time properly" << endl;
         return 1;
       }
       if(board(i,j).puma - old_board(i,j).puma*exp(-m*timeStep) > 0.0000001)
       {
-        cout << "error: k,l=0 parameter test: pumas not evolving properly" << endl;
+        cout << "error: k,l=0 parameter test: pumas not evolving in time properly" << endl;
         return 1;
       }
     }
