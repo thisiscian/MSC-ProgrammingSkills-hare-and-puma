@@ -1,6 +1,8 @@
 hares and pumas
 =======
 
+[https://github.com/thisiscian/hare-and-puma](https://github.com/thisiscian/hare-and-puma "hare-and-puma home")
+
 
 Usage
 ------
