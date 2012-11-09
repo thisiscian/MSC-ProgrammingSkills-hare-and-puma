@@ -6,6 +6,8 @@
 using namespace std;
 
 
+void reset_board(Board<Tile> &board, Board<Tile> &old_board);
+void initialise_board(Board<Tile> &board, Board<Tile> &old_board, double hares, double pumas, int mod);
 /*a piece of code to test the update routines*/
 
 int main()
@@ -20,23 +22,8 @@ int main()
 //
 // initialise without pumas to test hare growth also make boundaries 0
 //
-
-	for(size_t j=0; j<board.get_height(); ++j)
-	for(size_t i=0; i<board.get_width(); ++i)
-	{
-		if(j == 0 || i == 0 || j == board.get_height()-1 || i == board.get_width()-1)
-		{
-			board(i,j).make_water();
-			board(i,j).hare = old_board(i,j).hare = 0.0;
-			board(i,j).puma = old_board(i,j).puma = 0.0;
-		}
-		else
-		{
-			board(i,j).make_land();
-			board(i,j).hare = old_board(i,j).hare = 1.6;
-			board(i,j).puma = old_board(i,j).puma = 0.0;
-		}
-	}
+  reset_board(board, old_board);
+  initialise_board(board, old_board, 1.6, 0.0, 1);
 
 	update_animals(board, timeStep, a, b, k, l, m, r);
 
@@ -68,7 +55,7 @@ int main()
 	
 	if(newHareSum <= oldHareSum)
 	{
-		cout << "error: hare sums not changing" << endl;
+		cout << "error: hares decreasing" << endl;
 		return 1;
 	}
 	else if(newPumaSum != 0)
@@ -82,12 +69,7 @@ int main()
 // this requires a short loop over updates
 //
 	
-	for(size_t j=1; j<board.get_height()-1; ++j)
-	for(size_t i=1; i<board.get_width()-1; ++i)
-	{
-		board(i,j).hare = old_board(i,j).hare = 0.0;
-		board(i,j).puma = old_board(i,j).puma = 1.6;
-	}
+  initialise_board(board, old_board, 0.0, 1.6, 1);
 
 	for(int i=0;i<1000;++i)
 	{
@@ -134,17 +116,19 @@ int main()
 		return 1;
 	}
 
+//
+//flip board and old_board to test rectangular arrays properly
+//
+
+  board.resize(10,12);
+  old_board.resize(10,12);
+
+  reset_board(board, old_board);
+  initialise_board(board, old_board, 0.0, 0.0, 1);
 
 //
 // initialise one square with pumas and hares to test migration
 //
-
-	for(size_t j=1; j<board.get_height()-1; ++j)
-	for(size_t i=1; i<board.get_width()-1; ++i)
-	{
-		board(i,j).hare = old_board(i,j).hare = 0.0;
-		board(i,j).puma = old_board(i,j).puma = 0.0;
-	}
 
 	board(5,5).hare = 10.8;
 	board(5,5).puma = 10.8;
@@ -192,12 +176,7 @@ int main()
 // reinitialise to now test that the parameters (all=0) have the correct effect
 //
 
-	for(size_t j=1; j<board.get_height()-1; ++j)
-	for(size_t i=1; i<board.get_width()-1; ++i)
-	{
-		board(i,j).hare = old_board(i,j).hare = 1.5;
-		board(i,j).puma = old_board(i,j).puma = 1.5;
-	}
+  initialise_board(board, old_board, 1.5, 1.5, 1);
  
 //
 //  will test that if all parameters are zero that the number of animals stay the same
@@ -232,12 +211,7 @@ int main()
 // reinitialise to now test that the parameters (a,b!=0) have the correct effect
 //
 
-	for(size_t j=1; j<board.get_height()-1; ++j)
-	for(size_t i=1; i<board.get_width()-1; ++i)
-	{
-		board(i,j).hare = 1.5;
-		board(i,j).puma = 1.5;
-	}
+  initialise_board(board, old_board, 1.5, 1.5, 1);
  
 //
 //  test for agreement with analytical solution to a,b!=0 everything else 0
@@ -274,20 +248,7 @@ int main()
 // reinitialise to now test that the parameters(k,l=0) have the correct effect
 //
 
-	for(size_t j=1; j<board.get_height()-1; ++j)
-	for(size_t i=1; i<board.get_width()-1; ++i)
-	{
-    if(0 == (i+j)%2)
-    {
-      board(i,j).hare = old_board(i,j).hare = 1.5;
-      board(i,j).puma = old_board(i,j).puma = 1.5;
-    }
-    else
-    {
-      board(i,j).hare = old_board(i,j).hare = 0.0;
-      board(i,j).puma = old_board(i,j).puma = 0.0;
-    }
-	}
+  initialise_board(board, old_board, 1.5, 1.5, 2);
  
 //
 //  will test that if k,l=0 that there is no diffusion occuring
@@ -322,20 +283,7 @@ int main()
 // reinitialise to now test that the parameters(k,l=0) have the correct effect
 //
 
-	for(size_t j=1; j<board.get_height()-1; ++j)
-	for(size_t i=1; i<board.get_width()-1; ++i)
-	{
-    if(0 == (i+j)%2)
-    {
-      board(i,j).hare = old_board(i,j).hare = 1.5;
-      board(i,j).puma = old_board(i,j).puma = 1.5;
-    }
-    else
-    {
-      board(i,j).hare = old_board(i,j).hare = 0.0;
-      board(i,j).puma = old_board(i,j).puma = 0.0;
-    }
-	}
+  initialise_board(board, old_board, 1.5, 1.5, 2);
  
 //
 //  will test that if k,l=0 that the hares an pumas increase in populated squares according to H_1=H_0e^(rt) and similarly
@@ -383,12 +331,7 @@ int main()
 // reinitialise to now test that the parameters (k,l=1, allelse=0) have the correct effect
 //
 
-	for(size_t j=1; j<board.get_height()-1; ++j)
-	for(size_t i=1; i<board.get_width()-1; ++i)
-	{
-		board(i,j).hare = old_board(i,j).hare = 1.5;
-		board(i,j).puma = old_board(i,j).puma = 1.5;
-	}
+  initialise_board(board, old_board, 1.5, 1.5, 1);
  
 //
 //  will test that if the board is uniform it stays uniform with only diffusion
@@ -405,7 +348,7 @@ int main()
 	{
     if(old_board(i,j).hare != board(i,j).hare)
     {
-      cout << old_board(i-1,j).hare << board(i+1,j).hare << board(i,j+1).hare << board(i,j-1).hare << "i " << i << "j " << j << " error: k,l=1 parameter test: hare numbers changed" << endl;
+      cout << " error: k,l=1 parameter test: hare numbers changed" << endl;
       return 1;
     }
     if(old_board(i,j).puma != board(i,j).puma)
@@ -434,20 +377,7 @@ int main()
 // reinitialise to now test that the parameters(k,l=1) and everything else 0 has the correct effect
 //
 
-	for(size_t j=1; j<board.get_height()-1; ++j)
-	for(size_t i=1; i<board.get_width()-1; ++i)
-	{
-    if(0 == (i+j)%2)
-    {
-      board(i,j).hare = old_board(i,j).hare = 1.5;
-      board(i,j).puma = old_board(i,j).puma = 1.5;
-    }
-    else
-    {
-      board(i,j).hare = old_board(i,j).hare = 0.0;
-      board(i,j).puma = old_board(i,j).puma = 0.0;
-    }
-	}
+  initialise_board(board, old_board, 1.5, 1.5, 2);
  
 //
 //  will test that if k,l=1 on a checkerboard 0 squares become populated
@@ -481,13 +411,9 @@ int main()
 // test for animals appearing on water in the map
 //
 
+  a = b = k = l = m = r = 1.0;
 
-	for(size_t i=1; i<board.get_width()-1; ++i)
-	for(size_t j=1; j<board.get_height()-1; ++j)
-	{
-		board(i,j).hare = 0.9; //I know these values persist for a while
-		board(i,j).puma = 1.1;
-	} 	
+  initialise_board(board, old_board, 0.9, 1.1, 1); //these puma and hare values persist for a while
 	
 	board(5,5).make_water();
 	board(2,2).make_water();
@@ -503,9 +429,50 @@ int main()
 		} 
 	}
 
-//
-//  test handling of rectangular arrays to ensure get_length() and get_height() and board indices are used correctly
-//
-
 	return 0;
+}
+
+//
+//function to initialise the board, takes arguments of the hare and puma numbers
+//the mod argument determines whether it will be in a checkerboard style or not
+//
+void initialise_board(Board<Tile> &board, Board<Tile> &old_board, double hares, double pumas, int mod)
+{
+	for(size_t i=1; i<board.get_width()-1; ++i)
+	for(size_t j=1; j<board.get_height()-1; ++j)
+	{
+    if(0 == (i+j)%mod)
+    {
+      board(i,j).hare = old_board(i,j).hare = hares;
+      board(i,j).puma = old_board(i,j).puma = pumas;
+    }
+    else
+    {
+      board(i,j).hare = old_board(i,j).hare = 0.0;
+      board(i,j).puma = old_board(i,j).puma = 0.0;
+    }
+	}
+}
+
+//
+//function to reset the boundaries of the board
+//
+void reset_board(Board<Tile> &board, Board<Tile> &old_board)
+{
+	for(size_t i=0; i<board.get_width(); ++i)
+	for(size_t j=0; j<board.get_height(); ++j)
+	{
+		if(j == 0 || i == 0 || j == board.get_height()-1 || i == board.get_width()-1)
+		{
+			board(i,j).make_water();
+      old_board(i,j).make_water();
+			board(i,j).hare = old_board(i,j).hare = 0.0;
+			board(i,j).puma = old_board(i,j).puma = 0.0;
+		}
+    else
+    {
+    board(i,j).make_land();
+    old_board(i,j).make_land();
+    }
+	}
 }
