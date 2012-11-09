@@ -6,12 +6,12 @@ As a precursor to this the main code was profiled so that it was possible to dec
 The profiling program \texttt{Valgrind} and the tool \texttt{Callgrind} associated with it was used.
 This showed that one of the large users of CPU time was the update\_animals function as would be expected as this is the main computational part of the code.
 Once it was known what that this part of the code needed testing a specific performance test was written to test this function as outlined in the tests part of this report.
-Since a comprehensive test suite had already been written the code could be changed quite aggresivly in order to improve performance.
+Since a comprehensive test suite had already been written the code could be changed quite aggressively in order to improve performance.
 
 The first idea was to investigate compiler flags.
 \texttt{G++} was the compiler used for this project so the compiler options \texttt{-O1}, \texttt{-O2} and \texttt{-O3} were tested in the hope that they might improve performance.
 It was seen that as optimisation levels were increased there was increase in the performance of the code as could be expected.
-There was however a negligable difference seen between the \texttt{-O2} and \texttt{-O3} options.
+There was however a negligible difference seen between the \texttt{-O2} and \texttt{-O3} options.
 Due to the fact that \texttt{-O3} is more aggressive when it comes to changing the execution of code it was decided to use -O2 as the compiler optimisation option.
 
 Next the memory accesses during the update were considered.

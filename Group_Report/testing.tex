@@ -50,7 +50,7 @@ correct output in some special cases.
           P(t) &= P_0 e^{-mt}
         \end{align*}
 
-  \item When only diffusion terms are nonzero, both hare densities and pume
+  \item When only diffusion terms are nonzero, both hare densities and puma
         densities should reach an equilibrium distribution.
 
   \item When an equilibrium distribution is given as input to the program,
@@ -126,14 +126,14 @@ It was then possible to keep track of the improvements easily by adding the timi
 			Now there is a constant number of hares, 1, and a constant number of pumas, 2, in each element.
 			This leads to a pixel count of "2 1 0".
 			
-			This test makes sure that the hares and pumas are not somehow interferring with each other's output.
+			This test makes sure that the hares and pumas are not somehow interfering with each other's output.
 		\item[Linear Hares, No Pumas, Only Land]
-			Now each element has a number of hares equal to the sum of it's colum and row minus 1, if they are numbered from 1 to 5.
+			Now each element has a number of hares equal to the sum of it's column and row minus 1, if they are numbered from 1 to 5.
 			Thus, the first element in the first row is expected to have a pixel value of "1 0 0", the second "2 0 0" etc., all the way to the last element on the last row having a pixel value of "9 0 0".
 
 			This test ensures that the number of being outputted is independent of other values of hare.
 		\item[No Hares, Linear Pumas, Only Land]
-			As above, but with pumas, and the rows and colums are numbered from 5 to 1.
+			As above, but with pumas, and the rows and columns are numbered from 5 to 1.
 		\item[Non-Integer Hares, No Pumas, Only Land]
 			This test is as the Linear Hares, No Pumas, Only Land test, except that each element is now multiplied by 1.1.
 			This means that a full range of decimal places is tested.
